@@ -9,7 +9,6 @@ Sword::Sword(glm::vec3 position, glm::vec3 scale, glm::vec3 velocity, glm::vec4 
     rigidBody.isStatic = isStatic;
     this->color = color;
     this->name = name;
-    //this->player = player;
     usingSword = false;
     length = scale.x;
     width = scale.y;
