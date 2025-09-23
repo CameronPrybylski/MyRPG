@@ -1,0 +1,6 @@
+[submodule "2DEngine"]
+	path = 2DEngine
+	url = https://github.com/CameronPrybylski/2DEngine.git
+[submodule "engine"]
+	path = engine
+	url = https://github.com/CameronPrybylski/2DEngine.git
