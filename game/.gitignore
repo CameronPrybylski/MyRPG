@@ -1,0 +1,32 @@
+# macOS system files
+.DS_Store
+
+# Build artifacts
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Compiled object files and binaries
+*.o
+*.obj
+*.so
+*.dll
+*.exe
+*.out
+*.a
+*.lib
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Editor/IDE folders and files
+.vscode/
+.idea/
+*.swp
+
+# Backup files
+*~
+*.bak
