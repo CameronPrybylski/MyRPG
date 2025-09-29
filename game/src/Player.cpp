@@ -8,7 +8,7 @@ Player::Player(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
     hp = 3;
-    texture.Create("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/8bitLink.png");
+    texture.Create("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/large_display_fighter.png");
     this->color = color;
     this->name = name;
 }
@@ -117,6 +117,7 @@ void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 coll
     if (collidedObj->name.find("enemy") != std::string::npos && !hit)
     {
         Hit(collisionNormal, dt);
+        inBattle = true;
     }
 }
 
