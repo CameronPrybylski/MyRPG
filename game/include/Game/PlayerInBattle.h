@@ -2,11 +2,11 @@
 #include <Engine/Scene/GameObject.h>
 #include <Game/Sword.h>
 
-class Player : public GameObject {
+class PlayerInBattle : public GameObject {
 
 public:
-    Player(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, bool isStatic);
-    ~Player();
+    PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, bool isStatic);
+    ~PlayerInBattle();
 
     void OnEvent(const Input& input) override;
     void Update(const Input& input, float dt) override;

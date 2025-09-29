@@ -6,9 +6,12 @@ add_executable(MyRPG
     src/Level.cpp
     src/GameOver.cpp
     src/Player.cpp
+    src/PlayerInBattle.cpp
     src/Obstacle.cpp
     src/Enemy.cpp
     src/Sword.cpp
+    src/Battle.cpp
+    src/BattleMenu.cpp
     # Add your game source files here
 )
 
