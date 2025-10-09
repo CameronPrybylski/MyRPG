@@ -1,8 +1,9 @@
 #pragma once
 
 class Scene;
-class Enemy;
+class EnemyInBattle;
 class PlayerInBattle;
+class BattleMenu;
 
 class Battle : public Scene {
 
@@ -20,10 +21,14 @@ public:
 
     void UpdateCamera();
 
+    void HandlePlayerAttack(std::shared_ptr<EnemyInBattle> attacked);
+
 private:
     std::string filepath;
     std::shared_ptr<PlayerInBattle> player;
+    std::shared_ptr<BattleMenu> menu;
     std::string nextArea;
-    std::vector<std::shared_ptr<Enemy>> enemies;
+    std::unordered_map<std::string, std::shared_ptr<EnemyInBattle>> enemies;
+    bool playerMove = true;
 
 };

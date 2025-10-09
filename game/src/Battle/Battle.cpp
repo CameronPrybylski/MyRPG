@@ -4,7 +4,7 @@
 #include <Game/BattleMenu.h>
 #include <Game/PlayerInBattle.h>
 #include <Game/Obstacle.h>
-#include <Game/Enemy.h>
+#include <Game/EnemyInBattle.h>
 
 Battle::Battle(float screenWidth, float screenHeight, std::string filepath) : Scene(screenWidth, screenHeight), filepath(filepath)
 {
@@ -57,20 +57,37 @@ void Battle::LoadBattle()
                 player = std::make_shared<PlayerInBattle>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
-                go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/sword.png", "sword" ,false);
+                go = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/sword.png", "sword" ,false);
                 player->AddItem("sword", go);
                 AddObject("sword", go);
             }
             else if(objs.key() == "enemies"){
-                std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(position, scale, velocity, color, "", name, isStatic);
+                std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(position, scale, color, texturePath, name);
                 go = enemy;
                 AddObject(obst.value("name", "Unnamed"), go);
-                enemies.push_back(enemy);
+                enemies[name] = enemy;
             }
             else if(objs.key() == "menu"){
-                std::shared_ptr<BattleMenu> menu = std::make_shared<BattleMenu>(position, scale, color, "", name);
-                go = menu;
-                AddObject(obst.value("name", "Unnamed"), go);
+                if(name == "menu")
+                {
+                    menu = std::make_shared<BattleMenu>(position, scale, color, "", name);
+                    menu->SetCursorMinHeight(obst["cursorMinMaxHeight"][0]);
+                    menu->SetCursorMaxHeight(obst["cursorMinMaxHeight"][1]);
+                    go = menu;
+                    AddObject(obst.value("name", "Unnamed"), go);
+                }
+                else if(name.find("menuItem") != std::string::npos)
+                {
+                    menu->AddMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                }
+                else if(name.find("attackMenuItem") != std::string::npos)
+                {
+                    menu->AddAttackMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                }
+                else if(name == "cursor" && menu != nullptr)
+                {
+                    menu->AddCursor(name, position, scale, color, texturePath);
+                }
             }
             /*
             else if(objs.key() == "aground"){
@@ -102,9 +119,12 @@ void Battle::LoadPhysics(PhysicsSystem& physics)
 
 void Battle::OnEvent(const Input& input)
 {
-    for(auto& obj : objectList)
+    if(playerMove)
     {
-        obj->OnEvent(input);
+        for(auto& obj : objectList)
+        {
+            obj->OnEvent(input);
+        }
     }
 }
 
@@ -112,16 +132,44 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
 {
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(collisions, dt);
+    if(playerMove && menu->GetPlayerMove() != "")
+    {
+        player->SetMove(menu->GetPlayerMove());
+        if(menu->GetPlayerMove().find("Attack") != std::string::npos)
+        {
+            enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+        }
+        playerMove = false;
+    }
+
     for(auto& obj : objectList)
     {
         obj->Update(input, dt);
     }
+
+    menu->SetPlayerMove("");
+    player->SetMove(menu->GetPlayerMove());
+
+    for(auto enemy : enemies)
+    {
+        if(enemy.second->GetMove())
+        {
+            playerMove = true;
+        }
+        enemy.second->SetMove(!playerMove);
+    }
+    
     //UpdateCamera();
 }
 
 void Battle::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 {
 
+}
+
+void Battle::HandlePlayerAttack(std::shared_ptr<EnemyInBattle> attacked)
+{
+    attacked->TakeDamage(player->GetAttackDamage());
 }
 
 void Battle::UpdateCamera()

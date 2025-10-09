@@ -1,4 +1,6 @@
 #include <Game/PlayerInBattle.h>
+#include <thread>
+#include <chrono>
 
 PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, bool isStatic)
 {
@@ -7,10 +9,12 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     transform.position = position;
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
-    hp = 3;
+    hp = 10;
     texture.Create("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/large_display_fighter.png");
     this->color = color;
     this->name = name;
+
+    equippedWeapon = std::make_shared<Weapon>(2);
 }
 
 PlayerInBattle::~PlayerInBattle()
@@ -25,7 +29,16 @@ void PlayerInBattle::OnEvent(const Input& input)
 
 void PlayerInBattle::Update(const Input& input, float dt)
 {
-    PositionSword();
+    if(playerMove == "Attack")
+    {
+        usingSword = true;
+        transform.position.x -= 100.0f;
+    }else if(playerMove == "Magic")
+    {
+        usingSword = false;
+        transform.position.x += 100.0f;
+    }
+    //PositionSword();
 }
 
 void PlayerInBattle::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
@@ -41,6 +54,7 @@ void PlayerInBattle::Render(Renderer& renderer, const Camera& camera)
 {
     renderer.DrawTexturedQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), texture, color);
     texture.Unbind();
+    //std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 void PlayerInBattle::Hit(glm::vec2 collisionNormal, float dt)
