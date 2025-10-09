@@ -1,6 +1,7 @@
 #pragma once
 #include <Engine/Scene/GameObject.h>
 #include <Game/Sword.h>
+#include <Game/Weapon.h>
 
 class PlayerInBattle : public GameObject {
 
@@ -17,6 +18,26 @@ public:
     void AddItem(std::string name, std::shared_ptr<GameObject> item);
     void PositionSword();
 
+    void SetMove(std::string move)
+    {
+        playerMove = move;
+    }
+
+    void SetHP(int hp)
+    {
+        this->hp = hp;
+    }
+
+    int GetHP()
+    {
+        return hp;
+    }
+
+    int GetAttackDamage()
+    {
+        return equippedWeapon->GetDamage();
+    }
+
     bool hit = false;
     bool alive = true;
     bool usingSword = false;
@@ -24,9 +45,14 @@ public:
     bool inBattle = false;
     std::string positionFacing = "Down";
 
-    int hp;
+    std::string playerMove = "";
+
     float timeSinceHit = 0.0f;
 
     std::unordered_map<std::string, std::shared_ptr<GameObject>> items;
+private:
+    int hp;
+    std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons;
+    std::shared_ptr<Weapon> equippedWeapon;
 
 };

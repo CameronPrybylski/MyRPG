@@ -3,15 +3,18 @@ project(MyRPG)
 
 add_executable(MyRPG
     src/main.cpp
-    src/Level.cpp
+    src/OverWorld/Level.cpp
     src/GameOver.cpp
-    src/Player.cpp
-    src/PlayerInBattle.cpp
+    src/OverWorld/Player.cpp
+    src/Battle/PlayerInBattle.cpp
     src/Obstacle.cpp
-    src/Enemy.cpp
+    src/OverWorld/Enemy.cpp
     src/Sword.cpp
-    src/Battle.cpp
-    src/BattleMenu.cpp
+    src/Battle/Battle.cpp
+    src/Battle/BattleMenu.cpp
+    src/Battle/MenuItem.cpp
+    src/Battle/EnemyInBattle.cpp
+    src/Battle/Weapon.cpp
     # Add your game source files here
 )
 
@@ -21,4 +24,6 @@ target_include_directories(MyRPG
 )
 
 target_link_libraries(MyRPG PRIVATE Engine)
+
+#cmake -DCMAKE_BUILD_TYPE=Debug .
 

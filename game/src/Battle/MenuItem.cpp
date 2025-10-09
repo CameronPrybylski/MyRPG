@@ -1,0 +1,34 @@
+#include <Game/MenuItem.h>
+
+MenuItem::MenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
+{
+    transform.position = position;
+    transform.scale = scale;
+    this->color = color;
+    this->name = name;
+    this->text = text;
+
+    mesh = AssetManager::GetMesh("quadMesh");
+
+    if(fontPath != ""){
+        shaderName = "textureShader";
+        textTexture.Create(fontPath, text);
+        texture = textTexture;
+    }else{
+        shaderName = "objectShader";
+    }
+}
+
+MenuItem::~MenuItem()
+{
+}
+
+void MenuItem::Render(Renderer &renderer, const Camera &camera)
+{
+    renderer.DrawTexturedQuad(*mesh, transform, camera, AssetManager::GetShader("textureShader"), texture, color);
+}
+
+void MenuItem::SetTexture(std::string fontPath, std::string text)
+{
+
+}

@@ -21,7 +21,84 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 0.0, 1.0, 0.5],
                 "isStatic": true,
+                "texturePath" : "",
+                "cursorMinMaxHeight" : [55.0, 135.0]
+            },
+            {
+                "name": "menuItem1",
+                "position": [100.0, 135.0, 0.0],
+                "scale": [70.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Attack"
+            },
+            {
+                "name": "menuItem2",
+                "position": [100.0, 95.0, 0.0],
+                "scale": [70.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Magic"
+            },
+            {
+                "name": "menuItem3",
+                "position": [100.0, 55.0, 0.0],
+                "scale": [70.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Items"
+            },
+            {
+                "name": "cursor",
+                "position": [50.0, 135.0, 0.0],
+                "scale": [10.0, 5.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
                 "texturePath" : ""
+            },
+            {
+                "name": "attackMenuItem1",
+                "position": [100.0, 135.0, 0.0],
+                "scale": [70.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Enemy1"
+            },
+            {
+                "name": "attackMenuItem2",
+                "position": [100.0, 95.0, 0.0],
+                "scale": [70.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Enemy2"
+            },
+            {
+                "name": "attackMenuItem3",
+                "position": [100.0, 55.0, 0.0],
+                "scale": [70.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Back"
             }
         ],
         "obstacles": [
@@ -50,8 +127,8 @@
         ],
         "enemies" : [
             {
-                "name": "enemy1",
-                "position": [400.0, 300.0, 0.0],
+                "name": "Enemy1",
+                "position": [200.0, 600.0, 0.0],
                 "scale": [50.0, 50.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -60,8 +137,8 @@
                 "texturePath" : ""
             },
             {
-                "name": "enemy2",
-                "position": [850.0, 75.0, 0.0],
+                "name": "Enemy2",
+                "position": [200.0, 400.0, 0.0],
                 "scale": [50.0, 50.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],

@@ -13,7 +13,6 @@ Enemy::Enemy(glm::vec3 position, glm::vec3 scale, glm::vec3 velocity, glm::vec4 
     this->name = name;
     this->type = "Enemy";
     this->velocity = velocity;
-    transform.rotation.z += 45.0f;
     if(texturePath != ""){
         shaderName = "textureShader";
         texture.Create(texturePath);
