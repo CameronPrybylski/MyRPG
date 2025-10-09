@@ -34,7 +34,11 @@ void EnemyInBattle::Update(float dt)
 
 void EnemyInBattle::Update(const Input &input, float dt)
 {
-    if(enemyMove)
+    if(hp <= 0)
+    {
+        isAlive = false;
+    }
+    if(enemyMove && isAlive)
     {
         MakeMove();
     }
@@ -63,7 +67,10 @@ void EnemyInBattle::TakeDamage(int damage)
 
 void EnemyInBattle::Render(Renderer &renderer, const Camera &camera)
 {
-    renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader("objectShader"), color);
+    if(isAlive)
+    {
+        renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader("objectShader"), color);
+    }
 }
 
 void EnemyInBattle::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)

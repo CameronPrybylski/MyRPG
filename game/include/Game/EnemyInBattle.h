@@ -29,6 +29,11 @@ public:
         return hp;
     }
 
+    bool IsAlive()
+    {
+        return isAlive;
+    }
+
 private:
     bool isAlive;
     bool enemyMove = false;

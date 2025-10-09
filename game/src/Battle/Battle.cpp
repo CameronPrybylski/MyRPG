@@ -134,12 +134,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     OnCollision(collisions, dt);
     if(playerMove && menu->GetPlayerMove() != "")
     {
-        player->SetMove(menu->GetPlayerMove());
-        if(menu->GetPlayerMove().find("Attack") != std::string::npos)
-        {
-            enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
-        }
-        playerMove = false;
+        HandlePlayerMove();
     }
 
     for(auto& obj : objectList)
@@ -150,13 +145,26 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     menu->SetPlayerMove("");
     player->SetMove(menu->GetPlayerMove());
 
+    std::vector<std::string> deadEnemies;
     for(auto enemy : enemies)
     {
         if(enemy.second->GetMove())
         {
             playerMove = true;
         }
+        if(!enemy.second->IsAlive())
+        {
+            deadEnemies.push_back(enemy.second->name);
+        }
         enemy.second->SetMove(!playerMove);
+    }
+
+    if(deadEnemies.size() > 0)
+        menu->SetDeadEnemies(deadEnemies);
+    
+    if(deadEnemies.size() == enemies.size())
+    {
+        EndScene("overworld");
     }
     
     //UpdateCamera();
@@ -167,9 +175,14 @@ void Battle::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 
 }
 
-void Battle::HandlePlayerAttack(std::shared_ptr<EnemyInBattle> attacked)
+void Battle::HandlePlayerMove()
 {
-    attacked->TakeDamage(player->GetAttackDamage());
+    player->SetMove(menu->GetPlayerMove());
+    if(menu->GetPlayerMove().find("Attack") != std::string::npos)
+    {
+        enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+    }
+    playerMove = false;
 }
 
 void Battle::UpdateCamera()

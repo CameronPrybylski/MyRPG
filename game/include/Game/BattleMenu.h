@@ -38,6 +38,8 @@ public:
         playerMove = move;
     }
 
+    void SetDeadEnemies(std::vector<std::string> deadEnemies);
+
 
 private:
 

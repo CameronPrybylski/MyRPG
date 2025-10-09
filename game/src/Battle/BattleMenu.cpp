@@ -53,16 +53,11 @@ void BattleMenu::OnEvent(const Input &input)
             {
                 if(cursor->transform.position.y == attackMenuItem.second->transform.position.y)
                 {
-                    if(attackMenuItem.second->GetText() == "Back")
-                    {
-                        menuName = "MenuItems";
-                    }
-                    else
+                    if(attackMenuItem.second->GetText() != "Back")
                     {
                         playerMove = "Attack" + attackMenuItem.second->GetText();
-                        menuName = "MenuItems";
                     }
-
+                    menuName = "MenuItems";
                 }
             }
         }
@@ -116,7 +111,7 @@ void BattleMenu::AddMenuItem(std::string name, glm::vec3 position, glm::vec3 sca
 void BattleMenu::AddAttackMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
-    attackMenuItems[name] = menuItem;
+    attackMenuItems[text] = menuItem;
 }
 
 void BattleMenu::AddCursor(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath)
@@ -136,4 +131,12 @@ void BattleMenu::AddCursor(std::string name, glm::vec3 position, glm::vec3 scale
         cursor->shaderName = "objectShader";
     }
 
+}
+
+void BattleMenu::SetDeadEnemies(std::vector<std::string> deadEnemies)
+{
+    for(std::string enemyName : deadEnemies)
+    {
+        attackMenuItems.erase(enemyName);
+    }
 }
