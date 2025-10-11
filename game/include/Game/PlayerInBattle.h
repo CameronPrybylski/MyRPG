@@ -38,8 +38,13 @@ public:
         return equippedWeapon->GetDamage();
     }
 
+    void TakeDamage(int damage)
+    {
+        hp -= damage;
+    }
+
     bool hit = false;
-    bool alive = true;
+
     bool usingSword = false;
     bool stop = false;
     bool inBattle = false;
@@ -52,6 +57,7 @@ public:
     std::unordered_map<std::string, std::shared_ptr<GameObject>> items;
 private:
     int hp;
+    bool alive = true;
     std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons;
     std::shared_ptr<Weapon> equippedWeapon;
 

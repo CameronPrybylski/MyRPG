@@ -140,3 +140,8 @@ void BattleMenu::SetDeadEnemies(std::vector<std::string> deadEnemies)
         attackMenuItems.erase(enemyName);
     }
 }
+
+void BattleMenu::UpdatePlayerHP(int hp)
+{
+    menuItems["menuItemPlayerHP"]->ChangeText("HP: " + std::to_string(hp));
+}

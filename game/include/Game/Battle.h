@@ -22,6 +22,7 @@ public:
     void UpdateCamera();
 
     void HandlePlayerMove();
+    void HandleEnemyMove(std::shared_ptr<EnemyInBattle> enemy);
 
 private:
     std::string filepath;
