@@ -14,7 +14,7 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     this->color = color;
     this->name = name;
 
-    equippedWeapon = std::make_shared<Weapon>(2);
+    equippedWeapon = std::make_shared<Weapon>(3);
 }
 
 PlayerInBattle::~PlayerInBattle()
@@ -37,6 +37,11 @@ void PlayerInBattle::Update(const Input& input, float dt)
     {
         usingSword = false;
         transform.position.x += 100.0f;
+    }
+
+    if(hp <= 0)
+    {
+        alive = false;
     }
     //PositionSword();
 }

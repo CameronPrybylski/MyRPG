@@ -7,6 +7,7 @@ MenuItem::MenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::v
     this->color = color;
     this->name = name;
     this->text = text;
+    this->fontPath = fontPath;
 
     mesh = AssetManager::GetMesh("quadMesh");
 
@@ -31,4 +32,14 @@ void MenuItem::Render(Renderer &renderer, const Camera &camera)
 void MenuItem::SetTexture(std::string fontPath, std::string text)
 {
 
+}
+
+void MenuItem::ChangeText(std::string newText)
+{
+    if(fontPath != ""){
+        textTexture.Delete();
+        shaderName = "textureShader";
+        textTexture.Create(fontPath, newText);
+        texture = textTexture;
+    }
 }

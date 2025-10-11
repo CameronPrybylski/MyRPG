@@ -19,8 +19,11 @@ public:
         return text;
     }
 
+    void ChangeText(std::string newText);
+
 private:
     TextTexture textTexture;
     std::string text;
+    std::string fontPath;
 
 };

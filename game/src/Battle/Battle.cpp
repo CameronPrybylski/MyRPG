@@ -62,7 +62,8 @@ void Battle::LoadBattle()
                 AddObject("sword", go);
             }
             else if(objs.key() == "enemies"){
-                std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(position, scale, color, texturePath, name);
+                int attackDamage = obst.value("attackDamage", 0);
+                std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(position, scale, color, texturePath, name, attackDamage);
                 go = enemy;
                 AddObject(obst.value("name", "Unnamed"), go);
                 enemies[name] = enemy;
@@ -150,6 +151,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     {
         if(enemy.second->GetMove())
         {
+            HandleEnemyMove(enemy.second);
             playerMove = true;
         }
         if(!enemy.second->IsAlive())
@@ -162,12 +164,12 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     if(deadEnemies.size() > 0)
         menu->SetDeadEnemies(deadEnemies);
     
-    if(deadEnemies.size() == enemies.size())
+    if(deadEnemies.size() == enemies.size() || player->GetHP() <= 0)
     {
         EndScene("overworld");
     }
     
-    //UpdateCamera();
+    menu->UpdatePlayerHP(player->GetHP());
 }
 
 void Battle::OnCollision(std::vector<CollisionEvent> collisions, float dt)
@@ -183,6 +185,11 @@ void Battle::HandlePlayerMove()
         enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
     }
     playerMove = false;
+}
+
+void Battle::HandleEnemyMove(std::shared_ptr<EnemyInBattle> enemy)
+{
+    player->TakeDamage(enemy->GetAttackDamage());
 }
 
 void Battle::UpdateCamera()

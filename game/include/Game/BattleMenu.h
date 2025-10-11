@@ -40,6 +40,8 @@ public:
 
     void SetDeadEnemies(std::vector<std::string> deadEnemies);
 
+    void UpdatePlayerHP(int hp);
+
 
 private:
 
