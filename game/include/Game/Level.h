@@ -7,7 +7,7 @@
 class Level : public Scene {
 
 public:
-    Level(float screenWidth, float screenHeight, std::string filepath);
+    Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath);
     //Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects);
     ~Level();
 
@@ -18,6 +18,9 @@ public:
     void OnEvent(const Input& input) override;
     void OnUpdate(const Input& input, PhysicsSystem& physics, float dt) override;
     void OnCollision(std::vector<CollisionEvent> collisions, float dt);
+
+    void SaveState();
+    void LoadState();
 
     //void UpdatePhysics(PhysicsSystem& physics, float dt);
 
@@ -30,6 +33,8 @@ private:
     std::string filepath;
     float completionDist;
     std::string nextLevel;
+    std::string saveFilePath;
+    bool initialStart;
 
 
 };

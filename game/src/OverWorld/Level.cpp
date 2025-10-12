@@ -1,8 +1,10 @@
 #include <Game/Level.h>
 #include <Game/Obstacle.h>
 
-Level::Level(float screenWidth, float screenHeight, std::string filepath) : Scene(screenWidth, screenHeight), filepath(filepath)
+Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
 {
+    this->saveFilePath = saveFilePath;
+    initialStart = true;
     Init();
 }
 
@@ -82,6 +84,10 @@ void Level::LoadLevel(std::string filepath)
     topScreenEdge = screenHeight;
 
     gameOver = false;
+    if(!initialStart)
+    {
+        LoadState();
+    }
 
 }
 
@@ -125,6 +131,8 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     }
     if(player->inBattle)
     {
+        SaveState();
+        initialStart = false;
         EndScene("battle");
     }
     if(gameOver)
@@ -158,6 +166,10 @@ void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 
 void Level::UpdateCamera()
 {
+    if(!initialStart)
+    {
+        //std::cout << "Hello" << std::endl;
+    }
     glm::vec3 playerPositionChange(0.0f);
     float changeX = player->transform.position.x - player->rigidBody.previousPosition.x;
     float changeY = player->transform.position.y - player->rigidBody.previousPosition.y;
@@ -175,4 +187,47 @@ void Level::UpdateCamera()
     leftScreenEdge += changeX;
     rightScreenEdge += changeX;
     
+}
+
+void Level::SaveState()
+{
+    std::ofstream levelSave(saveFilePath);
+    if (!levelSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json saveData;
+    nlohmann::json::array_t position = {player->transform.position.x, player->transform.position.y, player->transform.position.z};
+    saveData["Player"] = nlohmann::json::object_t({{"position", position}});
+    saveData["Camera"] = nlohmann::json::object_t({{"leftScreenEdge", leftScreenEdge}, {"rightScreenEdge", rightScreenEdge}, {"topScreenEdge", topScreenEdge}, {"bottomScreenEdge", bottomScreenEdge}});
+    levelSave << saveData;
+}
+
+void Level::LoadState()
+{
+    std::ifstream levelSave(saveFilePath);
+    if (!levelSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json saveData;
+    levelSave >> saveData;
+    glm::vec3 position;
+    for(auto item : saveData.items())
+    {
+        if(item.key() == "Camera")
+        {
+            leftScreenEdge = item.value()["leftScreenEdge"];
+            rightScreenEdge = item.value()["rightScreenEdge"];
+            topScreenEdge = item.value()["topScreenEdge"];
+            bottomScreenEdge = item.value()["bottomScreenEdge"];
+        }
+        else if(item.key() == "Player")
+        {
+            position = {item.value()["position"][0], item.value()["position"][1], item.value()["position"][2]};
+        }
+    }
+    player->rigidBody.previousPosition = player->transform.position;
+    player->transform.position = position;
+    camera.Create(leftScreenEdge, rightScreenEdge, bottomScreenEdge, topScreenEdge, -1.0f, 1.0f);
 }

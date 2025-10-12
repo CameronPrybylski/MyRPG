@@ -21,7 +21,7 @@ int main()
         auto quadMesh = std::make_shared<QuadMesh>();
         AssetManager::LoadMesh("quadMesh", quadMesh);
         
-        std::shared_ptr<Scene> overworld = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/overworld.json");
+        std::shared_ptr<Scene> overworld = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/overworld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveOverWorld.json");
         std::shared_ptr<Scene> battle = std::make_shared<Battle>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/battle.json");
         //std::shared_ptr<Scene> gameOver = std::make_shared<GameOver>(app.GetScreenWidth(), app.GetScreenHeight());
 
