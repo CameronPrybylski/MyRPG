@@ -162,8 +162,9 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     }
 
     if(deadEnemies.size() > 0)
+    {
         menu->SetDeadEnemies(deadEnemies);
-    
+    }
     if(deadEnemies.size() == enemies.size() || player->GetHP() <= 0)
     {
         EndScene("overworld");
@@ -195,7 +196,6 @@ void Battle::HandleEnemyMove(std::shared_ptr<EnemyInBattle> enemy)
 void Battle::UpdateCamera()
 {
     glm::vec3 playerPositionChange(0.0f);
-    
     camera.OnUpdate(playerPositionChange);
 
 }
