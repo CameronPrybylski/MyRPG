@@ -3,6 +3,7 @@
 #include <Engine/Scene/Scene.h>
 #include <Game/Player.h>
 #include <Game/Enemy.h>
+#include <set>
 
 class Level : public Scene {
 
@@ -22,6 +23,8 @@ public:
     void SaveState();
     void LoadState();
 
+    void RemoveEnemy(std::string enemyName);
+
     //void UpdatePhysics(PhysicsSystem& physics, float dt);
 
     void UpdateCamera();
@@ -35,6 +38,7 @@ private:
     std::string nextLevel;
     std::string saveFilePath;
     bool initialStart;
+    std::set<std::string> deadEnemies;
 
 
 };

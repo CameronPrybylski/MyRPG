@@ -61,10 +61,13 @@ void Level::LoadLevel(std::string filepath)
                 AddObject("sword", go);
             }
             else if(objs.key() == "enemies"){
-                std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(position, scale, velocity, color, "", name, isStatic);
-                go = enemy;
-                AddObject(obst.value("name", "Unnamed"), go);
-                enemies.push_back(enemy);
+                if(deadEnemies.count(name) == 0)
+                {
+                    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(position, scale, velocity, color, "", name, isStatic);
+                    go = enemy;
+                    AddObject(obst.value("name", "Unnamed"), go);
+                    enemies.push_back(enemy);
+                }
             }
             /*
             else if(objs.key() == "aground"){
@@ -98,17 +101,17 @@ void Level::LoadPhysics(PhysicsSystem& physics)
     gravity.z = 0.0f;
     gravity.y = 0.0f;
     physics.SetGravity(gravity);
-    for(auto& obj : objectList)
+    for(auto& obj : objectMap)
     {
-        physics.RegisterBody(obj->transform, obj->rigidBody, obj->name);
+        physics.RegisterBody(obj.second->transform, obj.second->rigidBody, obj.second->name);
     }
 }
 
 void Level::OnEvent(const Input &input)
 {
-    for(auto& obj : objectList)
+    for(auto& obj : objectMap)
     {
-        obj->OnEvent(input);
+        obj.second->OnEvent(input);
     }
 }
 
@@ -198,8 +201,9 @@ void Level::SaveState()
 
     nlohmann::json saveData;
     nlohmann::json::array_t position = {player->transform.position.x, player->transform.position.y, player->transform.position.z};
-    saveData["Player"] = nlohmann::json::object_t({{"position", position}});
+    saveData["Player"] = nlohmann::json::object_t({{"position", position}, {"hp", player->hp}});
     saveData["Camera"] = nlohmann::json::object_t({{"leftScreenEdge", leftScreenEdge}, {"rightScreenEdge", rightScreenEdge}, {"topScreenEdge", topScreenEdge}, {"bottomScreenEdge", bottomScreenEdge}});
+    saveData["Enemy"] = nlohmann::json::object_t({{"enemyFighting", player->enemyFighting}});
     levelSave << saveData;
 }
 
@@ -225,9 +229,27 @@ void Level::LoadState()
         else if(item.key() == "Player")
         {
             position = {item.value()["position"][0], item.value()["position"][1], item.value()["position"][2]};
+            player->SetHP(item.value()["hp"]);
+        }
+        else if(item.key() == "Enemy")
+        {
+            RemoveEnemy(item.value()["enemyFighting"]);
         }
     }
     player->rigidBody.previousPosition = player->transform.position;
     player->transform.position = position;
     camera.Create(leftScreenEdge, rightScreenEdge, bottomScreenEdge, topScreenEdge, -1.0f, 1.0f);
+}
+
+void Level::RemoveEnemy(std::string enemyName)
+{
+    for(int i = 0; i < objectList.size(); i++)
+    {
+        if(objectList[i]->name == enemyName)
+        {
+            objectList.erase(objectList.begin() + i);
+        }
+    }
+    objectMap.erase(enemyName);
+    deadEnemies.insert(enemyName);
 }

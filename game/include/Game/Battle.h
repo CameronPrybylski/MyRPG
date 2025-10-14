@@ -8,7 +8,7 @@ class BattleMenu;
 class Battle : public Scene {
 
 public:
-    Battle(float screenWidth, float screenHeight, std::string filepath);
+    Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath);
     ~Battle();
 
     void Init() override;
@@ -24,6 +24,9 @@ public:
     void HandlePlayerMove();
     void HandleEnemyMove(std::shared_ptr<EnemyInBattle> enemy);
 
+    void SavePlayerInfo();
+    void LoadPlayerInfo();
+
 private:
     std::string filepath;
     std::shared_ptr<PlayerInBattle> player;
@@ -31,5 +34,7 @@ private:
     std::string nextArea;
     std::unordered_map<std::string, std::shared_ptr<EnemyInBattle>> enemies;
     bool playerMove = true;
+    std::string saveFilePath;
+    bool initialStart = true;
 
 };
