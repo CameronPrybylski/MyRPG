@@ -1,9 +1,12 @@
 #include <Game/Level.h>
 #include <Game/Obstacle.h>
+#include <Game/SaveSpot.h>
 
-Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
+Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
 {
     this->saveFilePath = saveFilePath;
+    this->saveBattleFilePath = saveBattleFilePath;
+    this->saveGameFilePath = saveGameFilePath;
     initialStart = true;
     Init();
 }
@@ -68,6 +71,12 @@ void Level::LoadLevel(std::string filepath)
                     AddObject(obst.value("name", "Unnamed"), go);
                     enemies.push_back(enemy);
                 }
+            }
+            else if(objs.key() == "saveSpots"){
+                std::shared_ptr<SaveSpot> saveSpot = std::make_shared<SaveSpot>(position, scale, color, "", name);
+                go = saveSpot;
+                AddObject(obst.value("name", "Unnamed"), go);
+                saveSpots[name] = saveSpot;
             }
             /*
             else if(objs.key() == "aground"){
@@ -144,6 +153,11 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     }
     if(player->transform.position.x + player->transform.scale.x >= completionDist){
         //EndScene(nextLevel);
+    }
+    if(saveSpots["saveSpot1"]->GetSaveGame())
+    {
+        SaveGame();
+        saveSpots["saveSpot1"]->SetSaveGame(false);
     }
 }
 
@@ -252,4 +266,67 @@ void Level::RemoveEnemy(std::string enemyName)
     }
     objectMap.erase(enemyName);
     deadEnemies.insert(enemyName);
+}
+
+void Level::SaveGame()
+{
+    SaveState();
+    std::ifstream battleSave(saveBattleFilePath);
+    if (!battleSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    std::ifstream levelSave(saveFilePath);
+    if (!levelSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json loadBattleData;
+    nlohmann::json saveData;
+    battleSave >> loadBattleData;
+    for(auto item : loadBattleData.items())
+    {
+        if(item.key() == "Player")
+        {
+           saveData["PlayerBattle"] = nlohmann::json::object_t({{"hp", item.value()["hp"]}});
+        }
+    }
+    nlohmann::json loadLevelData;
+    levelSave >> loadLevelData;
+
+    glm::vec3 position;
+    for(auto item : loadLevelData.items())
+    {
+        if(item.key() == "Camera")
+        {
+            saveData["Camera"] = nlohmann::json::object_t({
+                {"leftScreenEdge", item.value()["leftScreenEdge"]},
+                {"rightScreenEdge", item.value()["rightScreenEdge"]},
+                {"topScreenEdge", item.value()["topScreenEdge"]},
+                {"bottomScreenEdge", item.value()["bottomScreenEdge"]}
+            });
+        }
+        else if(item.key() == "Player")
+        {
+            saveData["PlayerOverworld"] = nlohmann::json::object_t({
+                {"position", item.value()["position"]},
+                {"hp", player->hp}
+            });
+        }
+        else if(item.key() == "Enemies")
+        {
+            //RemoveEnemy(item.value()["enemyFighting"]);
+        }
+    }
+
+    std::ofstream gameSave(saveGameFilePath);
+    if (!gameSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+    
+    gameSave << saveData;
+    levelSave.close();
+    battleSave.close();
+    gameSave.close();
+    
 }

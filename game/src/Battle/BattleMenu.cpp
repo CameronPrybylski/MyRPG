@@ -1,24 +1,9 @@
 #include <Game/BattleMenu.h>
 #include <Game/MenuItem.h>
 
-BattleMenu::BattleMenu(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name)
+BattleMenu::BattleMenu(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name) : Menu(position, scale, color, texturePath, name)
 {
-    transform.position = position;
-    transform.scale = scale;
-    this->color = color;
-    this->name = name;
-
-    menuName = "MenuItems";
-
-    mesh = AssetManager::GetMesh("quadMesh");
-
-    if(texturePath != ""){
-        shaderName = "textureShader";
-        texture.Create(texturePath);
-    }else{
-        shaderName = "objectShader";
-    }
-
+    
 }
 
 BattleMenu::~BattleMenu()
@@ -102,35 +87,10 @@ void BattleMenu::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 
 {
 }
 
-void BattleMenu::AddMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
-{
-    std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
-    menuItems[name] = menuItem;
-}
-
 void BattleMenu::AddAttackMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     attackMenuItems[text] = menuItem;
-}
-
-void BattleMenu::AddCursor(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath)
-{
-    cursor = std::make_shared<GameObject>();
-    cursor->name = name;
-    cursor->transform.position = position;
-    cursor->transform.scale = scale;
-    cursor->color = color;
-    
-    cursor->mesh = AssetManager::GetMesh("quadMesh");
-
-    if(texturePath != ""){
-        cursor->shaderName = "textureShader";
-        cursor->texture.Create(texturePath);
-    }else{
-        cursor->shaderName = "objectShader";
-    }
-
 }
 
 void BattleMenu::SetDeadEnemies(std::vector<std::string> deadEnemies)

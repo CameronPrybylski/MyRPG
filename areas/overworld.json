@@ -127,6 +127,18 @@
                 "isStatic": false,
                 "texturePath" : ""
             }
+        ],
+        "saveSpots" : [
+            {
+                "name": "saveSpot1",
+                "position": [600.0, 300.0, 0.0],
+                "scale": [60.0, 50.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            }
         ]
     },
     "levelParams" : {

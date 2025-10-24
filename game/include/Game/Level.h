@@ -5,10 +5,12 @@
 #include <Game/Enemy.h>
 #include <set>
 
+class SaveSpot;
+
 class Level : public Scene {
 
 public:
-    Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath);
+    Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath);
     //Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects);
     ~Level();
 
@@ -23,6 +25,8 @@ public:
     void SaveState();
     void LoadState();
 
+    void SaveGame();
+
     void RemoveEnemy(std::string enemyName);
 
     //void UpdatePhysics(PhysicsSystem& physics, float dt);
@@ -32,11 +36,14 @@ public:
 private:
     std::shared_ptr<Player> player;
     std::vector<std::shared_ptr<Enemy>> enemies; 
+    std::unordered_map<std::string, std::shared_ptr<SaveSpot>> saveSpots;
     bool gameOver = false;
     std::string filepath;
     float completionDist;
     std::string nextLevel;
     std::string saveFilePath;
+    std::string saveBattleFilePath;
+    std::string saveGameFilePath;
     bool initialStart;
     std::set<std::string> deadEnemies;
 

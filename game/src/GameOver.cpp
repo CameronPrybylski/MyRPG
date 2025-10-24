@@ -25,7 +25,7 @@ void GameOver::OnEvent(const Input &input)
 {
     if(input.IsKeyDown("space"))
     {
-        EndScene("levelOne");
+        EndScene("overworld");
     }
 }
 

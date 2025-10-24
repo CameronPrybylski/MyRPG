@@ -1,1 +1,1 @@
-{"Camera":{"bottomScreenEdge":67.40005493164063,"leftScreenEdge":-83.9000244140625,"rightScreenEdge":983.099853515625,"topScreenEdge":867.3995971679688},"Enemy":{"enemyFighting":"enemy1"},"Player":{"hp":1,"position":[449.5999755859375,467.40008544921875,0.0]}}
+{"Camera":{"bottomScreenEdge":-100.0,"leftScreenEdge":6.5,"rightScreenEdge":1073.5,"topScreenEdge":700.0},"Enemy":{"enemyFighting":""},"Player":{"hp":3,"position":[540.0,300.0,0.0]}}

@@ -171,7 +171,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     {
         menu->SetDeadEnemies(deadEnemies);
     }
-    if(deadEnemies.size() == enemies.size() || player->GetHP() <= 0)
+    if(deadEnemies.size() == enemies.size())
     {
         SavePlayerInfo();
         initialStart = false;
@@ -179,6 +179,10 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     }
     
     menu->UpdatePlayerHP(player->GetHP());
+    if(player->GetHP() <= 0)
+    {
+        EndScene("gameOver");
+    }
 }
 
 void Battle::OnCollision(std::vector<CollisionEvent> collisions, float dt)
@@ -230,7 +234,6 @@ void Battle::LoadPlayerInfo()
 
     nlohmann::json saveData;
     levelSave >> saveData;
-    glm::vec3 position;
     for(auto item : saveData.items())
     {
         if(item.key() == "Player")
