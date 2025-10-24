@@ -5,7 +5,9 @@ add_executable(MyRPG
     src/main.cpp
     src/OverWorld/Level.cpp
     src/GameOver.cpp
+    src/Menu.cpp
     src/OverWorld/Player.cpp
+    src/OverWorld/SaveSpot.cpp
     src/Battle/PlayerInBattle.cpp
     src/Obstacle.cpp
     src/OverWorld/Enemy.cpp
@@ -15,6 +17,9 @@ add_executable(MyRPG
     src/Battle/MenuItem.cpp
     src/Battle/EnemyInBattle.cpp
     src/Battle/Weapon.cpp
+    src/Title/TitleScene.cpp
+    src/Title/TitleMenu.cpp
+    src/Title/SaveScene.cpp
     # Add your game source files here
 )
 

@@ -16,6 +16,7 @@ public:
     void Hit(glm::vec2 collisionNormal, float dt);
     void AddItem(std::string name, std::shared_ptr<GameObject> item);
     void PositionSword();
+    void SetHP(int hp){this->hp = hp;}
 
     bool hit = false;
     bool alive = true;
@@ -23,6 +24,7 @@ public:
     bool stop = false;
     bool inBattle = false;
     std::string positionFacing = "Down";
+    std::string enemyFighting;
 
     int hp;
     float timeSinceHit = 0.0f;

@@ -1,0 +1,97 @@
+{
+    "objects" : {
+        "menu" : [
+            {
+                "name": "menu",
+                "position": [533.5, 275.0, 0.0],
+                "scale": [250.0, 200.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 1.0, 0.5],
+                "isStatic": true,
+                "texturePath" : "",
+                "cursorMinMaxHeight" : [55.0, 135.0]
+            },
+            {
+                "name": "menuItem1",
+                "position": [533.5, 300.0, 0.0],
+                "scale": [110.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "New Game"
+            },
+            {
+                "name": "menuItem2",
+                "position": [533.5, 260.0, 0.0],
+                "scale": [120.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Load Game"
+            },
+            {
+                "name": "cursor",
+                "position": [450.0, 300.0, 0.0],
+                "scale": [10.0, 5.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "loadMenuItem1",
+                "position": [533.5, 300.0, 0.0],
+                "scale": [110.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Enemy1"
+            },
+            {
+                "name": "loadMenuItem2",
+                "position": [533.5, 260.0, 0.0],
+                "scale": [120.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Enemy2"
+            },
+            {
+                "name": "loadMenuItem3",
+                "position": [533.5, 220.0, 0.0],
+                "scale": [120.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Back"
+            }
+        ],
+        "obstacles": [
+            {
+                "name": "obstacle1",
+                "position": [0.0, 400.0, 0.0],
+                "scale": [10.0, 800.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            }
+        ]
+    },
+    "levelParams" : {
+        "nextLevel" : "overworld"
+    }
+}

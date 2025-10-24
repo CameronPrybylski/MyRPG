@@ -6,8 +6,9 @@
 #include <Game/Obstacle.h>
 #include <Game/EnemyInBattle.h>
 
-Battle::Battle(float screenWidth, float screenHeight, std::string filepath) : Scene(screenWidth, screenHeight), filepath(filepath)
+Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
 {
+    this->saveFilePath = saveFilePath;
     Init();
 }
 
@@ -106,6 +107,11 @@ void Battle::LoadBattle()
     bottomScreenEdge = 0.0f;
     topScreenEdge = screenHeight;
 
+    if(!initialStart)
+    {
+        LoadPlayerInfo();
+    }
+
 }
 
 void Battle::LoadPhysics(PhysicsSystem& physics)
@@ -165,12 +171,18 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     {
         menu->SetDeadEnemies(deadEnemies);
     }
-    if(deadEnemies.size() == enemies.size() || player->GetHP() <= 0)
+    if(deadEnemies.size() == enemies.size())
     {
+        SavePlayerInfo();
+        initialStart = false;
         EndScene("overworld");
     }
     
     menu->UpdatePlayerHP(player->GetHP());
+    if(player->GetHP() <= 0)
+    {
+        EndScene("gameOver");
+    }
 }
 
 void Battle::OnCollision(std::vector<CollisionEvent> collisions, float dt)
@@ -198,4 +210,35 @@ void Battle::UpdateCamera()
     glm::vec3 playerPositionChange(0.0f);
     camera.OnUpdate(playerPositionChange);
 
+}
+
+void Battle::SavePlayerInfo()
+{
+    std::ofstream levelSave(saveFilePath);
+    if (!levelSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json saveData;
+    saveData["Player"] = nlohmann::json::object_t({{"hp", player->GetHP()}});
+    
+    levelSave << saveData;
+}
+
+void Battle::LoadPlayerInfo()
+{
+    std::ifstream levelSave(saveFilePath);
+    if (!levelSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json saveData;
+    levelSave >> saveData;
+    for(auto item : saveData.items())
+    {
+        if(item.key() == "Player")
+        {
+            player->SetHP(item.value()["hp"]);
+        }
+    }
 }

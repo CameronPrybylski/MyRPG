@@ -118,6 +118,7 @@ void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 coll
     {
         Hit(collisionNormal, dt);
         inBattle = true;
+        enemyFighting = collidedObj->name;
     }
 }
 

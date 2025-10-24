@@ -1,9 +1,12 @@
 #include <Game/Level.h>
 #include <Game/Obstacle.h>
+#include <Game/SaveSpot.h>
 
-Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
+Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
 {
     this->saveFilePath = saveFilePath;
+    this->saveBattleFilePath = saveBattleFilePath;
+    this->saveGameFilePath = saveGameFilePath;
     initialStart = true;
     Init();
 }
@@ -61,10 +64,19 @@ void Level::LoadLevel(std::string filepath)
                 AddObject("sword", go);
             }
             else if(objs.key() == "enemies"){
-                std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(position, scale, velocity, color, "", name, isStatic);
-                go = enemy;
+                if(deadEnemies.count(name) == 0)
+                {
+                    std::shared_ptr<Enemy> enemy = std::make_shared<Enemy>(position, scale, velocity, color, "", name, isStatic);
+                    go = enemy;
+                    AddObject(obst.value("name", "Unnamed"), go);
+                    enemies.push_back(enemy);
+                }
+            }
+            else if(objs.key() == "saveSpots"){
+                std::shared_ptr<SaveSpot> saveSpot = std::make_shared<SaveSpot>(position, scale, color, "", name);
+                go = saveSpot;
                 AddObject(obst.value("name", "Unnamed"), go);
-                enemies.push_back(enemy);
+                saveSpots[name] = saveSpot;
             }
             /*
             else if(objs.key() == "aground"){
@@ -98,17 +110,17 @@ void Level::LoadPhysics(PhysicsSystem& physics)
     gravity.z = 0.0f;
     gravity.y = 0.0f;
     physics.SetGravity(gravity);
-    for(auto& obj : objectList)
+    for(auto& obj : objectMap)
     {
-        physics.RegisterBody(obj->transform, obj->rigidBody, obj->name);
+        physics.RegisterBody(obj.second->transform, obj.second->rigidBody, obj.second->name);
     }
 }
 
 void Level::OnEvent(const Input &input)
 {
-    for(auto& obj : objectList)
+    for(auto& obj : objectMap)
     {
-        obj->OnEvent(input);
+        obj.second->OnEvent(input);
     }
 }
 
@@ -141,6 +153,11 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     }
     if(player->transform.position.x + player->transform.scale.x >= completionDist){
         //EndScene(nextLevel);
+    }
+    if(saveSpots["saveSpot1"]->GetSaveGame())
+    {
+        SaveGame();
+        saveSpots["saveSpot1"]->SetSaveGame(false);
     }
 }
 
@@ -198,8 +215,9 @@ void Level::SaveState()
 
     nlohmann::json saveData;
     nlohmann::json::array_t position = {player->transform.position.x, player->transform.position.y, player->transform.position.z};
-    saveData["Player"] = nlohmann::json::object_t({{"position", position}});
+    saveData["Player"] = nlohmann::json::object_t({{"position", position}, {"hp", player->hp}});
     saveData["Camera"] = nlohmann::json::object_t({{"leftScreenEdge", leftScreenEdge}, {"rightScreenEdge", rightScreenEdge}, {"topScreenEdge", topScreenEdge}, {"bottomScreenEdge", bottomScreenEdge}});
+    saveData["Enemy"] = nlohmann::json::object_t({{"enemyFighting", player->enemyFighting}});
     levelSave << saveData;
 }
 
@@ -225,9 +243,90 @@ void Level::LoadState()
         else if(item.key() == "Player")
         {
             position = {item.value()["position"][0], item.value()["position"][1], item.value()["position"][2]};
+            player->SetHP(item.value()["hp"]);
+        }
+        else if(item.key() == "Enemy")
+        {
+            RemoveEnemy(item.value()["enemyFighting"]);
         }
     }
     player->rigidBody.previousPosition = player->transform.position;
     player->transform.position = position;
     camera.Create(leftScreenEdge, rightScreenEdge, bottomScreenEdge, topScreenEdge, -1.0f, 1.0f);
+}
+
+void Level::RemoveEnemy(std::string enemyName)
+{
+    for(int i = 0; i < objectList.size(); i++)
+    {
+        if(objectList[i]->name == enemyName)
+        {
+            objectList.erase(objectList.begin() + i);
+        }
+    }
+    objectMap.erase(enemyName);
+    deadEnemies.insert(enemyName);
+}
+
+void Level::SaveGame()
+{
+    SaveState();
+    std::ifstream battleSave(saveBattleFilePath);
+    if (!battleSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    std::ifstream levelSave(saveFilePath);
+    if (!levelSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json loadBattleData;
+    nlohmann::json saveData;
+    battleSave >> loadBattleData;
+    for(auto item : loadBattleData.items())
+    {
+        if(item.key() == "Player")
+        {
+           saveData["PlayerBattle"] = nlohmann::json::object_t({{"hp", item.value()["hp"]}});
+        }
+    }
+    nlohmann::json loadLevelData;
+    levelSave >> loadLevelData;
+
+    glm::vec3 position;
+    for(auto item : loadLevelData.items())
+    {
+        if(item.key() == "Camera")
+        {
+            saveData["Camera"] = nlohmann::json::object_t({
+                {"leftScreenEdge", item.value()["leftScreenEdge"]},
+                {"rightScreenEdge", item.value()["rightScreenEdge"]},
+                {"topScreenEdge", item.value()["topScreenEdge"]},
+                {"bottomScreenEdge", item.value()["bottomScreenEdge"]}
+            });
+        }
+        else if(item.key() == "Player")
+        {
+            saveData["PlayerOverworld"] = nlohmann::json::object_t({
+                {"position", item.value()["position"]},
+                {"hp", player->hp}
+            });
+        }
+        else if(item.key() == "Enemies")
+        {
+            //RemoveEnemy(item.value()["enemyFighting"]);
+        }
+    }
+
+    std::ofstream gameSave(saveGameFilePath);
+    if (!gameSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+    
+    gameSave << saveData;
+    levelSave.close();
+    battleSave.close();
+    gameSave.close();
+    
 }
