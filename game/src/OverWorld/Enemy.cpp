@@ -47,7 +47,6 @@ void Enemy::Update(const Input &input, float dt)
     {
         transform.position.y = -500.0f;
     }
-    //transform.rotation.z += 10.0f;
 }
 void Enemy::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
 {

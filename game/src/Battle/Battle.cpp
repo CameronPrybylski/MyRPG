@@ -6,7 +6,7 @@
 #include <Game/Obstacle.h>
 #include <Game/EnemyInBattle.h>
 
-Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
+Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath) : Scene(screenWidth, screenHeight), filepath(filepath), saveGameFilePath(saveGameFilePath)
 {
     this->saveFilePath = saveFilePath;
     Init();
@@ -35,7 +35,6 @@ void Battle::LoadBattle()
     objectList.clear();
     objectMap.clear();
     player = nullptr;
-    //std::cout << j["levelParams"]["completionDist"] << std::endl;
     nextArea = j["levelParams"]["nextLevel"];
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
@@ -91,13 +90,6 @@ void Battle::LoadBattle()
                     menu->AddCursor(name, position, scale, color, texturePath);
                 }
             }
-            /*
-            else if(objs.key() == "aground"){
-                glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
-                go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
-                AddObject(obst.value("name", "Unnamed"), go);
-            }
-            */
         }
     }
     camera.Create(0.0f, screenWidth, 0.0f, screenHeight, -1.0f, 1.0f);
@@ -110,6 +102,10 @@ void Battle::LoadBattle()
     if(!initialStart)
     {
         LoadPlayerInfo();
+    }
+    if(loadBattle && initialStart)
+    {
+        LoadGame();
     }
 
 }
@@ -241,4 +237,26 @@ void Battle::LoadPlayerInfo()
             player->SetHP(item.value()["hp"]);
         }
     }
+}
+
+void Battle::LoadGame()
+{
+    std::ifstream levelSave(saveGameFilePath);
+    if (!levelSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json saveData;
+    levelSave >> saveData;
+    glm::vec3 position;
+    nlohmann::json saveGame = saveData[saveSlot];
+    for(auto item : saveGame.items())
+    {
+        if(item.key() == "PlayerBattle")
+        {
+            player->SetHP(item.value()["hp"]);
+        }
+    }
+
+    loadBattle = false;
 }

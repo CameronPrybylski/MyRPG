@@ -52,7 +52,6 @@ void BattleMenu::OnEvent(const Input &input)
 
 void BattleMenu::Update(const Input &input, float dt)
 {
-    //std::cout << cursor->transform.position.y << std::endl;
 }
 
 void BattleMenu::Render(Renderer &renderer, const Camera &camera)

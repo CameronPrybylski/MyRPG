@@ -20,6 +20,7 @@ add_executable(MyRPG
     src/Title/TitleScene.cpp
     src/Title/TitleMenu.cpp
     src/Title/SaveScene.cpp
+    src/Title/SaveMenu.cpp
     # Add your game source files here
 )
 
@@ -30,5 +31,5 @@ target_include_directories(MyRPG
 
 target_link_libraries(MyRPG PRIVATE Engine)
 
-#cmake -DCMAKE_BUILD_TYPE=Debug .
+###cmake -DCMAKE_BUILD_TYPE=Debug .
 

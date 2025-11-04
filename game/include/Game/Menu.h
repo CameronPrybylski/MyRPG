@@ -28,7 +28,7 @@ public:
         cursorMaxHeight = height;
     }
 
-
+    std::shared_ptr<MenuItem> GetMenuItem(std::string name){return menuItems[name];}
 
 
 protected:

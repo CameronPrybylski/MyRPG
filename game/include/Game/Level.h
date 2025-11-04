@@ -25,13 +25,15 @@ public:
     void SaveState();
     void LoadState();
 
-    void SaveGame();
+    void SaveGame(std::string saveSpot);
+    void LoadGame();
 
     void RemoveEnemy(std::string enemyName);
 
-    //void UpdatePhysics(PhysicsSystem& physics, float dt);
-
     void UpdateCamera();
+
+    void SetSaveSlot(std::string saveSlot){this->saveSlot = saveSlot;}
+    void SetLoadGame(bool loadGame){this->loadGame = loadGame;}
 
 private:
     std::shared_ptr<Player> player;
@@ -46,6 +48,8 @@ private:
     std::string saveGameFilePath;
     bool initialStart;
     std::set<std::string> deadEnemies;
-
+    std::string savescene;
+    bool loadGame = false;
+    std::string saveSlot;
 
 };

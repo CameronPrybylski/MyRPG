@@ -43,18 +43,6 @@ void Sword::OnEvent(const Input &input)
 
 void Sword::Update(const Input& input, float dt)
 {
-    /*
-    if(usingSword)
-    {
-        transform.position.y = player->transform.position.y;
-        transform.position.x = player->transform.position.x + transform.scale.x;
-    }
-    else
-    {
-        transform.position.y = player->transform.position.y;
-        transform.position.x = player->transform.position.x;
-    }
-    */
 }
 
 void Sword::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
