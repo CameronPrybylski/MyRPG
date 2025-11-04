@@ -8,7 +8,7 @@ class BattleMenu;
 class Battle : public Scene {
 
 public:
-    Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath);
+    Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath);
     ~Battle();
 
     void Init() override;
@@ -26,6 +26,10 @@ public:
 
     void SavePlayerInfo();
     void LoadPlayerInfo();
+    void LoadGame();
+
+    void SetSaveSlot(std::string saveSlot){this->saveSlot = saveSlot;}
+    void SetLoadGame(bool loadBattle){this->loadBattle = loadBattle;}
 
 private:
     std::string filepath;
@@ -35,6 +39,11 @@ private:
     std::unordered_map<std::string, std::shared_ptr<EnemyInBattle>> enemies;
     bool playerMove = true;
     std::string saveFilePath;
+    std::string saveGameFilePath;
     bool initialStart = true;
+    bool loadBattle = false;
+    std::string saveSlot;
+
+
 
 };

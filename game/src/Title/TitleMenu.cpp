@@ -61,6 +61,10 @@ void TitleMenu::Update(const Input &input, float dt)
     {
         newGame = true;
     }
+    if(menuName == "Load GameMenuItems")
+    {
+        loadGame = true;
+    }
 }
 
 void TitleMenu::Render(Renderer &renderer, const Camera &camera)

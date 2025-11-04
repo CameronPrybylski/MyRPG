@@ -142,6 +142,10 @@ void TitleScene::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     {
         EndScene("overworld");
     }
+    if(menu->IsLoadGame())
+    {
+        EndScene("loadscene");
+    }
 
 }
 

@@ -21,6 +21,8 @@ public:
 
     void ChangeText(std::string newText);
 
+    std::string GetFontPath(){return fontPath;}
+
 private:
     TextTexture textTexture;
     std::string text;

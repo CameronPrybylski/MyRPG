@@ -19,7 +19,9 @@ public:
     void AddLoadMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text);
 
     bool IsNewGame(){return newGame;}
+    bool IsLoadGame(){return loadGame;}
 private:
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> loadMenuItems;
     bool newGame = false;
+    bool loadGame = false;
 };

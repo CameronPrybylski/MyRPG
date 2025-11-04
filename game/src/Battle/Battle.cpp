@@ -6,7 +6,7 @@
 #include <Game/Obstacle.h>
 #include <Game/EnemyInBattle.h>
 
-Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
+Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath) : Scene(screenWidth, screenHeight), filepath(filepath), saveGameFilePath(saveGameFilePath)
 {
     this->saveFilePath = saveFilePath;
     Init();
@@ -110,6 +110,10 @@ void Battle::LoadBattle()
     if(!initialStart)
     {
         LoadPlayerInfo();
+    }
+    if(loadBattle && initialStart)
+    {
+        LoadGame();
     }
 
 }
@@ -241,4 +245,26 @@ void Battle::LoadPlayerInfo()
             player->SetHP(item.value()["hp"]);
         }
     }
+}
+
+void Battle::LoadGame()
+{
+    std::ifstream levelSave(saveGameFilePath);
+    if (!levelSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json saveData;
+    levelSave >> saveData;
+    glm::vec3 position;
+    nlohmann::json saveGame = saveData[saveSlot];
+    for(auto item : saveGame.items())
+    {
+        if(item.key() == "PlayerBattle")
+        {
+            player->SetHP(item.value()["hp"]);
+        }
+    }
+
+    loadBattle = false;
 }
