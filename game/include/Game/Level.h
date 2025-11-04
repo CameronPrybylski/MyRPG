@@ -30,8 +30,6 @@ public:
 
     void RemoveEnemy(std::string enemyName);
 
-    //void UpdatePhysics(PhysicsSystem& physics, float dt);
-
     void UpdateCamera();
 
     void SetSaveSlot(std::string saveSlot){this->saveSlot = saveSlot;}

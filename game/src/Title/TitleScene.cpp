@@ -32,8 +32,6 @@ void TitleScene::LoadTitle()
 
     objectList.clear();
     objectMap.clear();
-    //std::cout << j["levelParams"]["completionDist"] << std::endl;
-    //nextArea = j["levelParams"]["nextLevel"];
     float cursorMin = screenHeight;
     float cursorMax = 0.0f;
     for (const auto& objs : j["objects"].items()) {
@@ -104,10 +102,6 @@ void TitleScene::LoadTitle()
     bottomScreenEdge = 0.0f;
     topScreenEdge = screenHeight;
 
-    if(!initialStart)
-    {
-        //LoadPlayerInfo();
-    }
 }
 
 void TitleScene::LoadPhysics(PhysicsSystem& physics)
@@ -130,8 +124,6 @@ void TitleScene::OnEvent(const Input& input)
 
 void TitleScene::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
 {
-    //std::vector<CollisionEvent> collisions = physics.Update(dt);
-    //OnCollision(collisions, dt);
 
     for(auto& obj : objectList)
     {

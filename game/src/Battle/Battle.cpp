@@ -35,7 +35,6 @@ void Battle::LoadBattle()
     objectList.clear();
     objectMap.clear();
     player = nullptr;
-    //std::cout << j["levelParams"]["completionDist"] << std::endl;
     nextArea = j["levelParams"]["nextLevel"];
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
@@ -91,13 +90,6 @@ void Battle::LoadBattle()
                     menu->AddCursor(name, position, scale, color, texturePath);
                 }
             }
-            /*
-            else if(objs.key() == "aground"){
-                glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
-                go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
-                AddObject(obst.value("name", "Unnamed"), go);
-            }
-            */
         }
     }
     camera.Create(0.0f, screenWidth, 0.0f, screenHeight, -1.0f, 1.0f);

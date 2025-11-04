@@ -32,7 +32,6 @@ void SaveMenu::OnEvent(const Input &input)
                 }
                 else if(cursor->transform.position.y == menuItem.second->transform.position.y)
                 {
-                    //menuName = menuItem.second->GetText() + "MenuItems";
                     saveGame = true;
                     saveSlot = menuItem.second->GetText();
                 }

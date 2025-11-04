@@ -43,7 +43,6 @@ void PlayerInBattle::Update(const Input& input, float dt)
     {
         alive = false;
     }
-    //PositionSword();
 }
 
 void PlayerInBattle::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
