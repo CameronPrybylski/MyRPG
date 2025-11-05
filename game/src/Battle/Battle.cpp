@@ -103,6 +103,11 @@ void Battle::LoadBattle()
     {
         LoadPlayerInfo();
     }
+    else
+    {
+        SavePlayerInfo();
+    }
+    
     if(loadBattle && initialStart)
     {
         LoadGame();
