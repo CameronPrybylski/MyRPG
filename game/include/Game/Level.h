@@ -6,6 +6,7 @@
 #include <set>
 
 class SaveSpot;
+class TownSpot;
 
 class Level : public Scene {
 
@@ -39,6 +40,7 @@ private:
     std::shared_ptr<Player> player;
     std::vector<std::shared_ptr<Enemy>> enemies; 
     std::unordered_map<std::string, std::shared_ptr<SaveSpot>> saveSpots;
+    std::unordered_map<std::string, std::shared_ptr<TownSpot>> towns;
     bool gameOver = false;
     std::string filepath;
     float completionDist;
@@ -51,5 +53,6 @@ private:
     std::string savescene;
     bool loadGame = false;
     std::string saveSlot;
+    std::string areaName;
 
 };

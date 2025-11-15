@@ -1,6 +1,7 @@
 #include <Game/Level.h>
 #include <Game/Obstacle.h>
 #include <Game/SaveSpot.h>
+#include <Game/TownSpot.h>
 
 Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
 {
@@ -39,6 +40,7 @@ void Level::LoadLevel(std::string filepath)
     completionDist = j["levelParams"]["completionDist"];
     nextLevel = j["levelParams"]["nextLevel"];
     savescene = j["levelParams"]["savescene"];
+    areaName = j["levelParams"]["area"];
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -78,6 +80,12 @@ void Level::LoadLevel(std::string filepath)
                 go = saveSpot;
                 AddObject(obst.value("name", "Unnamed"), go);
                 saveSpots[name] = saveSpot;
+            }
+            else if(objs.key() == "towns"){
+                std::shared_ptr<TownSpot> town = std::make_shared<TownSpot>(position, scale, color, "", name);
+                go = town;
+                AddObject(obst.value("name", "Unnamed"), go);
+                towns[name] = town;
             }
             /*
             else if(objs.key() == "aground"){
@@ -167,6 +175,14 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
             SaveGame(saveSpot.first);
         }
     }
+    for(auto town : towns)
+    {
+        if(town.second->EnterTown())
+        {
+            town.second->SetEnterTown(false);
+            EndScene(town.first);
+        }
+    }
 }
 
 void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
@@ -228,6 +244,17 @@ void Level::SaveState()
     saveData["Camera"] = nlohmann::json::object_t({{"leftScreenEdge", leftScreenEdge}, {"rightScreenEdge", rightScreenEdge}, {"topScreenEdge", topScreenEdge}, {"bottomScreenEdge", bottomScreenEdge}});
     saveData["Enemy"] = nlohmann::json::object_t({{"enemyFighting", player->enemyFighting}});
     levelSave << saveData;
+
+    std::ofstream currentArea("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/currentArea.json");
+    if (!currentArea.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json currentAreaData;
+    currentAreaData["CurrentArea"] = areaName;
+    
+    currentArea << currentAreaData;
+
 }
 
 void Level::LoadState()
@@ -280,6 +307,7 @@ void Level::RemoveEnemy(std::string enemyName)
 void Level::SaveGame(std::string saveSpot)
 {
     SaveState();
+
     EndScene(savescene);
 }
 
