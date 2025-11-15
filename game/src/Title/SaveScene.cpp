@@ -36,6 +36,16 @@ void SaveScene::LoadSaveScene()
     objectMap.clear();
     //std::cout << j["levelParams"]["completionDist"] << std::endl;
     //nextArea = j["levelParams"]["nextLevel"];
+    
+    std::ifstream nextAreaFile("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/currentArea.json");
+    if (!nextAreaFile.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json nextAreaJson;
+    nextAreaFile >> nextAreaJson;
+    nextScene = nextAreaJson["CurrentArea"];
+    
     float cursorMin = screenHeight;
     float cursorMax = 0.0f;
     for (const auto& objs : j["objects"].items()) {
@@ -106,7 +116,7 @@ void SaveScene::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     {
         if(save)
         {
-            EndScene("overworld");
+            EndScene(nextScene);
         }
         else
         {
@@ -172,7 +182,12 @@ void SaveScene::SaveGame()
     {
         if(item.key() == "Player")
         {
-           saveData[saveNumber]["PlayerBattle"] = nlohmann::json::object_t({{"hp", item.value()["hp"]}});
+           saveData[saveNumber]["PlayerBattle"] = nlohmann::json::object_t({
+                {"hp", item.value()["hp"]},
+                {"level", item.value()["level"]},
+                {"strength", item.value()["strength"]},
+                {"xp", item.value()["xp"]}    
+            });
         }
     }
     nlohmann::json loadLevelData;
@@ -218,5 +233,5 @@ void SaveScene::LoadGame()
     loadGame->SetLoadGame(true);
     loadBattle->SetSaveSlot(menu->SaveSlot());
     loadBattle->SetLoadGame(true);
-    EndScene("overworld");
+    EndScene(nextScene);
 }

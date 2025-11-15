@@ -8,6 +8,7 @@ add_executable(MyRPG
     src/Menu.cpp
     src/OverWorld/Player.cpp
     src/OverWorld/SaveSpot.cpp
+    src/OverWorld/TownSpot.cpp
     src/Battle/PlayerInBattle.cpp
     src/Obstacle.cpp
     src/OverWorld/Enemy.cpp

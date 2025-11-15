@@ -107,7 +107,7 @@ void Battle::LoadBattle()
     {
         SavePlayerInfo();
     }
-    
+
     if(loadBattle && initialStart)
     {
         LoadGame();
@@ -221,7 +221,12 @@ void Battle::SavePlayerInfo()
     }
 
     nlohmann::json saveData;
-    saveData["Player"] = nlohmann::json::object_t({{"hp", player->GetHP()}});
+    saveData["Player"] = nlohmann::json::object_t({
+        {"hp", player->GetHP()}, 
+        {"level", player->GetLevel()},
+        {"strength", player->GetStrength()},
+        {"xp", player->GetXP()}
+    });
     
     levelSave << saveData;
 }
@@ -240,6 +245,9 @@ void Battle::LoadPlayerInfo()
         if(item.key() == "Player")
         {
             player->SetHP(item.value()["hp"]);
+            player->SetStrength(item.value()["strength"]);
+            player->SetLevel(item.value()["level"]);
+            player->SetXP(item.value()["xp"]);
         }
     }
 }
@@ -260,6 +268,9 @@ void Battle::LoadGame()
         if(item.key() == "PlayerBattle")
         {
             player->SetHP(item.value()["hp"]);
+            player->SetStrength(item.value()["strength"]);
+            player->SetLevel(item.value()["level"]);
+            player->SetXP(item.value()["xp"]);
         }
     }
 

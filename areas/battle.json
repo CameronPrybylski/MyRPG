@@ -147,17 +147,6 @@
                 "isStatic": false,
                 "texturePath" : "",
                 "attackDamage" : 1
-            },
-            {
-                "name": "Enemy2",
-                "position": [200.0, 400.0, 0.0],
-                "scale": [50.0, 50.0, 0.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 1.0, 1.0],
-                "isStatic": false,
-                "texturePath" : "",
-                "attackDamage" : 1
             }
         ]
     },

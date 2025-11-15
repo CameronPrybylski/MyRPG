@@ -25,6 +25,7 @@ int main()
         
         std::shared_ptr<Scene> title = std::make_shared<TitleScene>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/title.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json");
         std::shared_ptr<Level> overworld = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/overworld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveOverWorld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json");
+        std::shared_ptr<Level> town1 = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/town.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveOverWorld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json");
         std::shared_ptr<Battle> battle = std::make_shared<Battle>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/battle.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json");
         std::shared_ptr<Scene> savescene = std::make_shared<SaveScene>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/save.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveOverWorld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", true, overworld, battle);
         std::shared_ptr<Scene> gameOver = std::make_shared<GameOver>(app.GetScreenWidth(), app.GetScreenHeight());
@@ -36,6 +37,7 @@ int main()
         app.AddScene("savescene", savescene);
         app.AddScene("loadscene", loadscene);
         app.AddScene("overworld", level);
+        app.AddScene("town1", town1);
         app.AddScene("battle", battleScene);
         app.AddScene("gameOver", gameOver);
         app.SetScene("title");

@@ -22,6 +22,9 @@ public:
     void SaveGame();
     void LoadGame();
 
+    void SetNextScene(std::string nextScene){this->nextScene = nextScene;}
+    std::string NextScene(){return nextScene;}
+
 private:
     std::string saveFilePath;
     std::string filepath;
@@ -31,5 +34,6 @@ private:
     bool save;
     std::shared_ptr<Level> loadGame;
     std::shared_ptr<Battle> loadBattle;
+    std::string nextScene;
 
 };

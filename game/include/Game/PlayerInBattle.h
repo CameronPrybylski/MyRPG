@@ -16,6 +16,7 @@ public:
 
     void Hit(glm::vec2 collisionNormal, float dt);
     void AddItem(std::string name, std::shared_ptr<GameObject> item);
+    void AddWeapon(std::string name, std::shared_ptr<Weapon> weapon);
     void PositionSword();
 
     void SetMove(std::string move)
@@ -35,13 +36,21 @@ public:
 
     int GetAttackDamage()
     {
-        return equippedWeapon->GetDamage();
+        return strength * equippedWeapon->GetDamage();
     }
 
     void TakeDamage(int damage)
     {
         hp -= damage;
     }
+
+    int GetLevel(){return level;}
+    int GetXP(){return xp;}
+    int GetStrength(){return strength;}
+
+    void SetLevel(int level){this->level = level;}
+    void SetXP(int xp){this->xp = xp;}
+    void SetStrength(int strength){this->strength = strength;}
 
     bool hit = false;
 
@@ -60,5 +69,10 @@ private:
     bool alive = true;
     std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons;
     std::shared_ptr<Weapon> equippedWeapon;
+    
+    int level;
+    int strength;
+    int xp;
+
 
 };

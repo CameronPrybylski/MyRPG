@@ -10,6 +10,9 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
     hp = 10;
+    strength = 1;
+    level = 1;
+    xp = 0;
     texture.Create("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/large_display_fighter.png");
     this->color = color;
     this->name = name;
@@ -80,6 +83,11 @@ void PlayerInBattle::Hit(glm::vec2 collisionNormal, float dt)
 void PlayerInBattle::AddItem(std::string name, std::shared_ptr<GameObject> item)
 {
     items[name] = item;
+}
+
+void PlayerInBattle::AddWeapon(std::string name, std::shared_ptr<Weapon> weapon)
+{
+    weapons[name] = weapon;
 }
 
 void PlayerInBattle::PositionSword()
