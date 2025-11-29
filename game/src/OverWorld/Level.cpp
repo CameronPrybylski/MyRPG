@@ -2,6 +2,9 @@
 #include <Game/Obstacle.h>
 #include <Game/SaveSpot.h>
 #include <Game/TownSpot.h>
+#include <Game/NPC.h>
+#include <Game/DialogueBox.h>
+#include <Game/MenuItem.h>
 
 Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
 {
@@ -86,6 +89,28 @@ void Level::LoadLevel(std::string filepath)
                 go = town;
                 AddObject(obst.value("name", "Unnamed"), go);
                 towns[name] = town;
+            }
+            else if(objs.key() == "npcs"){
+                std::vector<std::string> dialogue = obst["dialogue"];
+                std::shared_ptr<NPC> npc = std::make_shared<NPC>(position, scale, velocity, color, "", name, isStatic, dialogue);
+                npcs[name] = npc;
+                go = npc;
+                AddObject(obst.value("name", "Unnamed"), go);
+            }
+            else if(objs.key() == "dialogue")
+            {
+                if(name == "dialogueBox")
+                {
+                    dialogueBox = std::make_shared<DialogueBox>(position, scale, color, "", name);
+                    go = dialogueBox;
+                    AddObject(obst.value("name", "Unnamed"), go);
+                }
+                else if(name == "textPos")
+                {
+                    std::string text = obst.value("text", "Unnamed");
+                    std::shared_ptr<MenuItem> textPos = std::make_shared<MenuItem>(name, position, scale, color, texturePath, text);
+                    dialogueBox->SetCurrentText(textPos);
+                }
             }
             /*
             else if(objs.key() == "aground"){
@@ -183,15 +208,37 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
             EndScene(town.first);
         }
     }
+    if(player->talkingToNPC && !dialogueBox->InUse())
+    {
+        npcs[player->npcTalkingTo]->SetTalking(true);
+        dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
+        dialogueBox->SetInUse(true);
+    }
+    if(dialogueBox != nullptr && dialogueBox->GetIndex() >= dialogueBox->GetDialogue().size() && dialogueBox->InUse())
+    {
+        npcs[player->npcTalkingTo]->SetTalking(false);
+        dialogueBox->SetInUse(false);
+        player->npcTalkingTo = "";
+        player->talkingToNPC = false;
+        dialogueBox->SetIndex(0);
+    }
+    
 }
 
 void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 {
+    bool playerContactWithNPC = false;
     for(auto& collision : collisions)
     {
         auto& obj1 = objectMap[collision.body1.id];
         auto& obj2 = objectMap[collision.body2.id];
-
+        if(collision.body1.id == "player" || collision.body2.id == "player")
+        {
+            if(collision.body1.id.find("npc") != std::string::npos || collision.body2.id.find("npc") != std::string::npos)
+            {
+                playerContactWithNPC = true;
+            }
+        }
         if(!collision.body1.rigidBody->isStatic && collision.body2.rigidBody->isStatic)
         {
             obj2->OnCollision(obj1, collision.collisionNormalBody2, dt);
@@ -202,6 +249,13 @@ void Level::OnCollision(std::vector<CollisionEvent> collisions, float dt)
             obj1->OnCollision(obj2, collision.collisionNormalBody1, dt);
             obj2->OnCollision(obj1, collision.collisionNormalBody2, dt);
         }
+    }
+    if(playerContactWithNPC)
+    {
+        player->contactWithNPC = true;
+    }
+    else{
+        player->contactWithNPC = false;
     }
 }
 
