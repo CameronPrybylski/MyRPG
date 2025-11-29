@@ -4,6 +4,16 @@ MenuItem::MenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::v
 {
     transform.position = position;
     transform.scale = scale;
+    int lengthNoSpace = 0;
+    for(int i = 0; i < text.length(); i++)
+    {
+        if(text[i] != ' ')
+        {
+            lengthNoSpace++;
+        }
+    }
+    //transform.scale.x = 20.0 * ((double)text.length());
+    //transform.scale.y = 5.0 * ((double)text.length());
     this->color = color;
     this->name = name;
     this->text = text;
@@ -41,5 +51,18 @@ void MenuItem::ChangeText(std::string newText)
         shaderName = "textureShader";
         textTexture.Create(fontPath, newText);
         texture = textTexture;
+        text = newText;
+        int textLength = text.length();
+        int lengthNoSpace = 0;
+        int j = 0;
+        for(int i = 0; i < text.length(); i++)
+        {
+            if(text[i] != ' ')
+            {
+                lengthNoSpace++;
+            }
+        }
+        transform.scale.x = 20.0 * ((double)text.length());
+        transform.scale.y = 5.0 * ((double)text.length());
     }
 }

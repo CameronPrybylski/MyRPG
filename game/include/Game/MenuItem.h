@@ -23,6 +23,8 @@ public:
 
     std::string GetFontPath(){return fontPath;}
 
+    std::string GetText(){return text;}
+
 private:
     TextTexture textTexture;
     std::string text;

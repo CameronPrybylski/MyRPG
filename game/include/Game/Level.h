@@ -7,6 +7,8 @@
 
 class SaveSpot;
 class TownSpot;
+class NPC;
+class DialogueBox;
 
 class Level : public Scene {
 
@@ -54,5 +56,7 @@ private:
     bool loadGame = false;
     std::string saveSlot;
     std::string areaName;
+    std::unordered_map<std::string, std::shared_ptr<NPC>> npcs;
+    std::shared_ptr<DialogueBox> dialogueBox;
 
 };

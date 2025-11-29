@@ -8,9 +8,16 @@ Player::Player(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
     hp = 3;
-    texture.Create(texturePath);
+    this->texturePath = texturePath;
+    if(texturePath != ""){
+        shaderName = "textureShader";
+        texture.Create(texturePath);
+    }else{
+        shaderName = "objectShader";
+    }
     this->color = color;
     this->name = name;
+    ///Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/WarriorOverworld.png"
 }
 
 Player::~Player()
@@ -52,6 +59,11 @@ void Player::OnEvent(const Input& input)
     {
         rigidBody.velocity.x = 0.0f;
         rigidBody.velocity.y = 0.0f;
+    }
+    if(input.IsKeyDown("SPACE") && contactWithNPC)
+    {
+        //std::cout << "Talking to " << npcTalkingTo << std::endl;
+        talkingToNPC = true;
     }
 }
 
@@ -120,12 +132,23 @@ void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 coll
         inBattle = true;
         enemyFighting = collidedObj->name;
     }
+    else if(collidedObj->name.find("npc") != std::string::npos)
+    {
+        npcTalkingTo = collidedObj->name;
+    }
 }
 
 void Player::Render(Renderer& renderer, const Camera& camera)
 {
-    renderer.DrawTexturedQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), texture, color);
-    texture.Unbind();
+
+    //renderer.DrawTexturedQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), texture, color);
+    //texture.Unbind();
+    if(shaderName == "textureShader"){
+        renderer.DrawTexturedQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), texture, color);
+        texture.Unbind();
+    }else{
+        renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), color);
+    }
 }
 
 void Player::Hit(glm::vec2 collisionNormal, float dt)

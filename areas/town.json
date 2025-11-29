@@ -61,7 +61,7 @@
                 "scale": [60.0, 50.0, 50.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
                 "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/WarriorOverworld.png"
             }
@@ -88,6 +88,42 @@
                 "color": [0.0, 1.0, 0.0, 1.0],
                 "isStatic": true,
                 "texturePath" : ""
+            }
+        ],
+        "npcs" : [
+            {
+                "name": "npcBob",
+                "position": [600.0, 600.0, 0.0],
+                "scale": [50.0, 50.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 0.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "",
+                "dialogue" : ["Hello!", "How are you?", "My name is bob.", "I am the owner of the prancing pony inn."]
+            }
+        ],
+        "dialogue" : [
+            {
+                "name": "dialogueBox",
+                "position": [600.0, 800.0, -1.0],
+                "scale": [500.0, 125.0, 0.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 0.5, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "textPos",
+                "position": [600.0, 800.0, 0.0],
+                "scale": [30.0, 15.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "text" : "Hi"
             }
         ]
     },
