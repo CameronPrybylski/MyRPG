@@ -62,7 +62,6 @@ void Player::OnEvent(const Input& input)
     }
     if(input.IsKeyDown("SPACE") && contactWithNPC)
     {
-        //std::cout << "Talking to " << npcTalkingTo << std::endl;
         talkingToNPC = true;
     }
 }
@@ -135,6 +134,7 @@ void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 coll
     else if(collidedObj->name.find("npc") != std::string::npos)
     {
         npcTalkingTo = collidedObj->name;
+        transform.position = rigidBody.previousPosition;
     }
 }
 

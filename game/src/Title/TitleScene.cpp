@@ -102,6 +102,9 @@ void TitleScene::LoadTitle()
     bottomScreenEdge = 0.0f;
     topScreenEdge = screenHeight;
 
+    menu->SetMenuItemsSize();
+    menu->Menu::SetMenuItemsSize();
+
 }
 
 void TitleScene::LoadPhysics(PhysicsSystem& physics)

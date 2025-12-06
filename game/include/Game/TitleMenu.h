@@ -20,6 +20,8 @@ public:
 
     bool IsNewGame(){return newGame;}
     bool IsLoadGame(){return loadGame;}
+
+    void SetMenuItemsSize() override;
 private:
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> loadMenuItems;
     bool newGame = false;

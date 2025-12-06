@@ -96,6 +96,8 @@ void SaveScene::LoadSaveScene()
     bottomScreenEdge = 0.0f;
     topScreenEdge = screenHeight;
 
+    menu->SetMenuItemsSize();
+
 }
 
 void SaveScene::OnEvent(const Input &input)

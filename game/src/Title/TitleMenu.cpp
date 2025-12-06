@@ -119,6 +119,7 @@ void TitleMenu::Render(Renderer &renderer, const Camera &camera)
         cursor->transform.position.y = maxHeight;
     }
     renderer.DrawQuad(*cursor->mesh, cursor->transform, camera, AssetManager::GetShader(cursor->shaderName), cursor->color);
+    Menu::Render(renderer, camera);
 }
 
 void TitleMenu::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
@@ -129,5 +130,39 @@ void TitleMenu::AddLoadMenuItem(std::string name, glm::vec3 position, glm::vec3 
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     loadMenuItems[text] = menuItem;
+}
+
+void TitleMenu::SetMenuItemsSize()
+{
+    std::shared_ptr<MenuItem> currentText;
+    float maxX = 0.0f;
+    std::string maxXString = "";
+    int i = 0;
+    for(auto menuItem : loadMenuItems)
+    {
+        currentText = menuItem.second;
+        if(maxX <= currentText->GetText().length())
+        {
+            maxX = currentText->GetText().length();
+            maxXString = menuItem.first;
+        }
+    }
+    currentText = loadMenuItems[maxXString];
+    currentText->transform.scale.x = transform.scale.x / 2.5;
+    currentText->transform.scale.y = transform.scale.x / 100.0;
+    //dialogueScale[maxXIndex] = currentText->transform.scale;
+    float yScale = currentText->transform.scale.y;
+    float xScale = currentText->transform.scale.x;
+    float widthToTextLength = currentText->GetText().length() / xScale;
+    i = 0;
+    for(auto menuItem : loadMenuItems)
+    {
+        currentText = menuItem.second;
+        if(menuItem.first != maxXString)
+        {
+            currentText->transform.scale.y = yScale;
+            currentText->transform.scale.x = currentText->GetText().length() / widthToTextLength;
+        }
+    }
 }
 
