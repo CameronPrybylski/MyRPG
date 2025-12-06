@@ -30,6 +30,8 @@ public:
 
     std::shared_ptr<MenuItem> GetMenuItem(std::string name){return menuItems[name];}
 
+    virtual void SetMenuItemsSize();
+
 
 protected:
 
@@ -38,5 +40,7 @@ protected:
     float cursorMinHeight;
     float cursorMaxHeight;
     std::string menuName;
+    std::vector<std::shared_ptr<GameObject>> borders;
 
+    void CreateBorders();
 };

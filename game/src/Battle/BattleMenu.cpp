@@ -80,6 +80,7 @@ void BattleMenu::Render(Renderer &renderer, const Camera &camera)
         }
     }
     renderer.DrawQuad(*cursor->mesh, cursor->transform, camera, AssetManager::GetShader(cursor->shaderName), cursor->color);
+    Menu::Render(renderer, camera);
 }
 
 void BattleMenu::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)

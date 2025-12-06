@@ -74,6 +74,7 @@ void SaveMenu::Render(Renderer &renderer, const Camera &camera)
         cursor->transform.position.y = maxHeight;
     }
     renderer.DrawQuad(*cursor->mesh, cursor->transform, camera, AssetManager::GetShader(cursor->shaderName), cursor->color);
+    Menu::Render(renderer, camera);
 }
 
 void SaveMenu::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)

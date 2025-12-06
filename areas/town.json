@@ -96,11 +96,12 @@
                 "position": [600.0, 600.0, 0.0],
                 "scale": [50.0, 50.0, 50.0],
                 "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
+                "velocity": [50.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 0.0, 1.0],
-                "isStatic": true,
+                "isStatic": false,
                 "texturePath" : "",
-                "dialogue" : ["Hello!", "How are you?", "My name is bob.", "I am the owner of the prancing pony inn."]
+                "dialogue" : ["Hello!", "How are you?", "My name is bob.", "I am the owner of the prancing pony inn."], 
+                "maxDist" : 150.0
             }
         ],
         "dialogue" : [

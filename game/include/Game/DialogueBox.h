@@ -24,12 +24,16 @@ public:
 
     std::vector<std::string> GetDialogue(){return dialogue;}
 
-    void ResizeDialogue(int index, std::vector<std::string> dialogue);
 
 private:
     bool inUse = false;
     int index = 0;
     int indexRendered = 0;
     std::vector<std::string> dialogue;
+    std::vector<glm::vec3> dialogueScale;
     std::shared_ptr<MenuItem> currentText;
+    std::vector<std::shared_ptr<GameObject>> borders;
+
+    void CreateBorders();
+    void ResizeDialogue();
 };

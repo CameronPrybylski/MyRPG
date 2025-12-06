@@ -92,7 +92,8 @@ void Level::LoadLevel(std::string filepath)
             }
             else if(objs.key() == "npcs"){
                 std::vector<std::string> dialogue = obst["dialogue"];
-                std::shared_ptr<NPC> npc = std::make_shared<NPC>(position, scale, velocity, color, "", name, isStatic, dialogue);
+                float maxDist = obst["maxDist"];
+                std::shared_ptr<NPC> npc = std::make_shared<NPC>(position, scale, velocity, color, "", name, isStatic, dialogue, maxDist);
                 npcs[name] = npc;
                 go = npc;
                 AddObject(obst.value("name", "Unnamed"), go);

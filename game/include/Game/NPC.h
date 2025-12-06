@@ -5,7 +5,7 @@
 class NPC : public GameObject {
 
 public:
-    NPC(glm::vec3 position, glm::vec3 scale, glm::vec3 velocity, glm::vec4 color, std::string texturePath, std::string name, bool isStatic, std::vector<std::string> dialogue);
+    NPC(glm::vec3 position, glm::vec3 scale, glm::vec3 velocity, glm::vec4 color, std::string texturePath, std::string name, bool isStatic, std::vector<std::string> dialogue, float maxDist);
     ~NPC();
     void OnEvent(const Input& input) override;
     void Update(const Input& input, float dt) override;
@@ -20,5 +20,8 @@ public:
 private:
     std::vector<std::string> dialogue;
     bool talking = false;
+    glm::vec3 velocity;
+    float maxDist;
+    float distance = 0;
 
 };
