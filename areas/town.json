@@ -57,7 +57,7 @@
         "player" : [
             {
                 "name": "player",
-                "position": [533.5, 400.0, 0.0],
+                "position": [650.5, 50.0, 0.0],
                 "scale": [60.0, 50.0, 50.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -96,12 +96,24 @@
                 "position": [600.0, 600.0, 0.0],
                 "scale": [50.0, 50.0, 50.0],
                 "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [50.0, 0.0, 0.0],
+                "velocity": [100.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 0.0, 1.0],
                 "isStatic": false,
                 "texturePath" : "",
                 "dialogue" : ["Hello!", "How are you?", "My name is bob.", "I am the owner of the prancing pony inn."], 
-                "maxDist" : 150.0
+                "maxDist" : 500.0
+            },
+            {
+                "name": "npcTom",
+                "position": [800.0, 600.0, 0.0],
+                "scale": [50.0, 50.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [-100.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 0.0, 1.0],
+                "isStatic": false,
+                "texturePath" : "",
+                "dialogue" : ["Hi!", "My name is Tom", "I am the shepherd of the old forest."], 
+                "maxDist" : 500.0
             }
         ],
         "dialogue" : [
