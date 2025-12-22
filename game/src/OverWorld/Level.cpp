@@ -65,9 +65,9 @@ void Level::LoadLevel(std::string filepath)
                 player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
-                go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/sword.png", "sword" ,false);
+                go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/sword.png", "sword" ,true);
                 player->AddItem("sword", go);
-                AddObject("sword", go);
+                //AddObject("sword", go);
             }
             else if(objs.key() == "enemies"){
                 if(deadEnemies.count(name) == 0)
@@ -123,12 +123,17 @@ void Level::LoadLevel(std::string filepath)
         }
     }
     
-    camera.Create(0.0f, screenWidth, 0.0f, screenHeight, -1.0f, 1.0f);
+    float minX, maxX, minY, maxY;
+    minX = player->transform.position.x - screenWidth / 2;
+    maxX = player->transform.position.x + screenWidth / 2;
+    minY = player->transform.position.y - screenHeight / 2;
+    maxY = player->transform.position.y + screenHeight / 2;
+    camera.Create(minX, maxX, minY, maxY, -1.0f, 1.0f);
     
-    leftScreenEdge = 0.0f;
-    rightScreenEdge = screenWidth;
-    bottomScreenEdge = 0.0f;
-    topScreenEdge = screenHeight;
+    leftScreenEdge = minX;
+    rightScreenEdge = maxX;
+    bottomScreenEdge = minY;
+    topScreenEdge = maxY;
 
     gameOver = false;
     if(!initialStart)
@@ -168,6 +173,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     //UpdatePhysics(physics, dt);
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(collisions, dt);
+    initialStart = false;
 
     UpdateCamera();
 
@@ -206,6 +212,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
         if(town.second->EnterTown())
         {
             town.second->SetEnterTown(false);
+            SaveState();
             EndScene(town.first);
         }
     }
@@ -287,18 +294,25 @@ void Level::UpdateCamera()
 
 void Level::SaveState()
 {
+    std::ifstream loadState(saveFilePath);
+    if (!loadState.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+    
+    nlohmann::json saveData;
+    loadState >> saveData;
+    player->transform.position = player->rigidBody.previousPosition;
+    nlohmann::json::array_t position = {player->transform.position.x, player->transform.position.y, player->transform.position.z};
+    saveData[areaName]["Player"] = nlohmann::json::object_t({{"position", position}, {"hp", player->hp}});
+    saveData[areaName]["Camera"] = nlohmann::json::object_t({{"leftScreenEdge", leftScreenEdge}, {"rightScreenEdge", rightScreenEdge}, {"topScreenEdge", topScreenEdge}, {"bottomScreenEdge", bottomScreenEdge}});
+    saveData[areaName]["Enemy"] = nlohmann::json::object_t({{"enemyFighting", player->enemyFighting}});
+
     std::ofstream levelSave(saveFilePath);
     if (!levelSave.is_open()) {
         throw std::runtime_error("Failed to open level file.");
     }
-
-    nlohmann::json saveData;
-    player->transform.position = player->rigidBody.previousPosition;
-    nlohmann::json::array_t position = {player->transform.position.x, player->transform.position.y, player->transform.position.z};
-    saveData["Player"] = nlohmann::json::object_t({{"position", position}, {"hp", player->hp}});
-    saveData["Camera"] = nlohmann::json::object_t({{"leftScreenEdge", leftScreenEdge}, {"rightScreenEdge", rightScreenEdge}, {"topScreenEdge", topScreenEdge}, {"bottomScreenEdge", bottomScreenEdge}});
-    saveData["Enemy"] = nlohmann::json::object_t({{"enemyFighting", player->enemyFighting}});
     levelSave << saveData;
+    
 
     std::ofstream currentArea("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/currentArea.json");
     if (!currentArea.is_open()) {
@@ -322,7 +336,8 @@ void Level::LoadState()
     nlohmann::json saveData;
     levelSave >> saveData;
     glm::vec3 position;
-    for(auto item : saveData.items())
+
+    for(auto item : saveData[areaName].items())
     {
         if(item.key() == "Camera")
         {

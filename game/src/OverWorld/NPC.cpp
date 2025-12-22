@@ -68,14 +68,21 @@ void NPC::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisi
 {
     if(collisionNormal.x == 1 || collisionNormal.x == -1)
     {
-        rigidBody.velocity.x *= -1.0f;
+        if((collisionNormal.x > 0 && rigidBody.velocity.x < 0) || (collisionNormal.x < 0 && rigidBody.velocity.x > 0))
+            rigidBody.velocity.x *= -1.0f;
     }
     if(collisionNormal.y == 1 || collisionNormal.y == -1)
     {
-        rigidBody.velocity.y *= -1.0f;
+        if((collisionNormal.y > 0 && rigidBody.velocity.y < 0) || (collisionNormal.y < 0 && rigidBody.velocity.y > 0))
+            rigidBody.velocity.y *= -1.0f;
     }
     if(rigidBody.velocity.x != 0.0f || rigidBody.velocity.y != 0.0f)
     {
+        velocity = rigidBody.velocity;
+    }
+    else
+    {
+        rigidBody.velocity = -1.0f * velocity;
         velocity = rigidBody.velocity;
     }
 }

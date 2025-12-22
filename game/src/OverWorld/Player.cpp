@@ -7,6 +7,7 @@ Player::Player(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string
     transform.position = position;
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
+    rigidBody.mass = 1.0f;
     hp = 3;
     this->texturePath = texturePath;
     if(texturePath != ""){
@@ -134,7 +135,6 @@ void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 coll
     else if(collidedObj->name.find("npc") != std::string::npos)
     {
         npcTalkingTo = collidedObj->name;
-        transform.position = rigidBody.previousPosition;
     }
 }
 
