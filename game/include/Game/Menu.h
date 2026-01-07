@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Engine/Scene/GameObject.h>
+#include <map>
 
 class MenuItem;
 
@@ -28,9 +29,28 @@ public:
         cursorMaxHeight = height;
     }
 
+    float GetCursorMaxHeight()
+    {
+        return cursorMaxHeight;
+    }
+    float GetCursorMinHeight()
+    {
+        return cursorMinHeight;
+    }
+
+    bool GetActive(){return active;}
+    void SetActive(bool active){this->active = active;}
+
+    std::shared_ptr<GameObject> GetCursor(){return cursor;}
+
+
     std::shared_ptr<MenuItem> GetMenuItem(std::string name){return menuItems[name];}
 
     virtual void SetMenuItemsSize();
+
+    virtual void UpdateMenuItems(std::map<std::string, int> menuItemsMap);
+
+    virtual void DrawBorders(Renderer &renderer, const Camera &camera);
 
 
 protected:
@@ -41,6 +61,9 @@ protected:
     float cursorMaxHeight;
     std::string menuName;
     std::vector<std::shared_ptr<GameObject>> borders;
+    bool active = true;
 
     void CreateBorders();
+
+    
 };

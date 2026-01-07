@@ -3,6 +3,7 @@
 #include <Game/Level.h>
 #include <Game/TitleScene.h>
 #include <Game/SaveScene.h>
+#include <Game/MenuScene.h>
 #include <Game/Battle.h>
 #include <Game/GameOver.h>
 #include <Game/Player.h>
@@ -32,6 +33,7 @@ int main()
         std::shared_ptr<Scene> loadscene = std::make_shared<SaveScene>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/save.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveOverWorld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", false, overworld, battle);
         std::shared_ptr<Scene> level = overworld;
         std::shared_ptr<Scene> battleScene = battle;
+        std::shared_ptr<Scene> menu = std::make_shared<MenuScene>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/menu.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json");
 
         app.AddScene("title", title);
         app.AddScene("savescene", savescene);
@@ -40,6 +42,7 @@ int main()
         app.AddScene("town1", town1);
         app.AddScene("battle", battleScene);
         app.AddScene("gameOver", gameOver);
+        app.AddScene("menu", menu);
         app.SetScene("title");
         
         AssetManager::LoadShader("objectShader", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/shaders/basic.vert", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/shaders/basic.frag");

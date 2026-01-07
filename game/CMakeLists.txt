@@ -24,6 +24,7 @@ add_executable(MyRPG
     src/Title/TitleMenu.cpp
     src/Title/SaveScene.cpp
     src/Title/SaveMenu.cpp
+    src/Menu/MenuScene.cpp
     # Add your game source files here
 )
 

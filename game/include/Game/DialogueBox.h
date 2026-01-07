@@ -1,8 +1,7 @@
 #pragma once
 
 #include <Engine/Scene/GameObject.h>
-
-class MenuItem;
+#include <Game/MenuItem.h>
 
 class DialogueBox : public GameObject{
 
@@ -23,6 +22,9 @@ public:
     void SetIndex(int index){this->index = index;}
 
     std::vector<std::string> GetDialogue(){return dialogue;}
+
+    void SetTextPosition(glm::vec3 position){currentText->transform.position = position;}
+    void SetBordersPosition(glm::vec3 position);
 
 
 private:
