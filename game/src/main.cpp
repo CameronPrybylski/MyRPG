@@ -3,7 +3,6 @@
 #include <Game/Level.h>
 #include <Game/TitleScene.h>
 #include <Game/SaveScene.h>
-#include <Game/MenuScene.h>
 #include <Game/Battle.h>
 #include <Game/GameOver.h>
 #include <Game/Player.h>
@@ -14,6 +13,8 @@ int main()
 {
     
     Application app;
+    const char* root = getenv("MYRPG_ROOT");
+
     
     if(!app.Create("Game", 1067, 800)){
         //1067 / 600 = 1.7783333
@@ -24,16 +25,15 @@ int main()
         auto quadMesh = std::make_shared<QuadMesh>();
         AssetManager::LoadMesh("quadMesh", quadMesh);
         
-        std::shared_ptr<Scene> title = std::make_shared<TitleScene>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/title.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json");
-        std::shared_ptr<Level> overworld = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/overworld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveOverWorld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json");
-        std::shared_ptr<Level> town1 = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/town.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveOverWorld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json");
-        std::shared_ptr<Battle> battle = std::make_shared<Battle>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/battle.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json");
-        std::shared_ptr<Scene> savescene = std::make_shared<SaveScene>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/save.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveOverWorld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", true, overworld, battle);
+        std::shared_ptr<Scene> title = std::make_shared<TitleScene>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/title.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str());
+        std::shared_ptr<Level> overworld = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/overworld.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str());
+        std::shared_ptr<Level> town1 = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/town.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), std::string(root) + "/savestate/saveBattle.json", (std::string(root) + "/savestate/saveGame.json").c_str());
+        std::shared_ptr<Battle> battle = std::make_shared<Battle>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/battle.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str());
+        std::shared_ptr<Scene> savescene = std::make_shared<SaveScene>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/save.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), true, overworld, battle);
         std::shared_ptr<Scene> gameOver = std::make_shared<GameOver>(app.GetScreenWidth(), app.GetScreenHeight());
-        std::shared_ptr<Scene> loadscene = std::make_shared<SaveScene>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/save.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveGame.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveOverWorld.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json", false, overworld, battle);
+        std::shared_ptr<Scene> loadscene = std::make_shared<SaveScene>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/save.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), false, overworld, battle);
         std::shared_ptr<Scene> level = overworld;
         std::shared_ptr<Scene> battleScene = battle;
-        std::shared_ptr<Scene> menu = std::make_shared<MenuScene>(app.GetScreenWidth(), app.GetScreenHeight(), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/areas/menu.json", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/saveBattle.json");
 
         app.AddScene("title", title);
         app.AddScene("savescene", savescene);
@@ -42,11 +42,10 @@ int main()
         app.AddScene("town1", town1);
         app.AddScene("battle", battleScene);
         app.AddScene("gameOver", gameOver);
-        app.AddScene("menu", menu);
         app.SetScene("title");
         
-        AssetManager::LoadShader("objectShader", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/shaders/basic.vert", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/shaders/basic.frag");
-        AssetManager::LoadShader("textureShader", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/shaders/texture.vert", "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/shaders/texture.frag");
+        AssetManager::LoadShader("objectShader", (std::string(root) + "/shaders/basic.vert").c_str(), (std::string(root) + "/shaders/basic.frag").c_str());
+        AssetManager::LoadShader("textureShader", (std::string(root) + "/shaders/texture.vert").c_str(), (std::string(root) + "/shaders/texture.frag").c_str());
         app.Run();
     }
     return 0;
