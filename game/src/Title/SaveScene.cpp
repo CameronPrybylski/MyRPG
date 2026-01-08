@@ -7,8 +7,8 @@
 #include <Game/Level.h>
 #include <Game/Battle.h>
 
-SaveScene::SaveScene(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveLevelFilePath, std::string saveBattleFilePath, bool save, std::shared_ptr<Level> loadGame, std::shared_ptr<Battle> loadBattle) : Scene(screenWidth, screenHeight),
- saveFilePath(saveFilePath), filepath(filepath), saveBattleFilePath(saveBattleFilePath), saveLevelFilePath(saveLevelFilePath), save(save), loadGame(loadGame), loadBattle(loadBattle)
+SaveScene::SaveScene(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveLevelFilePath, std::string saveBattleFilePath, bool save, std::shared_ptr<Level> loadGame, std::shared_ptr<Battle> loadBattle, std::string root) : Scene(screenWidth, screenHeight),
+ saveFilePath(saveFilePath), filepath(filepath), saveBattleFilePath(saveBattleFilePath), saveLevelFilePath(saveLevelFilePath), save(save), loadGame(loadGame), loadBattle(loadBattle), root(root)
 {
 
 }
@@ -37,7 +37,7 @@ void SaveScene::LoadSaveScene()
     //std::cout << j["levelParams"]["completionDist"] << std::endl;
     //nextArea = j["levelParams"]["nextLevel"];
     
-    std::ifstream nextAreaFile("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/currentArea.json");
+    std::ifstream nextAreaFile(root + "/savestate/currentArea.json");
     if (!nextAreaFile.is_open()) {
         throw std::runtime_error("Failed to open level file.");
     }
@@ -59,6 +59,11 @@ void SaveScene::LoadSaveScene()
             glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
             bool isStatic = obst.value("isStatic", false);
             std::string texturePath = obst.value("texturePath", "Unnamed");
+
+            if(texturePath.find("font") != std::string::npos)
+            {
+                texturePath = root + texturePath;
+            }
             
             if(objs.key() == "obstacles"){
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};

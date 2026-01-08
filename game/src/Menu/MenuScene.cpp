@@ -5,7 +5,7 @@
 #include <Game/Obstacle.h>
 #include <Game/Menu.h>
 
-MenuScene::MenuScene(float screenWidth, float screenHeight, std::string filepath, std::string battleFilePath) : Scene(screenWidth, screenHeight), filepath(filepath), battleFilePath(battleFilePath)
+MenuScene::MenuScene(float screenWidth, float screenHeight, std::string filepath, std::string battleFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), battleFilePath(battleFilePath), root(root)
 {
 }
 
@@ -53,6 +53,11 @@ void MenuScene::LoadMenuScene()
             glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
             bool isStatic = obst.value("isStatic", false);
             std::string texturePath = obst.value("texturePath", "Unnamed");
+
+            if(texturePath.find("font") != std::string::npos)
+            {
+                texturePath = root + texturePath;
+            }
             
         
             if(objs.key() == "menu"){

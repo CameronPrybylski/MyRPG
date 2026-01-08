@@ -13,7 +13,7 @@ class DialogueBox;
 class Level : public Scene {
 
 public:
-    Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath);
+    Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath, std::string root);
     //Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects);
     ~Level();
 
@@ -58,5 +58,7 @@ private:
     std::string areaName;
     std::unordered_map<std::string, std::shared_ptr<NPC>> npcs;
     std::shared_ptr<DialogueBox> dialogueBox;
+
+    std::string root;
 
 };

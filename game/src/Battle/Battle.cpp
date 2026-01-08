@@ -6,7 +6,7 @@
 #include <Game/Obstacle.h>
 #include <Game/EnemyInBattle.h>
 
-Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath) : Scene(screenWidth, screenHeight), filepath(filepath), saveGameFilePath(saveGameFilePath)
+Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), saveGameFilePath(saveGameFilePath), root(root)
 {
     this->saveFilePath = saveFilePath;
     Init();
@@ -47,6 +47,15 @@ void Battle::LoadBattle()
             glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
             bool isStatic = obst.value("isStatic", false);
             std::string texturePath = obst.value("texturePath", "Unnamed");
+
+            if(texturePath.find("font") != std::string::npos)
+            {
+                texturePath = root + texturePath;
+            }
+            else if(texturePath.find("textures") != std::string::npos)
+            {
+                texturePath = root + texturePath;
+            }
             
             if(objs.key() == "obstacles"){
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
@@ -57,7 +66,7 @@ void Battle::LoadBattle()
                 player = std::make_shared<PlayerInBattle>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
-                go = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/sword.png", "sword" ,false);
+                go = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,false);
                 player->AddItem("sword", go);
                 AddObject("sword", go);
             }

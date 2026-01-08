@@ -9,7 +9,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/entire_worldmap_single_image.png"
+                "texturePath" : ""
             }
         ],
         "menu" : [
@@ -32,7 +32,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Attack"
             },
             {
@@ -43,7 +43,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Magic"
             },
             {
@@ -54,7 +54,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Items"
             },
             {
@@ -65,7 +65,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "HP: "
             },
             {
@@ -86,7 +86,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Enemy1"
             },
             {
@@ -97,7 +97,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Enemy2"
             },
             {
@@ -108,7 +108,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Back"
             }
         ],
@@ -133,7 +133,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": false,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/large_display_fighter.png"
+                "texturePath" : "/textures/large_display_fighter.png"
             }
         ],
         "enemies" : [

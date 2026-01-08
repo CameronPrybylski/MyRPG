@@ -9,7 +9,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/entire_worldmap_single_image.png"
+                "texturePath" : ""
             }
         ],
         "obstacles": [
@@ -93,7 +93,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/WarriorOverworld.png"
+                "texturePath" : "/textures/WarriorOverworld.png"
             }
         ],
         "enemies" : [

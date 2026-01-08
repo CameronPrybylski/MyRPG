@@ -5,7 +5,7 @@ class Menu;
 
 class MenuScene : public Scene {
 public:
-    MenuScene(float screenWidth, float screenHeight, std::string filepath, std::string battleFilePath);
+    MenuScene(float screenWidth, float screenHeight, std::string filepath, std::string battleFilePath, std::string root);
     ~MenuScene();
 
     void Init() override;
@@ -26,4 +26,6 @@ private:
     std::shared_ptr<Menu> background;
     std::shared_ptr<Menu> activeMenu;
     std::map<std::string, int> playerInfoMap;
+
+    std::string root;
 };
