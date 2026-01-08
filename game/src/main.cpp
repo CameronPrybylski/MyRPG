@@ -2,6 +2,7 @@
 #include <Engine/Scene/Application.h>
 #include <Game/Level.h>
 #include <Game/TitleScene.h>
+#include <Game/MenuScene.h>
 #include <Game/SaveScene.h>
 #include <Game/Battle.h>
 #include <Game/GameOver.h>
@@ -32,12 +33,14 @@ int main()
         std::shared_ptr<Scene> savescene = std::make_shared<SaveScene>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/save.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), true, overworld, battle, std::string(root));
         std::shared_ptr<Scene> gameOver = std::make_shared<GameOver>(app.GetScreenWidth(), app.GetScreenHeight());
         std::shared_ptr<Scene> loadscene = std::make_shared<SaveScene>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/save.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), false, overworld, battle, std::string(root));
+        std::shared_ptr<Scene> menu = std::make_shared<MenuScene>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/menu.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), std::string(root));
         std::shared_ptr<Scene> level = overworld;
         std::shared_ptr<Scene> battleScene = battle;
 
         app.AddScene("title", title);
         app.AddScene("savescene", savescene);
         app.AddScene("loadscene", loadscene);
+        app.AddScene("menu", menu);
         app.AddScene("overworld", level);
         app.AddScene("town1", town1);
         app.AddScene("battle", battleScene);

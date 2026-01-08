@@ -174,6 +174,10 @@ void Menu::SetMenuItemsSize()
     {
         currentText->transform.scale.x = (0.625) * transform.scale.x;
     }
+    else if(currentText->transform.scale.x < (0.625) * transform.scale.x && currentText->transform.scale.x > (0.4) * transform.scale.x)
+    {
+        currentText->transform.scale.x = (0.6) * transform.scale.x;
+    }
     currentText->transform.scale.y = (currentText->transform.scale.x / 4);
     float yScale = currentText->transform.scale.y;
     float xScale = currentText->transform.scale.x;
@@ -195,4 +199,6 @@ void Menu::UpdateMenuItems(std::map<std::string, int> menuItemsMap)
     {
         menuItems[item.first]->ChangeText(item.first + ": " + std::to_string(item.second));
     }
+
+    SetMenuItemsSize();
 }

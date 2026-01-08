@@ -201,7 +201,7 @@ void SaveScene::SaveGame()
     levelSave >> loadLevelData;
 
     glm::vec3 position;
-    for(auto item : loadLevelData.items())
+    for(auto item : loadLevelData[nextScene].items())
     {
         if(item.key() == "Camera")
         {

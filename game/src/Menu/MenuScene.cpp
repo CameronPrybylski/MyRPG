@@ -20,7 +20,7 @@ void MenuScene::Init()
 
 void MenuScene::LoadMenuScene()
 {
-    std::ifstream nextAreaFile("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/currentArea.json");
+    std::ifstream nextAreaFile(root + "/savestate/currentArea.json");
     if (!nextAreaFile.is_open()) {
         throw std::runtime_error("Failed to open level file.");
     }
