@@ -37,3 +37,5 @@ target_link_libraries(MyRPG PRIVATE Engine)
 
 ###cmake -DCMAKE_BUILD_TYPE=Debug .
 
+### export MYRPG_ROOT=/home/cameron/MyRPG
+
