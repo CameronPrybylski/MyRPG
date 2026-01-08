@@ -1,1 +1,1 @@
-{"overworld":{"Camera":{"bottomScreenEdge":-330.4499816894531,"leftScreenEdge":224.7996826171875,"rightScreenEdge":1291.7998046875,"topScreenEdge":469.5508117675781},"Enemy":{"enemyFighting":"enemy2"},"Player":{"hp":8,"position":[759.3001098632813,73.29981231689453,0.0]}}}
+{"overworld":{"Camera":{"bottomScreenEdge":-40.1492919921875,"leftScreenEdge":51.50054931640625,"rightScreenEdge":1118.5001220703125,"topScreenEdge":759.8510131835938},"Enemy":{"enemyFighting":""},"Player":{"hp":8,"position":[579.9005737304688,352.0,0.0]}}}
