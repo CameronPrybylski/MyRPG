@@ -220,6 +220,7 @@ void SaveScene::SaveGame()
             });
         }
     }
+    saveData[saveNumber]["Scene"] = nextScene;
 
     std::ofstream gameSaveOut(saveFilePath);
     if (!gameSaveOut.is_open()) {
@@ -236,9 +237,20 @@ void SaveScene::SaveGame()
 
 void SaveScene::LoadGame()
 {
-    loadGame->SetSaveSlot(menu->SaveSlot());
-    loadGame->SetLoadGame(true);
+    //loadGame->SetSaveSlot(menu->SaveSlot());
+    //loadGame->SetLoadGame(true);
+    Level::SetSaveSlot(menu->SaveSlot());
+    Level::SetLoadGame(true);
     loadBattle->SetSaveSlot(menu->SaveSlot());
     loadBattle->SetLoadGame(true);
+
+    std::ifstream gameSaveIn(saveFilePath);
+    if (!gameSaveIn.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+    nlohmann::json saveData;
+    gameSaveIn >> saveData;
+    nextScene = saveData[menu->SaveSlot()]["Scene"];
+    gameSaveIn.close();
     EndScene(nextScene);
 }

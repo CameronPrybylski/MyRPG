@@ -35,8 +35,8 @@ public:
 
     void UpdateCamera();
 
-    void SetSaveSlot(std::string saveSlot){this->saveSlot = saveSlot;}
-    void SetLoadGame(bool loadGame){this->loadGame = loadGame;}
+    static void SetSaveSlot(std::string SaveSlot){saveSlot = SaveSlot;}
+    static void SetLoadGame(bool LoadGame){loadGame = LoadGame;}
 
 private:
     std::shared_ptr<Player> player;
@@ -53,8 +53,8 @@ private:
     bool initialStart;
     std::set<std::string> deadEnemies;
     std::string savescene;
-    bool loadGame = false;
-    std::string saveSlot;
+    static bool loadGame;
+    static std::string saveSlot;
     std::string areaName;
     std::unordered_map<std::string, std::shared_ptr<NPC>> npcs;
     std::shared_ptr<DialogueBox> dialogueBox;

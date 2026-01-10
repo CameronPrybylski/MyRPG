@@ -6,6 +6,9 @@
 #include <Game/DialogueBox.h>
 #include <Game/MenuItem.h>
 
+bool Level::loadGame = false;
+std::string Level::saveSlot = "";
+
 Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), root(root)
 {
     this->saveFilePath = saveFilePath;
