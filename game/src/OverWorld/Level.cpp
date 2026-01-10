@@ -8,6 +8,7 @@
 
 bool Level::loadGame = false;
 std::string Level::saveSlot = "";
+bool Level::initialStart = true;
 
 Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), root(root)
 {
@@ -436,4 +437,5 @@ void Level::LoadGame()
     player->transform.position = position;
     camera.Create(leftScreenEdge, rightScreenEdge, bottomScreenEdge, topScreenEdge, -1.0f, 1.0f);
     loadGame = false;
+    initialStart = false;
 }

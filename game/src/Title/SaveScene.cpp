@@ -237,8 +237,6 @@ void SaveScene::SaveGame()
 
 void SaveScene::LoadGame()
 {
-    //loadGame->SetSaveSlot(menu->SaveSlot());
-    //loadGame->SetLoadGame(true);
     Level::SetSaveSlot(menu->SaveSlot());
     Level::SetLoadGame(true);
     loadBattle->SetSaveSlot(menu->SaveSlot());

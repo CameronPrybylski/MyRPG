@@ -50,7 +50,7 @@ private:
     std::string saveFilePath;
     std::string saveBattleFilePath;
     std::string saveGameFilePath;
-    bool initialStart;
+    static bool initialStart;
     std::set<std::string> deadEnemies;
     std::string savescene;
     static bool loadGame;
