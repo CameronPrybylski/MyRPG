@@ -9,7 +9,7 @@ class Battle;
 class SaveScene : public Scene {
 
 public:
-    SaveScene(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveLevelFilePath, std::string saveBattleFilePath, bool save, std::shared_ptr<Level> loadGame, std::shared_ptr<Battle> loadBattle);
+    SaveScene(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveLevelFilePath, std::string saveBattleFilePath, bool save, std::shared_ptr<Level> loadGame, std::shared_ptr<Battle> loadBattle, std::string root);
     ~SaveScene();
 
     void Init() override;
@@ -35,5 +35,7 @@ private:
     std::shared_ptr<Level> loadGame;
     std::shared_ptr<Battle> loadBattle;
     std::string nextScene;
+
+    std::string root;
 
 };

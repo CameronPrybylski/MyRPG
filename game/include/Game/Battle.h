@@ -8,7 +8,7 @@ class BattleMenu;
 class Battle : public Scene {
 
 public:
-    Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath);
+    Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath, std::string root);
     ~Battle();
 
     void Init() override;
@@ -43,6 +43,8 @@ private:
     bool initialStart = true;
     bool loadBattle = false;
     std::string saveSlot;
+
+    std::string root;
 
 
 

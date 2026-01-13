@@ -9,7 +9,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/entire_worldmap_single_image.png"
+                "texturePath" : ""
             }
         ],
         "obstacles": [
@@ -63,7 +63,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/WarriorOverworld.png"
+                "texturePath" : "/textures/WarriorOverworld.png"
             }
         ],
         "saveSpots" : [
@@ -135,7 +135,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Hi"
             }
         ]
@@ -144,6 +144,7 @@
         "completionDist" : 3500.0,
         "nextLevel" : "battle",
         "savescene" : "savescene",
-        "area" : "town1"
+        "area" : "town1",
+        "combatArea" : false
     }
 }

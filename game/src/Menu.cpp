@@ -29,15 +29,15 @@ Menu::~Menu()
 
 void Menu::OnEvent(const Input &input)
 {
-    if(input.IsKeyDown("W") && cursor->transform.position.y < cursorMaxHeight)
+    if(input.IsKeyDown("W") && cursor->transform.position.y < cursorMaxHeight && active)
     {
         cursor->transform.position.y += 20.0f;
     }
-    if(input.IsKeyDown("S") && cursor->transform.position.y > cursorMinHeight)
+    if(input.IsKeyDown("S") && cursor->transform.position.y > cursorMinHeight && active)
     {
         cursor->transform.position.y -= 20.0f;
     }
-    if(input.IsKeyDown("RETURN"))
+    if(input.IsKeyDown("RETURN") && active)
     {
         if(menuName == "MenuItems")
         {
@@ -60,7 +60,6 @@ void Menu::Update(const Input &input, float dt)
 
 void Menu::Render(Renderer &renderer, const Camera &camera)
 {
-    /*
     renderer.DrawQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), color);
     if(menuName == "MenuItems")
     {
@@ -69,6 +68,7 @@ void Menu::Render(Renderer &renderer, const Camera &camera)
             menuItem.second->Render(renderer, camera);
         }
     }
+    /*
     else
     {
         menuName = "MenuItems";
@@ -76,13 +76,12 @@ void Menu::Render(Renderer &renderer, const Camera &camera)
         {
             menuItem.second->Render(renderer, camera);
         }
-    }
-    renderer.DrawQuad(*cursor->mesh, cursor->transform, camera, AssetManager::GetShader(cursor->shaderName), cursor->color);
-    */
-    for(auto border : borders)
-    {
-        border->Render(renderer, camera);
-    }
+    }*/
+    if(active)
+        renderer.DrawQuad(*cursor->mesh, cursor->transform, camera, AssetManager::GetShader(cursor->shaderName), cursor->color);
+
+    DrawBorders(renderer, camera);
+
 }
 
 void Menu::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
@@ -112,6 +111,14 @@ void Menu::AddCursor(std::string name, glm::vec3 position, glm::vec3 scale, glm:
         cursor->shaderName = "objectShader";
     }
 
+}
+
+void Menu::DrawBorders(Renderer &renderer, const Camera &camera)
+{
+    for(auto border : borders)
+    {
+        border->Render(renderer, camera);
+    }
 }
 
 void Menu::CreateBorders()
@@ -163,9 +170,13 @@ void Menu::SetMenuItemsSize()
     }
     currentText = menuItems[maxXString];
     currentText->transform.scale.x = currentText->GetText().length() * 20;
-    if(currentText->transform.scale.x <= (0.5) * transform.scale.x || currentText->transform.scale.x >= (0.75) * transform.scale.x)
+    if(/*currentText->transform.scale.x <= (0.5) * transform.scale.x ||*/ currentText->transform.scale.x >= (0.75) * transform.scale.x)
     {
         currentText->transform.scale.x = (0.625) * transform.scale.x;
+    }
+    else if(currentText->transform.scale.x < (0.625) * transform.scale.x && currentText->transform.scale.x > (0.4) * transform.scale.x)
+    {
+        currentText->transform.scale.x = (0.6) * transform.scale.x;
     }
     currentText->transform.scale.y = (currentText->transform.scale.x / 4);
     float yScale = currentText->transform.scale.y;
@@ -180,4 +191,14 @@ void Menu::SetMenuItemsSize()
             currentText->transform.scale.x = currentText->GetText().length() / widthToTextLength;
         }
     }
+}
+
+void Menu::UpdateMenuItems(std::map<std::string, int> menuItemsMap)
+{
+    for(auto item : menuItemsMap)
+    {
+        menuItems[item.first]->ChangeText(item.first + ": " + std::to_string(item.second));
+    }
+
+    SetMenuItemsSize();
 }

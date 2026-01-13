@@ -5,7 +5,7 @@
 class EnemyInBattle : public GameObject {
 
 public:
-    EnemyInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, int attackDamage);
+    EnemyInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, int attackDamage, int xp);
     ~EnemyInBattle();
     void OnEvent(const Input& input) override;
     void Update(float dt) override;
@@ -29,6 +29,11 @@ public:
         return hp;
     }
 
+    int GetXP()
+    {
+        return xp;
+    }
+
     int GetAttackDamage()
     {
         return attackDamage;
@@ -44,4 +49,5 @@ private:
     bool enemyMove = false;
     int hp;
     int attackDamage;
+    int xp;
 };

@@ -6,7 +6,11 @@
 #include <Game/DialogueBox.h>
 #include <Game/MenuItem.h>
 
-Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
+bool Level::loadGame = false;
+std::string Level::saveSlot = "";
+bool Level::initialStart = true;
+
+Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), root(root)
 {
     this->saveFilePath = saveFilePath;
     this->saveBattleFilePath = saveBattleFilePath;
@@ -44,6 +48,7 @@ void Level::LoadLevel(std::string filepath)
     nextLevel = j["levelParams"]["nextLevel"];
     savescene = j["levelParams"]["savescene"];
     areaName = j["levelParams"]["area"];
+    combatArea = j["levelParams"]["combatArea"];
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -55,6 +60,15 @@ void Level::LoadLevel(std::string filepath)
             glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
             bool isStatic = obst.value("isStatic", false);
             std::string texturePath = obst.value("texturePath", "Unnamed");
+
+            if(texturePath.find("font") != std::string::npos)
+            {
+                texturePath = root + texturePath;
+            }
+            else if(texturePath.find("textures") != std::string::npos)
+            {
+                texturePath = root + texturePath;
+            }
             
             if(objs.key() == "obstacles"){
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
@@ -65,7 +79,7 @@ void Level::LoadLevel(std::string filepath)
                 player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
-                go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/sword.png", "sword" ,true);
+                go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,true);
                 player->AddItem("sword", go);
                 //AddObject("sword", go);
             }
@@ -162,6 +176,11 @@ void Level::LoadPhysics(PhysicsSystem& physics)
 
 void Level::OnEvent(const Input &input)
 {
+    if(input.IsKeyDown("V"))
+    {
+        SaveState();
+        EndScene("menu");
+    }
     for(auto& obj : objectMap)
     {
         obj.second->OnEvent(input);
@@ -186,11 +205,15 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     {
         gameOver = true;
     }
-    if(player->inBattle)
+    if(player->GetDistance() >= 500.0f)
     {
-        SaveState();
-        initialStart = false;
-        EndScene("battle");
+        player->SetDistance(0.0f);
+        if(combatArea)
+        {
+            SaveState();
+            initialStart = false;
+            EndScene("battle");
+        }
     }
     if(gameOver)
     {
@@ -221,6 +244,10 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
         npcs[player->npcTalkingTo]->SetTalking(true);
         dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
         dialogueBox->SetInUse(true);
+        glm::vec3 newPosition = npcs[player->npcTalkingTo]->transform.position + glm::vec3(0.0f, 150.0f, 0.0f);
+        dialogueBox->transform.position = newPosition;
+        dialogueBox->SetTextPosition(newPosition);
+        dialogueBox->SetBordersPosition(newPosition);
     }
     if(dialogueBox != nullptr && dialogueBox->GetIndex() >= dialogueBox->GetDialogue().size() && dialogueBox->InUse())
     {
@@ -314,7 +341,7 @@ void Level::SaveState()
     levelSave << saveData;
     
 
-    std::ofstream currentArea("/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/savestate/currentArea.json");
+    std::ofstream currentArea(root + "/savestate/currentArea.json");
     if (!currentArea.is_open()) {
         throw std::runtime_error("Failed to open level file.");
     }
@@ -415,4 +442,5 @@ void Level::LoadGame()
     player->transform.position = position;
     camera.Create(leftScreenEdge, rightScreenEdge, bottomScreenEdge, topScreenEdge, -1.0f, 1.0f);
     loadGame = false;
+    initialStart = false;
 }

@@ -52,6 +52,8 @@ public:
     void SetXP(int xp){this->xp = xp;}
     void SetStrength(int strength){this->strength = strength;}
 
+    void AddToXP(int addedXP){xp += addedXP;}
+
     bool hit = false;
 
     bool usingSword = false;

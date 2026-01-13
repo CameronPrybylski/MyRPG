@@ -6,7 +6,7 @@ class TitleMenu;
 class TitleScene : public Scene {
 
 public:
-    TitleScene(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath);
+    TitleScene(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string root);
     ~TitleScene();
 
     void Init() override;
@@ -27,5 +27,7 @@ private:
     std::string saveFilePath;
     std::string filepath;
     bool initialStart = true;
+
+    std::string root;
 
 };

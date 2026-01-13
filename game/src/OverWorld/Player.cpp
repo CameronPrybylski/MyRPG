@@ -8,7 +8,7 @@ Player::Player(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
     rigidBody.mass = 1.0f;
-    hp = 3;
+    hp = 10;
     this->texturePath = texturePath;
     if(texturePath != ""){
         shaderName = "textureShader";
@@ -121,6 +121,11 @@ void Player::Update(const Input& input, float dt)
         alive = false;
     }
 
+    distance += std::abs(transform.position.x - rigidBody.previousPosition.x) + std::abs(transform.position.y - rigidBody.previousPosition.y);
+    if(distance >= 500.0f)
+    {
+        //inBattle = true;
+    }
     PositionSword();
 }
 

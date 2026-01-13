@@ -20,7 +20,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "New Game"
             },
             {
@@ -31,7 +31,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Load Game"
             },
             {
@@ -52,7 +52,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Enemy1"
             },
             {
@@ -63,7 +63,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Enemy2"
             },
             {
@@ -74,20 +74,8 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/fonts/OpenSans-Bold.ttf",
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Back"
-            }
-        ],
-        "obstacles": [
-            {
-                "name": "obstacle1",
-                "position": [0.0, 400.0, 0.0],
-                "scale": [10.0, 800.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : ""
             }
         ]
     },

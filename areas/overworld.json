@@ -9,7 +9,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": true,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyAdventureGame/textures/entire_worldmap_single_image.png"
+                "texturePath" : ""
             }
         ],
         "obstacles": [
@@ -93,29 +93,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
-                "texturePath" : "/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/WarriorOverworld.png"
-            }
-        ],
-        "enemies" : [
-            {
-                "name": "enemy1",
-                "position": [400.0, 300.0, 0.0],
-                "scale": [50.0, 50.0, 0.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 250.0, 0.0],
-                "color": [1.0, 0.0, 1.0, 1.0],
-                "isStatic": false,
-                "texturePath" : ""
-            },
-            {
-                "name": "enemy2",
-                "position": [850.0, 75.0, 0.0],
-                "scale": [50.0, 50.0, 0.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [200.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 1.0, 1.0],
-                "isStatic": false,
-                "texturePath" : ""
+                "texturePath" : "/textures/WarriorOverworld.png"
             }
         ],
         "saveSpots" : [
@@ -147,6 +125,7 @@
         "completionDist" : 3500.0,
         "nextLevel" : "battle",
         "savescene" : "savescene",
-        "area" : "overworld"
+        "area" : "overworld",
+        "combatArea" : true
     }
 }

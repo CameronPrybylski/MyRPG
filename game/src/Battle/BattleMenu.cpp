@@ -26,7 +26,7 @@ void BattleMenu::OnEvent(const Input &input)
         {
             for(auto menuItem : menuItems)
             {
-                if(cursor->transform.position.y == menuItem.second->transform.position.y)
+                if(cursor->transform.position.y == menuItem.second->transform.position.y && std::abs(cursor->transform.position.x - menuItem.second->transform.position.x) <= 100.0f )
                 {
                     menuName = menuItem.second->GetText() + "MenuItems";
                 }
@@ -80,7 +80,7 @@ void BattleMenu::Render(Renderer &renderer, const Camera &camera)
         }
     }
     renderer.DrawQuad(*cursor->mesh, cursor->transform, camera, AssetManager::GetShader(cursor->shaderName), cursor->color);
-    Menu::Render(renderer, camera);
+    DrawBorders(renderer, camera);
 }
 
 void BattleMenu::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)

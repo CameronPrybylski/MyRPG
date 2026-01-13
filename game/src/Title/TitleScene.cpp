@@ -5,7 +5,7 @@
 #include <Game/Obstacle.h>
 
 
-TitleScene::TitleScene(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath) : Scene(screenWidth, screenHeight), filepath(filepath)
+TitleScene::TitleScene(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), root(root)
 {
     this->saveFilePath = saveFilePath;
     Init();
@@ -45,6 +45,11 @@ void TitleScene::LoadTitle()
             glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
             bool isStatic = obst.value("isStatic", false);
             std::string texturePath = obst.value("texturePath", "Unnamed");
+
+            if(texturePath.find("font") != std::string::npos)
+            {
+                texturePath = root + texturePath;
+            }
             
             if(objs.key() == "obstacles"){
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};

@@ -2,7 +2,7 @@
 #include <random>
 #include <chrono>
 
-EnemyInBattle::EnemyInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, int attackDamage)
+EnemyInBattle::EnemyInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, int attackDamage, int xp)
 {
     mesh = AssetManager::GetMesh("quadMesh");
     transform.position = position;
@@ -13,6 +13,7 @@ EnemyInBattle::EnemyInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 colo
     this->type = "Enemy";
     hp = 5;
     this->attackDamage = attackDamage;
+    this->xp = xp;
     if(texturePath != ""){
         shaderName = "textureShader";
         texture.Create(texturePath);
@@ -42,6 +43,10 @@ void EnemyInBattle::Update(const Input &input, float dt)
     if(enemyMove && isAlive)
     {
         MakeMove();
+        if(transform.position.x - (transform.scale.x / 2) <= 0.0f)
+        {
+            transform.position.x = (transform.scale.x / 2);
+        }
     }
 }
 

@@ -99,6 +99,12 @@ void DialogueBox::CreateBorders()
     }
 }
 
+void DialogueBox::SetBordersPosition(glm::vec3 position)
+{
+    borders.clear();
+    CreateBorders();
+}
+
 void DialogueBox::ResizeDialogue()
 {
     currentText->ChangeText(dialogue[0]);
