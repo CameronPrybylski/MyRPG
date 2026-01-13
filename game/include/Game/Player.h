@@ -37,4 +37,8 @@ public:
 
     std::string texturePath;
 
+    float distance = 0.0f;
+    float GetDistance(){return distance;}
+    void SetDistance(float distance){this->distance = distance;}
+
 };

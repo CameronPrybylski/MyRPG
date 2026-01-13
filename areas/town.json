@@ -144,6 +144,7 @@
         "completionDist" : 3500.0,
         "nextLevel" : "battle",
         "savescene" : "savescene",
-        "area" : "town1"
+        "area" : "town1",
+        "combatArea" : false
     }
 }

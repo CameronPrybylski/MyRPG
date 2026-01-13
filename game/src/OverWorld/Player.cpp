@@ -121,6 +121,11 @@ void Player::Update(const Input& input, float dt)
         alive = false;
     }
 
+    distance += std::abs(transform.position.x - rigidBody.previousPosition.x) + std::abs(transform.position.y - rigidBody.previousPosition.y);
+    if(distance >= 500.0f)
+    {
+        //inBattle = true;
+    }
     PositionSword();
 }
 

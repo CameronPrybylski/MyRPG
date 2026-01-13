@@ -42,6 +42,10 @@ void EnemyInBattle::Update(const Input &input, float dt)
     if(enemyMove && isAlive)
     {
         MakeMove();
+        if(transform.position.x - (transform.scale.x / 2) <= 0.0f)
+        {
+            transform.position.x = (transform.scale.x / 2);
+        }
     }
 }
 

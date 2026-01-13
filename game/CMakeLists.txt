@@ -40,4 +40,4 @@ target_link_libraries(MyRPG PRIVATE Engine)
 ### export MYRPG_ROOT=/home/cameron/MyRPG
 
 ### export MYRPG_ROOT="/Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG"
-
+### echo $MYRPG_ROOT

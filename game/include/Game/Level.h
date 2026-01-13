@@ -61,4 +61,6 @@ private:
 
     std::string root;
 
+    bool combatArea;
+
 };

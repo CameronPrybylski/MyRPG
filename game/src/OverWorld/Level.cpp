@@ -48,6 +48,7 @@ void Level::LoadLevel(std::string filepath)
     nextLevel = j["levelParams"]["nextLevel"];
     savescene = j["levelParams"]["savescene"];
     areaName = j["levelParams"]["area"];
+    combatArea = j["levelParams"]["combatArea"];
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -204,11 +205,15 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     {
         gameOver = true;
     }
-    if(player->inBattle)
+    if(player->GetDistance() >= 500.0f)
     {
-        SaveState();
-        initialStart = false;
-        EndScene("battle");
+        player->SetDistance(0.0f);
+        if(combatArea)
+        {
+            SaveState();
+            initialStart = false;
+            EndScene("battle");
+        }
     }
     if(gameOver)
     {
