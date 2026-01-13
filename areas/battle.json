@@ -134,7 +134,8 @@
                 "color": [1.0, 0.0, 1.0, 1.0],
                 "isStatic": false,
                 "texturePath" : "",
-                "attackDamage" : 1
+                "attackDamage" : 1,
+                "xp" : 10
             }
         ]
     },

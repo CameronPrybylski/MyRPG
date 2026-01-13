@@ -72,7 +72,8 @@ void Battle::LoadBattle()
             }
             else if(objs.key() == "enemies"){
                 int attackDamage = obst.value("attackDamage", 0);
-                std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(position, scale, color, texturePath, name, attackDamage);
+                int xp = obst.value("xp", 0);
+                std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(position, scale, color, texturePath, name, attackDamage, xp);
                 go = enemy;
                 AddObject(obst.value("name", "Unnamed"), go);
                 enemies[name] = enemy;
@@ -173,6 +174,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
         if(!enemy.second->IsAlive())
         {
             deadEnemies.push_back(enemy.second->name);
+            player->AddToXP(enemy.second->GetXP());
         }
         enemy.second->SetMove(!playerMove);
     }
