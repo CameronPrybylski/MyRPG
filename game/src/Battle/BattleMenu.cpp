@@ -46,6 +46,20 @@ void BattleMenu::OnEvent(const Input &input)
                 }
             }
         }
+        else if(menuName == "ItemsMenuItems")
+        {
+            for(auto itemMenuItem : itemMenuItems)
+            {
+                if(cursor->transform.position.y == itemMenuItem.second->transform.position.y)
+                {
+                    if(itemMenuItem.second->GetText() != "Back")
+                    {
+                        playerMove = "UseItem" + itemMenuItem.second->GetText();
+                    }
+                    menuName = "MenuItems";
+                }
+            }
+        }
     }
 
 }
@@ -71,6 +85,13 @@ void BattleMenu::Render(Renderer &renderer, const Camera &camera)
             attackMenuItem.second->Render(renderer, camera);
         }
     }
+    else if(menuName == "ItemsMenuItems")
+    {
+        for(auto itemMenuItem : itemMenuItems)
+        {
+            itemMenuItem.second->Render(renderer, camera);
+        }
+    }
     else
     {
         menuName = "MenuItems";
@@ -91,6 +112,12 @@ void BattleMenu::AddAttackMenuItem(std::string name, glm::vec3 position, glm::ve
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     attackMenuItems[text] = menuItem;
+}
+
+void BattleMenu::AddItemMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
+{
+    std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
+    itemMenuItems[text] = menuItem;
 }
 
 void BattleMenu::SetDeadEnemies(std::vector<std::string> deadEnemies)

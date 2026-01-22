@@ -5,6 +5,7 @@
 #include <Game/PlayerInBattle.h>
 #include <Game/Obstacle.h>
 #include <Game/EnemyInBattle.h>
+#include <Game/Potion.h>
 
 Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), saveGameFilePath(saveGameFilePath), root(root)
 {
@@ -68,6 +69,8 @@ void Battle::LoadBattle()
                 AddObject(obst.value("name", "Unnamed"), go);
                 go = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,false);
                 player->AddItem("sword", go);
+                std::shared_ptr<ConsumableItem> conItem = std::make_shared<Potion>();
+                player->AddConsumableItem("Potion", conItem);
                 AddObject("sword", go);
             }
             else if(objs.key() == "enemies"){
@@ -94,6 +97,10 @@ void Battle::LoadBattle()
                 else if(name.find("attackMenuItem") != std::string::npos)
                 {
                     menu->AddAttackMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                }
+                else if(name.find("itemMenuItem") != std::string::npos)
+                {
+                    menu->AddItemMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
                 }
                 else if(name == "cursor" && menu != nullptr)
                 {
@@ -175,6 +182,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
         {
             deadEnemies.push_back(enemy.second->name);
             player->AddToXP(enemy.second->GetXP());
+            player->CheckXP();
         }
         enemy.second->SetMove(!playerMove);
     }
@@ -208,6 +216,10 @@ void Battle::HandlePlayerMove()
     if(menu->GetPlayerMove().find("Attack") != std::string::npos)
     {
         enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+    }
+    else if(menu->GetPlayerMove().find("UseItem") != std::string::npos)
+    {
+        player->UseItem(menu->GetPlayerMove());
     }
     playerMove = false;
 }

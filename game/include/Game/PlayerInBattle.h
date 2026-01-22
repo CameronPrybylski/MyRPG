@@ -3,6 +3,8 @@
 #include <Game/Sword.h>
 #include <Game/Weapon.h>
 
+class ConsumableItem;
+
 class PlayerInBattle : public GameObject {
 
 public:
@@ -16,6 +18,7 @@ public:
 
     void Hit(glm::vec2 collisionNormal, float dt);
     void AddItem(std::string name, std::shared_ptr<GameObject> item);
+    void AddConsumableItem(std::string name, std::shared_ptr<ConsumableItem> item);
     void AddWeapon(std::string name, std::shared_ptr<Weapon> weapon);
     void PositionSword();
 
@@ -53,6 +56,7 @@ public:
     void SetStrength(int strength){this->strength = strength;}
 
     void AddToXP(int addedXP){xp += addedXP;}
+    void CheckXP();
 
     bool hit = false;
 
@@ -65,16 +69,20 @@ public:
 
     float timeSinceHit = 0.0f;
 
-    std::unordered_map<std::string, std::shared_ptr<GameObject>> items;
+    std::unordered_map<std::string, std::vector<std::shared_ptr<GameObject>>> items;
+    void UseItem(std::string playerMove);
 private:
     int hp;
     bool alive = true;
     std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons;
+    std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> consumableItems;
     std::shared_ptr<Weapon> equippedWeapon;
     
     int level;
     int strength;
     int xp;
+    int xpNeeded;
+    int xpIncrement;
 
 
 };
