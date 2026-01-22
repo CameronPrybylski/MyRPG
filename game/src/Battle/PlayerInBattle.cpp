@@ -1,4 +1,5 @@
 #include <Game/PlayerInBattle.h>
+#include <Game/ConsumableItem.h>
 #include <thread>
 #include <chrono>
 
@@ -13,6 +14,8 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     strength = 1;
     level = 1;
     xp = 0;
+    xpNeeded = 50;
+    xpIncrement = 10;
     texture.Create(texturePath);
     this->color = color;
     this->name = name;
@@ -82,7 +85,12 @@ void PlayerInBattle::Hit(glm::vec2 collisionNormal, float dt)
 
 void PlayerInBattle::AddItem(std::string name, std::shared_ptr<GameObject> item)
 {
-    items[name] = item;
+    items[name].push_back(item);
+}
+
+void PlayerInBattle::AddConsumableItem(std::string name, std::shared_ptr<ConsumableItem> item)
+{
+    consumableItems[name].push_back(item);
 }
 
 void PlayerInBattle::AddWeapon(std::string name, std::shared_ptr<Weapon> weapon)
@@ -92,7 +100,7 @@ void PlayerInBattle::AddWeapon(std::string name, std::shared_ptr<Weapon> weapon)
 
 void PlayerInBattle::PositionSword()
 {
-    Transform swordTransform = items["sword"]->transform;
+    Transform swordTransform = items["sword"][0]->transform;
     swordTransform.position = transform.position;
     float swordScale = swordTransform.scale.x;
     if(usingSword)
@@ -126,5 +134,30 @@ void PlayerInBattle::PositionSword()
             }
         }
     }
-    items["sword"]->transform = swordTransform;
+    items["sword"][0]->transform = swordTransform;
+}
+
+void PlayerInBattle::CheckXP()
+{
+    if(xp >= xpNeeded)
+    {
+        level++;
+        strength++;
+        xpNeeded += (level * xpIncrement);
+    }
+}
+
+void PlayerInBattle::UseItem(std::string playerMove)
+{
+    std::string UseItemStr = "UseItem";
+    std::string itemUse = playerMove.substr(UseItemStr.length(), playerMove.length() - UseItemStr.length());
+    if(!consumableItems[itemUse].empty())
+    {
+        std::pair<std::string, int> itemEffect = consumableItems[itemUse][0]->UseItem();
+        consumableItems[itemUse].pop_back();
+        if(itemEffect.first == "hp")
+        {
+            hp += itemEffect.second;
+        }
+    }
 }
