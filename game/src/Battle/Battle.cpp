@@ -220,6 +220,14 @@ void Battle::HandlePlayerMove()
     else if(menu->GetPlayerMove().find("UseItem") != std::string::npos)
     {
         player->UseItem(menu->GetPlayerMove());
+        std::string UseItemStr = "UseItem";
+        std::string playerMove = player->GetMove();
+        std::string itemUse = playerMove.substr(UseItemStr.length(), playerMove.length() - UseItemStr.length());
+        
+        if(player->ConsumableItemCount(itemUse) < 1)
+        {
+            menu->RemoveItemMenuItem(itemUse);
+        }
     }
     playerMove = false;
 }
@@ -252,6 +260,7 @@ void Battle::SavePlayerInfo()
     });
     
     levelSave << saveData;
+    initialStart = false;
 }
 
 void Battle::LoadPlayerInfo()

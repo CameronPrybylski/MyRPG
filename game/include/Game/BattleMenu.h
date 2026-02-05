@@ -33,6 +33,8 @@ public:
 
     void UpdatePlayerHP(int hp);
 
+    void RemoveItemMenuItem(std::string menuItem){itemMenuItems.erase(menuItem);}
+
 
 private:
 

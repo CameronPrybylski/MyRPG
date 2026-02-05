@@ -2,6 +2,7 @@
 
 class Scene;
 class Menu;
+class PlayerMenu;
 
 class MenuScene : public Scene {
 public:
@@ -16,13 +17,16 @@ public:
     void LoadMenuScene();
 
     void PlayerInfo();
+    void SetPlayerInfo();
     void SetPlayerMenu();
+
+    void UseItem();
 
 private:
     std::string nextScene;
     std::string filepath;
     std::string battleFilePath;
-    std::shared_ptr<Menu> menu;
+    std::shared_ptr<PlayerMenu> menu;
     std::shared_ptr<Menu> background;
     std::shared_ptr<Menu> activeMenu;
     std::map<std::string, int> playerInfoMap;

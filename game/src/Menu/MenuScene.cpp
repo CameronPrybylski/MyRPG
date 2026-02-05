@@ -4,6 +4,7 @@
 #include <Game/MenuItem.h>
 #include <Game/Obstacle.h>
 #include <Game/Menu.h>
+#include <Game/PlayerMenu.h>
 
 MenuScene::MenuScene(float screenWidth, float screenHeight, std::string filepath, std::string battleFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), battleFilePath(battleFilePath), root(root)
 {
@@ -63,7 +64,7 @@ void MenuScene::LoadMenuScene()
             if(objs.key() == "menu"){
                 if(name == "menu")
                 {
-                    menu = std::make_shared<Menu>(position, scale, color, "", name);
+                    menu = std::make_shared<PlayerMenu>(position, scale, color, "", name);
                     menu->SetCursorMinHeight(obst["cursorMinMaxHeight"][0]);
                     menu->SetCursorMaxHeight(obst["cursorMinMaxHeight"][1]);
                     go = menu;
@@ -108,6 +109,13 @@ void MenuScene::LoadMenuScene()
                     background->AddCursor(name, position, scale, color, texturePath);
                 }
             }
+            else if(objs.key() == "playerMenu")
+            {
+                if(name.find("menuItem") != std::string::npos && menu != nullptr)
+                {
+                    menu->AddItemsMenuItem( obst.value("text", "Unnamed"), position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                }
+            }
         }
     }
      
@@ -119,6 +127,7 @@ void MenuScene::LoadMenuScene()
     topScreenEdge = screenHeight;
 
     menu->SetMenuItemsSize();
+    menu->SetItemsMenuItemsSize();
     background->SetMenuItemsSize();
     PlayerInfo();
     SetPlayerMenu();
@@ -150,6 +159,10 @@ void MenuScene::OnEvent(const Input &input)
 
 void MenuScene::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
 {
+    if(menu->GetPlayerMove().find("UseItem") != std::string::npos)
+    {
+        UseItem();
+    }
 }
 
 void MenuScene::PlayerInfo()
@@ -176,7 +189,41 @@ void MenuScene::PlayerInfo()
     battleSave.close();
 }
 
+void MenuScene::SetPlayerInfo()
+{
+    std::ofstream battleSave(battleFilePath);
+    if (!battleSave.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json saveData;
+    saveData["Player"] = nlohmann::json::object_t({
+        {"hp", playerInfoMap["HP"]}, 
+        {"level", playerInfoMap["Level"]},
+        {"strength", playerInfoMap["Strength"]},
+        {"xp", playerInfoMap["XP"]}
+    });
+    
+    battleSave << saveData;
+    battleSave.close();
+}
+
 void MenuScene::SetPlayerMenu()
 {
     background->UpdateMenuItems(playerInfoMap);
+}
+
+void MenuScene::UseItem()
+{
+    std::string UseItemStr = "UseItem";
+    std::string playerMove = menu->GetPlayerMove();
+    std::string itemUse = playerMove.substr(UseItemStr.length(), playerMove.length() - UseItemStr.length());
+    
+    if(itemUse == "Potion")
+    {
+        playerInfoMap["HP"] += 5;
+        SetPlayerMenu();
+        SetPlayerInfo();
+        menu->SetPlayerMove("");
+    }
 }

@@ -121,6 +121,41 @@
                 "isStatic": true,
                 "texturePath" : ""
             }
+        ],
+        "playerMenu" : [
+            {
+                "name": "playerMenu",
+                "position": [200.0, 400.0, 0.0],
+                "scale": [250.0, 600.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 1.0, 0.5],
+                "isStatic": true,
+                "texturePath" : "",
+                "cursorMinMaxHeight" : [800.0, 0.0]
+            },
+            {
+                "name": "menuItem1",
+                "position": [200.0, 600.0, 0.0],
+                "scale": [110.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Potion"
+            },
+            {
+                "name": "menuItem2",
+                "position": [200.0, 560.0, 0.0],
+                "scale": [110.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Back"
+            }
         ]
     }
 }

@@ -27,6 +27,8 @@ public:
         playerMove = move;
     }
 
+    std::string GetMove(){return playerMove;}
+
     void SetHP(int hp)
     {
         this->hp = hp;
@@ -71,6 +73,8 @@ public:
 
     std::unordered_map<std::string, std::vector<std::shared_ptr<GameObject>>> items;
     void UseItem(std::string playerMove);
+    int ConsumableItemCount(std::string item){return consumableItems[item].size();}
+
 private:
     int hp;
     bool alive = true;
