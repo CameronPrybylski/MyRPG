@@ -30,6 +30,7 @@ private:
     std::shared_ptr<Menu> background;
     std::shared_ptr<Menu> activeMenu;
     std::map<std::string, int> playerInfoMap;
+    std::unordered_map<std::string, int> items;
 
     std::string root;
 };

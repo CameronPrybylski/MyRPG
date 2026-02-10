@@ -114,6 +114,7 @@ void MenuScene::LoadMenuScene()
                 if(name.find("menuItem") != std::string::npos && menu != nullptr)
                 {
                     menu->AddItemsMenuItem( obst.value("text", "Unnamed"), position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                    menu->AddItem(obst.value("text", "Unnamed"));
                 }
             }
         }
@@ -184,6 +185,15 @@ void MenuScene::PlayerInfo()
             playerInfoMap["Level"] = item.value()["level"];
             playerInfoMap["Strength"] = item.value()["strength"];
             playerInfoMap["XP"] = item.value()["xp"];
+            for(auto conItem : item.value()["items"].items())
+            {
+                std::string conItemKey = conItem.key();
+                items[conItem.key()] = item.value()["items"][conItem.key()];
+                if(items[conItem.key()] < 1)
+                {
+                    menu->RemoveAllItems(conItem.key());
+                }
+            }
         }
     }
     battleSave.close();
@@ -201,9 +211,10 @@ void MenuScene::SetPlayerInfo()
         {"hp", playerInfoMap["HP"]}, 
         {"level", playerInfoMap["Level"]},
         {"strength", playerInfoMap["Strength"]},
-        {"xp", playerInfoMap["XP"]}
+        {"xp", playerInfoMap["XP"]},
+        {"items", items}
     });
-    
+
     battleSave << saveData;
     battleSave.close();
 }
@@ -222,8 +233,10 @@ void MenuScene::UseItem()
     if(itemUse == "Potion")
     {
         playerInfoMap["HP"] += 5;
+        items[itemUse]--;
+        menu->SetPlayerMove("");
+        menu->RemoveItem(itemUse);
         SetPlayerMenu();
         SetPlayerInfo();
-        menu->SetPlayerMove("");
     }
 }

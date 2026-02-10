@@ -19,9 +19,39 @@ public:
 
     std::string GetPlayerMove(){return playerMove;}
     void SetPlayerMove(std::string playerMove){this->playerMove = playerMove;}
+    void AddItem(std::string item)
+    {
+        if(items[item] > 0)
+        {
+            items[item]++;
+        }
+        else
+        {
+            items[item] = 1;
+        }
+    }
+    void RemoveItem(std::string item)
+    {
+        if(items[item] > 1)
+        {
+            items[item]--;
+        }
+        else
+        {
+            items[item] = 0;
+            itemsMenuItems.erase(item);
+        }
+    }
+
+    void RemoveAllItems(std::string item)
+    {
+        items[item] = 0;
+        itemsMenuItems.erase(item);
+    }
     
 private:
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> itemsMenuItems;
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> equipmentMenuItems;
+    std::unordered_map<std::string, int> items;
     std::string playerMove;
 };

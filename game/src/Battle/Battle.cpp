@@ -7,6 +7,9 @@
 #include <Game/EnemyInBattle.h>
 #include <Game/Potion.h>
 
+#include <random>
+#include <chrono>
+
 Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), saveGameFilePath(saveGameFilePath), root(root)
 {
     this->saveFilePath = saveFilePath;
@@ -69,8 +72,6 @@ void Battle::LoadBattle()
                 AddObject(obst.value("name", "Unnamed"), go);
                 go = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,false);
                 player->AddItem("sword", go);
-                std::shared_ptr<ConsumableItem> conItem = std::make_shared<Potion>();
-                player->AddConsumableItem("Potion", conItem);
                 AddObject("sword", go);
             }
             else if(objs.key() == "enemies"){
@@ -120,12 +121,11 @@ void Battle::LoadBattle()
     {
         LoadPlayerInfo();
     }
-    else
+    else if(!loadBattle)
     {
         SavePlayerInfo();
     }
-
-    if(loadBattle && initialStart)
+    if(loadBattle)
     {
         LoadGame();
     }
@@ -193,6 +193,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     }
     if(deadEnemies.size() == enemies.size())
     {
+        LootBattle();
         SavePlayerInfo();
         initialStart = false;
         EndScene("overworld");
@@ -244,6 +245,33 @@ void Battle::UpdateCamera()
 
 }
 
+void Battle::LootBattle()
+{
+    
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 gen(seed);
+    std::uniform_int_distribution<> distrib(1, 5);
+    int random_num = distrib(gen);
+    
+    std::shared_ptr<ConsumableItem> conItem;
+    std::string conItemStr = "";
+    switch (random_num)
+    {
+        case 1:
+            conItem = std::make_shared<Potion>();
+            conItemStr = "Potion";
+            break;
+        
+        default:
+            break;
+    }
+    
+    if(conItemStr != "")
+    {
+        player->AddConsumableItem(conItemStr, conItem);
+    }
+}
+
 void Battle::SavePlayerInfo()
 {
     std::ofstream levelSave(saveFilePath);
@@ -252,11 +280,19 @@ void Battle::SavePlayerInfo()
     }
 
     nlohmann::json saveData;
+    /*
+    std::unordered_map<std::string, int> conItemMap;
+    for(auto itr = player->GetConsumableItems().begin(); itr != player->GetConsumableItems().end(); itr++)
+    {
+        conItemMap[itr->first] = itr->second.size();
+    }
+    */
     saveData["Player"] = nlohmann::json::object_t({
         {"hp", player->GetHP()}, 
         {"level", player->GetLevel()},
         {"strength", player->GetStrength()},
-        {"xp", player->GetXP()}
+        {"xp", player->GetXP()},
+        {"items", nlohmann::json::object_t({{"Potion", player->ConsumableItemCount("Potion")}})}
     });
     
     levelSave << saveData;
@@ -280,7 +316,18 @@ void Battle::LoadPlayerInfo()
             player->SetStrength(item.value()["strength"]);
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
+            int itemCount = 0;
+            itemCount = item.value()["items"]["Potion"];
+            for(int i = 0; i < itemCount - player->ConsumableItemCount("Potion"); i++)
+            {
+                std::shared_ptr<ConsumableItem> conItem = std::make_shared<Potion>();
+                player->AddConsumableItem("Potion", conItem);
+            }
         }
+    }
+    if(player->ConsumableItemCount("Potion") < 1)
+    {
+        menu->RemoveItemMenuItem("Potion");
     }
 }
 
@@ -303,8 +350,23 @@ void Battle::LoadGame()
             player->SetStrength(item.value()["strength"]);
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
+            for(auto conItem : item.value()["items"].items())
+            {
+                std::string conItemKey = conItem.key();
+                int itemCount = item.value()["items"][conItem.key()];
+                for(int i = 0; i < itemCount; i++)
+                {
+                    std::shared_ptr<ConsumableItem> conItem;
+                    if(conItemKey == "Potion")
+                    {
+                        conItem = std::make_shared<Potion>();
+                    }
+                    player->AddConsumableItem(conItemKey, conItem);
+                }
+            }
         }
     }
 
     loadBattle = false;
+    initialStart = false;
 }
