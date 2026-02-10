@@ -73,7 +73,13 @@ public:
 
     std::unordered_map<std::string, std::vector<std::shared_ptr<GameObject>>> items;
     void UseItem(std::string playerMove);
-    int ConsumableItemCount(std::string item){return consumableItems[item].size();}
+    int ConsumableItemCount(std::string item)
+    {
+        return consumableItems[item].size();
+    }
+
+    std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> GetConsumableItems(){return this->consumableItems;}
+
 
 private:
     int hp;

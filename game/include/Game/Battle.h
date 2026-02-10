@@ -31,6 +31,8 @@ public:
     void SetSaveSlot(std::string saveSlot){this->saveSlot = saveSlot;}
     void SetLoadGame(bool loadBattle){this->loadBattle = loadBattle;}
 
+    void LootBattle();
+
 private:
     std::string filepath;
     std::shared_ptr<PlayerInBattle> player;

@@ -193,7 +193,8 @@ void SaveScene::SaveGame()
                 {"hp", item.value()["hp"]},
                 {"level", item.value()["level"]},
                 {"strength", item.value()["strength"]},
-                {"xp", item.value()["xp"]}    
+                {"xp", item.value()["xp"]},
+                {"items", item.value()["items"]}//nlohmann::json::object_t({{"Potion", item.value()["items"]["Potion"]}})}
             });
         }
     }
