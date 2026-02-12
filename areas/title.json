@@ -77,6 +77,19 @@
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Back"
             }
+        ],
+        "title":[
+            {
+                "name": "title",
+                "position": [533.5, 600.0, 0.0],
+                "scale": [600.0, 150.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Cameron's RPG"
+            }
         ]
     },
     "levelParams" : {

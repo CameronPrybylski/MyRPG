@@ -90,6 +90,14 @@ void SaveScene::LoadSaveScene()
                     menu->AddCursor(name, position, scale, color, texturePath);
                 }
             }
+            else if(objs.key() == "title" && !save){
+                if(name == "title")
+                {
+                    title = std::make_shared<MenuItem>(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                    go = title;
+                    AddObject(obst.value("name", "Unnamed"), go);
+                }
+            }
         }
     }
      
