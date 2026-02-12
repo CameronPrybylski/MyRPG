@@ -5,6 +5,7 @@ class Menu;
 class SaveMenu;
 class Level;
 class Battle;
+class MenuItem;
 
 class SaveScene : public Scene {
 
@@ -31,6 +32,7 @@ private:
     std::string saveLevelFilePath;
     std::string saveBattleFilePath;
     std::shared_ptr<SaveMenu> menu;
+    std::shared_ptr<MenuItem> title;
     bool save;
     std::shared_ptr<Level> loadGame;
     std::shared_ptr<Battle> loadBattle;
