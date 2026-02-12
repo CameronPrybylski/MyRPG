@@ -250,7 +250,7 @@ void Battle::LootBattle()
     
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 gen(seed);
-    std::uniform_int_distribution<> distrib(1, 5);
+    std::uniform_int_distribution<> distrib(1, 4);
     int random_num = distrib(gen);
     
     std::shared_ptr<ConsumableItem> conItem;
@@ -280,8 +280,9 @@ void Battle::SavePlayerInfo()
     }
 
     nlohmann::json saveData;
-    /*
+    
     std::unordered_map<std::string, int> conItemMap;
+    /*
     for(auto itr = player->GetConsumableItems().begin(); itr != player->GetConsumableItems().end(); itr++)
     {
         conItemMap[itr->first] = itr->second.size();
@@ -317,11 +318,18 @@ void Battle::LoadPlayerInfo()
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
             int itemCount = 0;
-            itemCount = item.value()["items"]["Potion"];
-            for(int i = 0; i < itemCount - player->ConsumableItemCount("Potion"); i++)
+            for(auto conItem : item.value()["items"].items())
             {
-                std::shared_ptr<ConsumableItem> conItem = std::make_shared<Potion>();
-                player->AddConsumableItem("Potion", conItem);
+                std::string conItemKey = conItem.key();
+                int itemCount = conItem.value();
+                for(int i = 0; i < itemCount - player->ConsumableItemCount(conItemKey); i++)
+                {
+                    if(conItemKey == "Potion")
+                    {
+                        std::shared_ptr<ConsumableItem> conItem = std::make_shared<Potion>();
+                        player->AddConsumableItem("Potion", conItem);
+                    }
+                }
             }
         }
     }

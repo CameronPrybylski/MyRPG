@@ -194,6 +194,10 @@ void MenuScene::PlayerInfo()
                     menu->RemoveAllItems(conItem.key());
                 }
             }
+            if(item.value()["items"].size() == 0)
+            {
+
+            }
         }
     }
     battleSave.close();
