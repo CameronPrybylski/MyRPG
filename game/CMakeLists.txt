@@ -6,6 +6,7 @@ add_executable(MyRPG
     src/OverWorld/Level.cpp
     src/GameOver.cpp
     src/Menu.cpp
+    src/FinalFantasyText.cpp
     src/OverWorld/Player.cpp
     src/OverWorld/SaveSpot.cpp
     src/OverWorld/TownSpot.cpp

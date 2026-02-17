@@ -242,12 +242,12 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     if(player->talkingToNPC && !dialogueBox->InUse())
     {
         npcs[player->npcTalkingTo]->SetTalking(true);
-        dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
         dialogueBox->SetInUse(true);
         glm::vec3 newPosition = npcs[player->npcTalkingTo]->transform.position + glm::vec3(0.0f, 150.0f, 0.0f);
         dialogueBox->transform.position = newPosition;
         dialogueBox->SetTextPosition(newPosition);
         dialogueBox->SetBordersPosition(newPosition);
+        dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
     }
     if(dialogueBox != nullptr && dialogueBox->GetIndex() >= dialogueBox->GetDialogue().size() && dialogueBox->InUse())
     {

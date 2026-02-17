@@ -102,41 +102,5 @@ void PlayerMenu::AddItemsMenuItem(std::string name, glm::vec3 position, glm::vec
 
 void PlayerMenu::SetItemsMenuItemsSize()
 {
-    std::shared_ptr<MenuItem> currentText;
-    float maxX = 0.0f;
-    std::string maxXString = "";
-    for(auto menuItem : itemsMenuItems)
-    {
-        currentText = menuItem.second;
-        if(maxX <= currentText->GetText().length())
-        {
-            maxX = currentText->GetText().length();
-            maxXString = menuItem.first;
-        }
-    }
-    currentText = itemsMenuItems[maxXString];
-    currentText->transform.scale.x = currentText->GetText().length() * 20;
-    if(/*currentText->transform.scale.x <= (0.5) * transform.scale.x ||*/ currentText->transform.scale.x >= (0.75) * transform.scale.x)
-    {
-        currentText->transform.scale.x = (0.625) * transform.scale.x;
-    }
-    else if(currentText->transform.scale.x < (0.625) * transform.scale.x && currentText->transform.scale.x > (0.4) * transform.scale.x)
-    {
-        currentText->transform.scale.x = (0.6) * transform.scale.x;
-    }
-    auto it = menuItems.begin();
-    currentText->transform.scale.y = it->second->transform.scale.y; //(currentText->transform.scale.x / 4);
-    float yScale = currentText->transform.scale.y;
-    float xScale = currentText->transform.scale.x;
-    float widthToTextLength = currentText->GetText().length() / xScale;
     
-    for(auto menuItem : itemsMenuItems)
-    {
-        currentText = menuItem.second;
-        if(menuItem.first != maxXString)
-        {
-            currentText->transform.scale.y = yScale;
-            currentText->transform.scale.x = currentText->GetText().length() / widthToTextLength;
-        }
-    }
 }
