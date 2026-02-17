@@ -14,8 +14,8 @@
             },
             {
                 "name": "menuItem1",
-                "position": [533.5, 300.0, 0.0],
-                "scale": [185.0, 50.0, 0.0],
+                "position": [470.0, 300.0, 0.0],
+                "scale": [22.0, 50.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
@@ -25,8 +25,8 @@
             },
             {
                 "name": "menuItem2",
-                "position": [533.5, 260.0, 0.0],
-                "scale": [185.0, 50.0, 0.0],
+                "position": [470.0, 260.0, 0.0],
+                "scale": [22.0, 50.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
@@ -57,8 +57,8 @@
             },
             {
                 "name": "loadMenuItem2",
-                "position": [533.5, 2600.0, 0.0],
-                "scale": [120.0, 50.0, 0.0],
+                "position": [470.0, 2600.0, 0.0],
+                "scale": [22.0, 50.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
@@ -68,8 +68,8 @@
             },
             {
                 "name": "menuItem3",
-                "position": [533.5, 220.0, 0.0],
-                "scale": [185.0, 50.0, 0.0],
+                "position": [470.0, 220.0, 0.0],
+                "scale": [22.0, 50.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
@@ -81,14 +81,27 @@
         "title":[
             {
                 "name": "title",
-                "position": [533.5, 600.0, 0.0],
+                "position": [325.0, 600.0, 0.0],
                 "scale": [600.0, 150.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Cameron's RPG"
+                "texturePath" : "/fonts/finalf.ttf",
+                "text" : "FINAL FANTASY",
+                "fontSize" : "40"
+            },
+            {
+                "name": "studio",
+                "position": [425.0, 500.0, 0.0],
+                "scale": [600.0, 150.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 0.0, 0.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/finalf.ttf",
+                "text" : "squaresoft",
+                "fontSize" : "25"
             }
         ]
     },

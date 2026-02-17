@@ -3,6 +3,7 @@
 class Scene;
 class TitleMenu;
 class MenuItem;
+class StringText;
 
 class TitleScene : public Scene {
 
@@ -25,7 +26,8 @@ public:
 
 private:
     std::shared_ptr<TitleMenu> menu;
-    std::shared_ptr<MenuItem> title;
+    std::shared_ptr<StringText> title;
+    std::shared_ptr<StringText> studio;
     std::string saveFilePath;
     std::string filepath;
     bool initialStart = true;

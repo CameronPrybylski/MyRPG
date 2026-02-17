@@ -100,7 +100,7 @@
                 "color": [1.0, 1.0, 0.0, 1.0],
                 "isStatic": false,
                 "texturePath" : "",
-                "dialogue" : ["Hello!", "How are you?", "My name is bob.", "I am the owner of the prancing pony inn."], 
+                "dialogue" : ["Hello!", "How are you?", "My name is bob.", "I am the owner of the prancing pony inn.", "Yo."], 
                 "maxDist" : 500.0
             },
             {
@@ -129,8 +129,8 @@
             },
             {
                 "name": "textPos",
-                "position": [600.0, 800.0, 0.0],
-                "scale": [30.0, 15.0, 0.0],
+                "position": [300.0, 800.0, 0.0],
+                "scale": [22.0, 15.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],

@@ -156,6 +156,7 @@ void Menu::CreateBorders()
 
 void Menu::SetMenuItemsSize()
 {
+    /*
     std::shared_ptr<MenuItem> currentText;
     float maxX = 0.0f;
     std::string maxXString = "";
@@ -170,7 +171,8 @@ void Menu::SetMenuItemsSize()
     }
     currentText = menuItems[maxXString];
     currentText->transform.scale.x = currentText->GetText().length() * 20;
-    if(/*currentText->transform.scale.x <= (0.5) * transform.scale.x ||*/ currentText->transform.scale.x >= (0.75) * transform.scale.x)
+    if(/*currentText->transform.scale.x <= (0.5) * transform.scale.x || currentText->transform.scale.x >= (0.75) * transform.scale.x)
+    
     {
         currentText->transform.scale.x = (0.625) * transform.scale.x;
     }
@@ -191,6 +193,7 @@ void Menu::SetMenuItemsSize()
             currentText->transform.scale.x = currentText->GetText().length() / widthToTextLength;
         }
     }
+    */
 }
 
 void Menu::UpdateMenuItems(std::map<std::string, int> menuItemsMap)

@@ -1,5 +1,7 @@
 #include <Engine/Scene/Scene.h>
 
+#include <Game/FinalFantasyText.h>
+
 #include <Game/SaveScene.h>
 #include <Game/Obstacle.h>
 #include <Game/SaveMenu.h>
@@ -93,8 +95,14 @@ void SaveScene::LoadSaveScene()
             else if(objs.key() == "title" && !save){
                 if(name == "title")
                 {
-                    title = std::make_shared<MenuItem>(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                    title = std::make_shared<FinalFantasyText>(obst.value("text", "Unnamed"), position, color, texturePath, std::stoi(obst.value("fontSize", "Unnamed")));
                     go = title;
+                    AddObject(obst.value("name", "Unnamed"), go);
+                }
+                else if(name == "studio")
+                {
+                    studio = std::make_shared<FinalFantasyText>(obst.value("text", "Unnamed"), position, color, texturePath, std::stoi(obst.value("fontSize", "Unnamed")));
+                    go = studio;
                     AddObject(obst.value("name", "Unnamed"), go);
                 }
             }

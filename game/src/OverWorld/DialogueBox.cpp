@@ -1,6 +1,7 @@
 #include <Game/DialogueBox.h>
 #include <Game/MenuItem.h>
 #include <Game/Obstacle.h>
+#include <Engine/Scene/LetterText.h>
 
 DialogueBox::DialogueBox(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name)
 {
@@ -31,7 +32,6 @@ void DialogueBox::OnEvent(const Input &input)
         if(index < dialogue.size())
         {
             currentText->ChangeText(dialogue[index]);
-            currentText->transform.scale = dialogueScale[index];
         }
     }
 }
@@ -59,11 +59,42 @@ void DialogueBox::SetDialogue(std::vector<std::string> dialogue)
     this->dialogue = dialogue;
     if(dialogue.size() > 0)
     {
-        //ResizeDialogue(0, dialogue);
-        ResizeDialogue();
         currentText->ChangeText(dialogue[0]);
-        currentText->transform.scale = dialogueScale[0];
+        for(int i = 0; i < dialogue.size(); i++)
+        {
+            currentText->ChangeText(dialogue[i]);
+            std::string dialogueStr = "";
+            std::string dialogueLongStr = "";
+            for(int j = 0; j < currentText->GetLetters().size(); j++)
+            {
+                if(currentText->GetLetters()[j]->GetPosition().x > transform.position.x + (transform.scale.x / 2))
+                {
+                    dialogueLongStr += dialogue[i][j];
+                }
+                else
+                {
+                    dialogueStr += dialogue[i][j];
+                }
+            }
+            if(dialogueLongStr.length() != 0)
+            {
+                dialogue[i] = dialogueStr;
+                if(i + 1 < dialogue.size())
+                    dialogue.insert(dialogue.begin() + (i + 1), dialogueLongStr);
+                else
+                    dialogue.push_back(dialogueLongStr);
+            }
+        }
+        currentText->ChangeText(dialogue[0]);
+        this->dialogue = dialogue;
     }
+}
+
+void DialogueBox::SetTextPosition(glm::vec3 position)
+{
+    position.x -= transform.scale.x / 2;
+    position.x += currentText->GetFontSize();
+    currentText->SetPosition(position);
 }
 
 void DialogueBox::CreateBorders()
@@ -103,42 +134,4 @@ void DialogueBox::SetBordersPosition(glm::vec3 position)
 {
     borders.clear();
     CreateBorders();
-}
-
-void DialogueBox::ResizeDialogue()
-{
-    currentText->ChangeText(dialogue[0]);
-    float maxX = 0.0f;
-    int maxXIndex = 0;
-    for(int i = 0; i < dialogue.size(); i++)
-    {
-        currentText->ChangeText(dialogue[i]);
-        if(maxX <= currentText->transform.scale.x)
-        {
-            maxX = currentText->transform.scale.x;
-            maxXIndex = i;
-        }
-        dialogueScale.push_back(glm::vec3(0.0f));
-    }
-    currentText->ChangeText(dialogue[maxXIndex]);
-    currentText->transform.scale.x = (0.75) * transform.scale.x;
-    currentText->transform.scale.x = currentText->GetText().length() * 20;
-    if(currentText->transform.scale.x <= (0.5) * transform.scale.x || currentText->transform.scale.x >= (0.75) * transform.scale.x)
-    {
-        currentText->transform.scale.x = (0.75) * transform.scale.x;
-    }
-    currentText->transform.scale.y = (currentText->transform.scale.x / 15);
-    dialogueScale[maxXIndex] = currentText->transform.scale;
-    float yScale = currentText->transform.scale.y;
-    float xScale = currentText->transform.scale.x;
-    float widthToTextLength = currentText->GetText().length() / xScale;
-    for(int i = 0; i < dialogue.size(); i++)
-    {
-        currentText->ChangeText(dialogue[i]);
-        if(i != maxXIndex)
-        {
-            dialogueScale[i].y = yScale;
-            dialogueScale[i].x = currentText->GetText().length() / widthToTextLength;
-        }
-    }
 }

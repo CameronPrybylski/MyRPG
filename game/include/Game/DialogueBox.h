@@ -23,7 +23,7 @@ public:
 
     std::vector<std::string> GetDialogue(){return dialogue;}
 
-    void SetTextPosition(glm::vec3 position){currentText->transform.position = position;}
+    void SetTextPosition(glm::vec3 position);
     void SetBordersPosition(glm::vec3 position);
 
 
@@ -37,5 +37,4 @@ private:
     std::vector<std::shared_ptr<GameObject>> borders;
 
     void CreateBorders();
-    void ResizeDialogue();
 };
