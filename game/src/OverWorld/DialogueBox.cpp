@@ -65,15 +65,36 @@ void DialogueBox::SetDialogue(std::vector<std::string> dialogue)
             currentText->ChangeText(dialogue[i]);
             std::string dialogueStr = "";
             std::string dialogueLongStr = "";
+            std::string dialogueWord = "";
+            bool tooLong = false;
             for(int j = 0; j < currentText->GetLetters().size(); j++)
             {
-                if(currentText->GetLetters()[j]->GetPosition().x > transform.position.x + (transform.scale.x / 2))
+
+                if(!tooLong && currentText->GetLetters()[j]->GetPosition().x + currentText->GetLetters()[j]->transform.scale.x > transform.position.x + (transform.scale.x / 2))
                 {
-                    dialogueLongStr += dialogue[i][j];
+                    tooLong = true;
+                }
+
+                if(currentText->GetLetters()[j]->GetText() != " ")
+                {
+                    dialogueWord += dialogue[i][j];
                 }
                 else
                 {
-                    dialogueStr += dialogue[i][j];
+                    if(!tooLong)
+                    {
+                        dialogueStr += dialogueWord;
+                    }
+                    else
+                    {
+                        dialogueLongStr += dialogueWord;
+                    }
+                    dialogueWord = " ";
+                }
+                if(j == currentText->GetLetters().size() - 1 && tooLong)
+                {
+                    dialogueLongStr += dialogueWord;
+                    dialogueLongStr.erase(0, 1);
                 }
             }
             if(dialogueLongStr.length() != 0)
