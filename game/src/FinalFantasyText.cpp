@@ -2,11 +2,11 @@
 
 FinalFantasyText::FinalFantasyText(std::string letters, glm::vec3 position, glm::vec4 color, std::string fontPath, int fontSize) : StringText(letters, position, color, fontPath, fontSize)
 {
-    SetTextSizeAndPos();
 }
 
 void FinalFantasyText::SetTextSizeAndPos()
 {
+    glm::vec3 ogPosition = this->transform.position;
     for(int i = 0; i < letters.size(); i++)
     {
         letters[i]->SetPosition(this->transform.position);
@@ -31,17 +31,6 @@ void FinalFantasyText::SetTextSizeAndPos()
         }
         this->transform.position.x += letters[i]->transform.scale.x;
     }
-}
-
-void FinalFantasyText::ChangeText(std::string newLetters)
-{
-    letters.clear();
-    for(int i = 0; i < newLetters.length(); i++)
-    {
-        std::string s;
-        s = newLetters[i];
-        this->letters.push_back(std::make_shared<LetterText>(color, fontPath, s));
-    }
-
-    SetTextSizeAndPos();
+    this->endPosition = this->transform.position;
+    this->transform.position = ogPosition;
 }

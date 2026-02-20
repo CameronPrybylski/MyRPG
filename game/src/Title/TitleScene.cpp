@@ -106,12 +106,14 @@ void TitleScene::LoadTitle()
                 {
                     //title = std::make_shared<MenuItem>(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
                     title = std::make_shared<FinalFantasyText>(obst.value("text", "Unnamed"), position, color, texturePath, std::stoi(obst.value("fontSize", "Unnamed")));
+                    title->Init();
                     go = title;
                     AddObject(obst.value("name", "Unnamed"), go);
                 }
                 else if(name == "studio")
                 {
                     studio = std::make_shared<FinalFantasyText>(obst.value("text", "Unnamed"), position, color, texturePath, std::stoi(obst.value("fontSize", "Unnamed")));
+                    studio->Init();
                     go = studio;
                     AddObject(obst.value("name", "Unnamed"), go);
                 }

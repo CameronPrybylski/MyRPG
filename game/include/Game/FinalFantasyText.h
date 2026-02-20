@@ -9,6 +9,4 @@ public:
     
     void SetTextSizeAndPos() override;
 
-    void ChangeText(std::string newLetters) override;
-
 };

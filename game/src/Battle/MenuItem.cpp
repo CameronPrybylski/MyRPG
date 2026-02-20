@@ -20,9 +20,8 @@ MenuItem::MenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::v
         shaderName = "objectShader";
     }
 
-    
-
     stringText = std::make_shared<StringText>(text, position, color, fontPath, scale.x);
+    stringText->Init();
 }
 
 MenuItem::~MenuItem()
