@@ -100,7 +100,7 @@
                 "color": [1.0, 1.0, 0.0, 1.0],
                 "isStatic": false,
                 "texturePath" : "",
-                "dialogue" : ["Hello!", "How are you?", "My name is bob.", "I am the owner of the prancing pony inn.", "Yo."], 
+                "dialogue" : ["Hello! How are you?", "My name is bob.", "I am the owner", "of the prancing pony inn.", "Yo."], 
                 "maxDist" : 500.0
             },
             {
