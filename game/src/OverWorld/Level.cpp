@@ -107,7 +107,7 @@ void Level::LoadLevel(std::string filepath)
             else if(objs.key() == "npcs"){
                 std::vector<std::string> dialogue = obst["dialogue"];
                 float maxDist = obst["maxDist"];
-                std::shared_ptr<NPC> npc = std::make_shared<NPC>(position, scale, velocity, color, "", name, isStatic, dialogue, maxDist);
+                std::shared_ptr<NPC> npc = std::make_shared<NPC>(position, scale, velocity, color, texturePath, name, isStatic, dialogue, maxDist);
                 npcs[name] = npc;
                 go = npc;
                 AddObject(obst.value("name", "Unnamed"), go);
@@ -127,13 +127,11 @@ void Level::LoadLevel(std::string filepath)
                     dialogueBox->SetCurrentText(textPos);
                 }
             }
-            /*
             else if(objs.key() == "aground"){
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
                 go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
                 AddObject(obst.value("name", "Unnamed"), go);
             }
-            */
         }
     }
     

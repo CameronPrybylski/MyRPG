@@ -22,6 +22,7 @@ add_executable(MyRPG
     src/Battle/EnemyInBattle.cpp
     src/Battle/Weapon.cpp
     src/Battle/Potion.cpp
+    src/Enemies/Goblin.cpp
     src/Title/TitleScene.cpp
     src/Title/TitleMenu.cpp
     src/Title/SaveScene.cpp
