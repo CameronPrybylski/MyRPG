@@ -63,7 +63,7 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
-                "texturePath" : "/textures/WarriorOverworld.png"
+                "texturePath" : "/textures/FighterOverworld.png"
             }
         ],
         "saveSpots" : [
@@ -92,15 +92,15 @@
         ],
         "npcs" : [
             {
-                "name": "npcBob",
+                "name": "npcNerrick",
                 "position": [600.0, 600.0, 0.0],
                 "scale": [50.0, 50.0, 50.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [100.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 0.0, 1.0],
+                "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": false,
-                "texturePath" : "",
-                "dialogue" : ["Hello! How are you?", "My name is bob.", "I am the owner", "of the prancing pony inn.", "Yo."], 
+                "texturePath" : "/textures/Nerrick_sprite.png",
+                "dialogue" : ["Hello! How are you?", "My name is Nerrick.", "I am the owner", "of the prancing pony inn.", "Yo."], 
                 "maxDist" : 500.0
             },
             {

@@ -5,6 +5,7 @@
 #include <Game/PlayerInBattle.h>
 #include <Game/Obstacle.h>
 #include <Game/EnemyInBattle.h>
+#include <Game/Goblin.h>
 #include <Game/Potion.h>
 
 #include <random>
@@ -28,7 +29,35 @@ void Battle::Init()
 
 void Battle::LoadBattle()
 {
-    std::ifstream file(filepath);
+
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 gen(seed);
+    std::uniform_int_distribution<> distrib(1, 2);
+    int random_num = distrib(gen);
+    
+    std::string newFilePath = filepath;
+    int whereToInsert = 0;
+    for(int i = 0; i < newFilePath.length(); i++)
+    {
+        if(newFilePath[i] == '.')
+        {
+            whereToInsert = i;
+            break;
+        }
+    }
+
+    newFilePath.insert(whereToInsert, std::to_string(random_num));
+
+    if(random_num == 1)
+    {
+        playerMove = true;
+    }
+    else
+    {
+        playerMove = false;
+    }
+    
+    std::ifstream file(newFilePath);
     if (!file.is_open()) {
         throw std::runtime_error("Failed to open level file.");
     }
@@ -77,10 +106,8 @@ void Battle::LoadBattle()
             else if(objs.key() == "enemies"){
                 int attackDamage = obst.value("attackDamage", 0);
                 int xp = obst.value("xp", 0);
-                std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(position, scale, color, texturePath, name, attackDamage, xp);
-                go = enemy;
-                AddObject(obst.value("name", "Unnamed"), go);
-                enemies[name] = enemy;
+                std::shared_ptr<EnemyInBattle> enemy = CreateEnemy(position, scale, color, texturePath, name, attackDamage, xp);
+                AddEnemy(enemy);
             }
             else if(objs.key() == "menu"){
                 if(name == "menu")
@@ -108,6 +135,12 @@ void Battle::LoadBattle()
                     menu->AddCursor(name, position, scale, color, texturePath);
                 }
             }
+            else if(objs.key() == "aground")
+            {
+                glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+                go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
+                AddObject(obst.value("name", "Unnamed"), go);
+            }
         }
     }
     camera.Create(0.0f, screenWidth, 0.0f, screenHeight, -1.0f, 1.0f);
@@ -130,6 +163,34 @@ void Battle::LoadBattle()
         LoadGame();
     }
 
+}
+
+std::shared_ptr<EnemyInBattle> Battle::CreateEnemy(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, int attackDamage, int xp)
+{
+    if(name.find("Goblin") != std::string::npos)
+    {
+        return std::make_shared<Goblin>(position, scale, color, texturePath, name, attackDamage, xp);
+    }
+    else
+    {
+        return std::make_shared<EnemyInBattle>(position, scale, color, texturePath, name, attackDamage, xp);
+    }
+}
+
+void Battle::AddEnemy(std::shared_ptr<EnemyInBattle> enemy)
+{
+    std::shared_ptr<GameObject> go;
+    go = enemy;
+    if(enemy->name.find("Goblin") != std::string::npos)
+    {
+        AddObject(enemy->name, go);
+        enemies[enemy->name] = enemy;
+    }
+    else
+    {
+        AddObject(enemy->name, go);
+        enemies[enemy->name] = enemy;
+    }
 }
 
 void Battle::LoadPhysics(PhysicsSystem& physics)
@@ -181,6 +242,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
         if(!enemy.second->IsAlive())
         {
             deadEnemies.push_back(enemy.second->name);
+            enemies.erase(enemy.first);
             player->AddToXP(enemy.second->GetXP());
             player->CheckXP();
         }
@@ -191,7 +253,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     {
         menu->SetDeadEnemies(deadEnemies);
     }
-    if(deadEnemies.size() == enemies.size())
+    if(enemies.size() == 0)
     {
         LootBattle();
         SavePlayerInfo();
@@ -216,7 +278,11 @@ void Battle::HandlePlayerMove()
     player->SetMove(menu->GetPlayerMove());
     if(menu->GetPlayerMove().find("Attack") != std::string::npos)
     {
-        enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+        if(enemies[menu->GetPlayerMove().substr(6)] != nullptr)
+        {
+            enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+        }
+        //enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
     }
     else if(menu->GetPlayerMove().find("UseItem") != std::string::npos)
     {
