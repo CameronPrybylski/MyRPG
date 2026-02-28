@@ -264,6 +264,8 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     menu->UpdatePlayerHP(player->GetHP());
     if(player->GetHP() <= 0)
     {
+        initialStart = true;
+        Init();
         EndScene("gameOver");
     }
 }

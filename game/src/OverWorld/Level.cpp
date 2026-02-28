@@ -442,3 +442,8 @@ void Level::LoadGame()
     loadGame = false;
     initialStart = false;
 }
+
+void Level::Reset()
+{
+    initialStart = true;
+}

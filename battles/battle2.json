@@ -80,7 +80,7 @@
             },
             {
                 "name": "attackMenuItem1",
-                "position": [100.0, 135.0, 0.0],
+                "position": [95.0, 135.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -102,7 +102,7 @@
             },
             {
                 "name": "itemMenuItem1",
-                "position": [100.0, 135.0, 0.0],
+                "position": [95.0, 135.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -138,13 +138,13 @@
         "enemies" : [
             {
                 "name": "Enemy1",
-                "position": [200.0, 300.0, 0.0],
+                "position": [200.0, 600.0, 0.0],
                 "scale": [100.0, 100.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
-                "texturePath" : "",
+                "texturePath" : "/textures/Wolf-ff1-nes.png",
                 "attackDamage" : 1,
                 "xp" : 10
             }
