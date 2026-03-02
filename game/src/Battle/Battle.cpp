@@ -56,6 +56,8 @@ void Battle::LoadBattle()
     {
         playerMove = false;
     }
+
+    enemies.clear();
     
     std::ifstream file(newFilePath);
     if (!file.is_open()) {
@@ -320,7 +322,7 @@ void Battle::LootBattle()
     
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 gen(seed);
-    std::uniform_int_distribution<> distrib(1, 1);
+    std::uniform_int_distribution<> distrib(1, 3);
     int random_num = distrib(gen);
     
     std::shared_ptr<ConsumableItem> conItem;
