@@ -31,6 +31,9 @@ private:
     std::shared_ptr<Menu> activeMenu;
     std::map<std::string, int> playerInfoMap;
     std::unordered_map<std::string, int> items;
+    
+    int maxHP;
+    int xpNeeded;
 
     std::string root;
 };

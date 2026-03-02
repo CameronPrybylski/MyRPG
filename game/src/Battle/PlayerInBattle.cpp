@@ -10,7 +10,8 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     transform.position = position;
     transform.scale = scale;
     rigidBody.isStatic = isStatic;
-    hp = 10;
+    hp = 20;
+    maxHP = hp;
     strength = 1;
     level = 1;
     xp = 0;
@@ -143,6 +144,9 @@ void PlayerInBattle::CheckXP()
     {
         level++;
         strength++;
+        double hpRatio = (double)hp / (double)maxHP;
+        maxHP += 10;
+        hp = hpRatio * maxHP;
         xpNeeded += (level * xpIncrement);
     }
 }
@@ -157,7 +161,14 @@ void PlayerInBattle::UseItem(std::string playerMove)
         consumableItems[itemUse].pop_back();
         if(itemEffect.first == "hp")
         {
-            hp += itemEffect.second;
+            if(hp + itemEffect.second < maxHP)
+            {
+                hp += itemEffect.second;
+            }
+            else
+            {
+                hp = maxHP;
+            }
         }
     }
 }

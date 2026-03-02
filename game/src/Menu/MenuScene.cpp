@@ -182,9 +182,11 @@ void MenuScene::PlayerInfo()
         if(item.key() == "Player")
         {
             playerInfoMap["HP"] = item.value()["hp"];
+            maxHP = item.value()["maxhp"];
             playerInfoMap["Level"] = item.value()["level"];
             playerInfoMap["Strength"] = item.value()["strength"];
             playerInfoMap["XP"] = item.value()["xp"];
+            xpNeeded = item.value()["xpNeeded"];
             for(auto conItem : item.value()["items"].items())
             {
                 std::string conItemKey = conItem.key();
@@ -212,10 +214,12 @@ void MenuScene::SetPlayerInfo()
 
     nlohmann::json saveData;
     saveData["Player"] = nlohmann::json::object_t({
-        {"hp", playerInfoMap["HP"]}, 
+        {"hp", playerInfoMap["HP"]},
+        {"maxhp", maxHP}, 
         {"level", playerInfoMap["Level"]},
         {"strength", playerInfoMap["Strength"]},
         {"xp", playerInfoMap["XP"]},
+        {"xpNeeded", xpNeeded},
         {"items", items}
     });
 
@@ -236,7 +240,14 @@ void MenuScene::UseItem()
     
     if(itemUse == "Potion")
     {
-        playerInfoMap["HP"] += 5;
+        if(playerInfoMap["HP"] + 5 <= maxHP)
+        {
+            playerInfoMap["HP"] += 5;
+        }
+        else
+        {
+            playerInfoMap["HP"] = maxHP;
+        }
         items[itemUse]--;
         menu->SetPlayerMove("");
         menu->RemoveItem(itemUse);

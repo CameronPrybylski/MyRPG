@@ -34,9 +34,19 @@ public:
         this->hp = hp;
     }
 
+    void SetMaxHP(int maxHP)
+    {
+        this->maxHP = maxHP;
+    }
+
     int GetHP()
     {
         return hp;
+    }
+
+    int GetMaxHP()
+    {
+        return maxHP;
     }
 
     int GetAttackDamage()
@@ -51,10 +61,12 @@ public:
 
     int GetLevel(){return level;}
     int GetXP(){return xp;}
+    int GetXPNeeded(){return xpNeeded;}
     int GetStrength(){return strength;}
 
     void SetLevel(int level){this->level = level;}
     void SetXP(int xp){this->xp = xp;}
+    void SetXPNeeded(int xpNeeded){this->xpNeeded = xpNeeded;}
     void SetStrength(int strength){this->strength = strength;}
 
     void AddToXP(int addedXP){xp += addedXP;}
@@ -83,6 +95,7 @@ public:
 
 private:
     int hp;
+    int maxHP;
     bool alive = true;
     std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons;
     std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> consumableItems;

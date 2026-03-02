@@ -265,6 +265,8 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     if(player->GetHP() <= 0)
     {
         initialStart = true;
+        enemies.clear();
+        deadEnemies.clear();
         Init();
         EndScene("gameOver");
     }
@@ -318,7 +320,7 @@ void Battle::LootBattle()
     
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     std::mt19937 gen(seed);
-    std::uniform_int_distribution<> distrib(1, 4);
+    std::uniform_int_distribution<> distrib(1, 1);
     int random_num = distrib(gen);
     
     std::shared_ptr<ConsumableItem> conItem;
@@ -357,10 +359,12 @@ void Battle::SavePlayerInfo()
     }
     */
     saveData["Player"] = nlohmann::json::object_t({
-        {"hp", player->GetHP()}, 
+        {"hp", player->GetHP()},
+        {"maxhp", player->GetMaxHP()},
         {"level", player->GetLevel()},
         {"strength", player->GetStrength()},
         {"xp", player->GetXP()},
+        {"xpNeeded", player->GetXPNeeded()},
         {"items", nlohmann::json::object_t({{"Potion", player->ConsumableItemCount("Potion")}})}
     });
     
@@ -382,9 +386,11 @@ void Battle::LoadPlayerInfo()
         if(item.key() == "Player")
         {
             player->SetHP(item.value()["hp"]);
+            player->SetMaxHP(item.value()["maxhp"]);
             player->SetStrength(item.value()["strength"]);
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
+            player->SetXPNeeded(item.value()["xpNeeded"]);
             int itemCount = 0;
             for(auto conItem : item.value()["items"].items())
             {
@@ -423,9 +429,11 @@ void Battle::LoadGame()
         if(item.key() == "PlayerBattle")
         {
             player->SetHP(item.value()["hp"]);
+            player->SetMaxHP(item.value()["maxhp"]);
             player->SetStrength(item.value()["strength"]);
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
+            player->SetXPNeeded(item.value()["xpNeeded"]);
             for(auto conItem : item.value()["items"].items())
             {
                 std::string conItemKey = conItem.key();
