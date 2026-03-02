@@ -157,6 +157,8 @@ void Level::LoadLevel(std::string filepath)
         LoadGame();
     }
 
+    std::sort(objectList.begin(), objectList.end());
+
 }
 
 void Level::LoadPhysics(PhysicsSystem& physics)
