@@ -158,6 +158,15 @@ void Level::LoadLevel(std::string filepath)
     }
 
     std::sort(objectList.begin(), objectList.end());
+    
+    if(player->transform.position.x < leftScreenEdge 
+    || player->transform.position.x > rightScreenEdge
+    || player->transform.position.y < bottomScreenEdge
+    || player->transform.position.y > topScreenEdge)
+    {
+        player->transform.position.x = (leftScreenEdge + rightScreenEdge) / 2;
+        player->transform.position.y = (bottomScreenEdge + topScreenEdge) / 2;
+    }
 
 }
 

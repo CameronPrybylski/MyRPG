@@ -2,12 +2,12 @@
     "objects" : {
         "obstacles": [
             {
-                "name": "obstacle2",
-                "position": [625.0, 260.0, -0.5],
-                "scale": [100.0, 500.0, 0.0],
+                "name": "obstacle1",
+                "position": [0.0, 400.0, 0.0],
+                "scale": [10.0, 800.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
-                "color": [0.5, 0.5, 0.5, 1.0],
+                "color": [0.0, 0.0, 1.0, 1.0],
                 "isStatic": true,
                 "texturePath" : ""
             }
@@ -15,8 +15,8 @@
         "player" : [
             {
                 "name": "player",
-                "position": [650.5, 50.0, 0.0],
-                "scale": [50.0, 50.0, 0.0],
+                "position": [650.5, 400.0, 0.0],
+                "scale": [50.0, 50.0, 50.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
@@ -24,33 +24,11 @@
                 "texturePath" : "/textures/FighterOverworld.png"
             }
         ],
-        "saveSpots" : [
-            {
-                "name": "saveSpot1",
-                "position": [800.0, 300.0, 0.0],
-                "scale": [60.0, 50.0, 50.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : ""
-            }
-        ],
         "towns" : [
             {
-                "name": "overworld",
-                "position": [590.0, 0.0, 0.0],
-                "scale": [300.0, 10.0, 50.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 1.0, 0.0, 1.0],
-                "isStatic": true,
-                "texturePath" : ""
-            },
-            {
-                "name": "prancingpony",
-                "position": [10.0, 400.0, 0.0],
-                "scale": [50.0, 50.0, 0.0],
+                "name": "town1",
+                "position": [590.0, 400.0, 0.0],
+                "scale": [10.0, 300.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 1.0, 0.0, 1.0],
@@ -69,18 +47,6 @@
                 "isStatic": false,
                 "texturePath" : "/textures/Nerrick_sprite.png",
                 "dialogue" : ["Hello! How are you?", "My name is Nerrick.", "I am the owner", "of the prancing pony inn.", "Yo."], 
-                "maxDist" : 500.0
-            },
-            {
-                "name": "npcTom",
-                "position": [800.0, 600.0, 0.0],
-                "scale": [50.0, 50.0, 50.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [-100.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 0.0, 1.0],
-                "isStatic": false,
-                "texturePath" : "",
-                "dialogue" : ["Hi!", "My name is Tom", "I am the shepherd of the old forest."], 
                 "maxDist" : 500.0
             }
         ],
@@ -112,7 +78,7 @@
         "completionDist" : 3500.0,
         "nextLevel" : "battle",
         "savescene" : "savescene",
-        "area" : "town1",
+        "area" : "prancingpony",
         "combatArea" : false
     }
 }
