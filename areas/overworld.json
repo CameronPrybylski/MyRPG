@@ -126,6 +126,7 @@
         "nextLevel" : "battle",
         "savescene" : "savescene",
         "area" : "overworld",
-        "combatArea" : true
+        "combatArea" : true,
+        "moveCamera" : true
     }
 }

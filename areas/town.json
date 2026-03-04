@@ -113,6 +113,7 @@
         "nextLevel" : "battle",
         "savescene" : "savescene",
         "area" : "town1",
-        "combatArea" : false
+        "combatArea" : false,
+        "moveCamera" : true
     }
 }

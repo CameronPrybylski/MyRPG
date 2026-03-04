@@ -49,6 +49,7 @@ void Level::LoadLevel(std::string filepath)
     savescene = j["levelParams"]["savescene"];
     areaName = j["levelParams"]["area"];
     combatArea = j["levelParams"]["combatArea"];
+    moveCamera = j["levelParams"]["moveCamera"];
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -157,7 +158,13 @@ void Level::LoadLevel(std::string filepath)
         LoadGame();
     }
 
-    std::sort(objectList.begin(), objectList.end());
+    // Sort using a lambda that dereferences the shared pointers
+    std::sort(objectList.begin(), objectList.end(), [](const std::shared_ptr<GameObject>& a, const std::shared_ptr<GameObject>& b) {
+        return a->transform.position.z < b->transform.position.z; // Access members using the arrow operator
+    });
+
+
+    //std::sort(objectList.begin(), objectList.end());
     
     if(player->transform.position.x < leftScreenEdge 
     || player->transform.position.x > rightScreenEdge
@@ -167,6 +174,8 @@ void Level::LoadLevel(std::string filepath)
         player->transform.position.x = (leftScreenEdge + rightScreenEdge) / 2;
         player->transform.position.y = (bottomScreenEdge + topScreenEdge) / 2;
     }
+    player->transform.position.x = (leftScreenEdge + rightScreenEdge) / 2;
+    player->transform.position.y = (bottomScreenEdge + topScreenEdge) / 2;
 
 }
 
@@ -203,7 +212,10 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     OnCollision(collisions, dt);
     initialStart = false;
 
-    UpdateCamera();
+    if(moveCamera)
+    {
+        UpdateCamera();
+    }
 
     for(auto& obj : objectList)
     {
@@ -252,7 +264,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     {
         npcs[player->npcTalkingTo]->SetTalking(true);
         dialogueBox->SetInUse(true);
-        glm::vec3 newPosition = npcs[player->npcTalkingTo]->transform.position + glm::vec3(0.0f, 150.0f, 0.0f);
+        glm::vec3 newPosition = npcs[player->npcTalkingTo]->transform.position + glm::vec3(0.0f, 150.0f, -0.5f);
         dialogueBox->transform.position = newPosition;
         dialogueBox->SetTextPosition(newPosition);
         dialogueBox->SetBordersPosition(newPosition);
