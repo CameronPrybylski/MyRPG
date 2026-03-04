@@ -23,6 +23,14 @@ TownSpot::~TownSpot()
 
 void TownSpot::OnEvent(const Input &input)
 {
+    if(input.IsKeyDown("SPACE"))
+    {
+        enterInput = true;
+    }
+    else
+    {
+        enterInput = false;
+    }
 }
 
 void TownSpot::Update(const Input &input, float dt)
@@ -40,7 +48,7 @@ void TownSpot::Render(Renderer &renderer, const Camera &camera)
 
 void TownSpot::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
 {
-    if(collidedObj->name == "player")
+    if(collidedObj->name == "player" && enterInput)
     {
         SetEnterTown(true);
     }
