@@ -66,5 +66,6 @@ private:
     bool combatArea;
 
     bool moveCamera = true;
+    bool enterArea = true;
 
 };
