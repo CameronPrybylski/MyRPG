@@ -50,6 +50,7 @@ void Level::LoadLevel(std::string filepath)
     areaName = j["levelParams"]["area"];
     combatArea = j["levelParams"]["combatArea"];
     moveCamera = j["levelParams"]["moveCamera"];
+    glm::vec3 initialPosition;
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -77,6 +78,7 @@ void Level::LoadLevel(std::string filepath)
                 AddObject(obst.value("name", "Unnamed"), go);
             }
             else if(objs.key() == "player"){
+                initialPosition = position;
                 player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
@@ -135,18 +137,6 @@ void Level::LoadLevel(std::string filepath)
             }
         }
     }
-    
-    float minX, maxX, minY, maxY;
-    minX = player->transform.position.x - screenWidth / 2;
-    maxX = player->transform.position.x + screenWidth / 2;
-    minY = player->transform.position.y - screenHeight / 2;
-    maxY = player->transform.position.y + screenHeight / 2;
-    camera.Create(minX, maxX, minY, maxY, -1.0f, 1.0f);
-    
-    leftScreenEdge = minX;
-    rightScreenEdge = maxX;
-    bottomScreenEdge = minY;
-    topScreenEdge = maxY;
 
     gameOver = false;
     if(!initialStart)
@@ -163,19 +153,25 @@ void Level::LoadLevel(std::string filepath)
         return a->transform.position.z < b->transform.position.z; // Access members using the arrow operator
     });
 
-
-    //std::sort(objectList.begin(), objectList.end());
-    
-    if(player->transform.position.x < leftScreenEdge 
-    || player->transform.position.x > rightScreenEdge
-    || player->transform.position.y < bottomScreenEdge
-    || player->transform.position.y > topScreenEdge)
-    {
-        player->transform.position.x = (leftScreenEdge + rightScreenEdge) / 2;
-        player->transform.position.y = (bottomScreenEdge + topScreenEdge) / 2;
-    }
     player->transform.position.x = (leftScreenEdge + rightScreenEdge) / 2;
     player->transform.position.y = (bottomScreenEdge + topScreenEdge) / 2;
+
+    if(enterArea)
+    {
+        player->transform.position = initialPosition;
+    }
+
+    float minX, maxX, minY, maxY;
+    minX = player->transform.position.x - screenWidth / 2;
+    maxX = player->transform.position.x + screenWidth / 2;
+    minY = player->transform.position.y - screenHeight / 2;
+    maxY = player->transform.position.y + screenHeight / 2;
+    camera.Create(minX, maxX, minY, maxY, -1.0f, 1.0f);
+    
+    leftScreenEdge = minX;
+    rightScreenEdge = maxX;
+    bottomScreenEdge = minY;
+    topScreenEdge = maxY;
 
 }
 
@@ -211,6 +207,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(collisions, dt);
     initialStart = false;
+    enterArea = false;
 
     if(moveCamera)
     {
