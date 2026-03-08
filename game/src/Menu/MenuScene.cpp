@@ -195,6 +195,10 @@ void MenuScene::PlayerInfo()
                 {
                     menu->RemoveAllItems(conItem.key());
                 }
+                else
+                {
+                    menu->SetItemCount(conItem.key(), item.value()["items"][conItem.key()]);
+                }
             }
             if(item.value()["items"].size() == 0)
             {

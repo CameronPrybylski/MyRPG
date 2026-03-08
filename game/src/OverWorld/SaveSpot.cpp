@@ -23,6 +23,14 @@ SaveSpot::~SaveSpot()
 
 void SaveSpot::OnEvent(const Input &input)
 {
+    if(input.IsKeyDown("SPACE"))
+    {
+        enterInput = true;
+    }
+    else
+    {
+        enterInput = false;
+    }
 }
 
 void SaveSpot::Update(const Input &input, float dt)
@@ -40,7 +48,7 @@ void SaveSpot::Render(Renderer &renderer, const Camera &camera)
 
 void SaveSpot::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
 {
-    if(collidedObj->name == "player")
+    if(collidedObj->name == "player" && enterInput)
     {
         SetSaveGame(true);
     }
