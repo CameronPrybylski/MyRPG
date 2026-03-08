@@ -19,6 +19,11 @@ public:
 
     std::string GetPlayerMove(){return playerMove;}
     void SetPlayerMove(std::string playerMove){this->playerMove = playerMove;}
+
+    void SetItemCount(std::string item, int count)
+    {
+        items[item] = count;
+    }
     void AddItem(std::string item)
     {
         if(items[item] > 0)
