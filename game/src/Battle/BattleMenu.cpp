@@ -52,7 +52,7 @@ void BattleMenu::OnEvent(const Input &input)
             {
                 if(cursor->transform.position.y == itemMenuItem.second->transform.position.y)
                 {
-                    if(itemMenuItem.second->GetText() != "Back" && itemMenuItem.second->GetText().find("Count") == std::string::npos)
+                    if(itemMenuItem.second->GetText() != "Back" )
                     {
                         playerMove = "UseItem" + itemMenuItem.second->GetText();
                         itemCount[itemMenuItem.second->GetText()]--;
