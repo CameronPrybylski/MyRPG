@@ -82,7 +82,6 @@ void PlayerMenu::Render(Renderer &renderer, const Camera &camera)
     {
         for(auto itemsMenuItem : itemsMenuItems)
         {
-            //itemsMenuItem.second->Render(renderer, camera);
             itemsMenuItem.second->Render(renderer, camera);
             if(itemsMenuItem.first.find("Back") == std::string::npos)
             {
