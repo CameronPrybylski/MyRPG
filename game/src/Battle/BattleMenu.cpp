@@ -52,9 +52,10 @@ void BattleMenu::OnEvent(const Input &input)
             {
                 if(cursor->transform.position.y == itemMenuItem.second->transform.position.y)
                 {
-                    if(itemMenuItem.second->GetText() != "Back")
+                    if(itemMenuItem.second->GetText() != "Back" )
                     {
                         playerMove = "UseItem" + itemMenuItem.second->GetText();
+                        itemCount[itemMenuItem.second->GetText()]--;
                     }
                     menuName = "MenuItems";
                 }
@@ -90,6 +91,11 @@ void BattleMenu::Render(Renderer &renderer, const Camera &camera)
         for(auto itemMenuItem : itemMenuItems)
         {
             itemMenuItem.second->Render(renderer, camera);
+            if(itemMenuItem.first.find("Back") == std::string::npos)
+            {
+                std::unique_ptr<MenuItem> itemCountMenuItem = std::make_unique<MenuItem>("ItemCount", itemMenuItem.second->GetEndPosition() + glm::vec3(25.0f, 0.0f, 0.0f), itemMenuItem.second->transform.scale, itemMenuItem.second->color, itemMenuItem.second->GetFontPath(), "x" + std::to_string(itemCount[itemMenuItem.second->GetText()]));
+                itemCountMenuItem->Render(renderer, camera);
+            }
         }
     }
     else
@@ -131,4 +137,9 @@ void BattleMenu::SetDeadEnemies(std::vector<std::string> deadEnemies)
 void BattleMenu::UpdatePlayerHP(int hp)
 {
     menuItems["menuItemPlayerHP"]->ChangeText("HP: " + std::to_string(hp));
+}
+
+void BattleMenu::SetItemCount(std::string item, int count)
+{
+    itemCount[item] = count;
 }

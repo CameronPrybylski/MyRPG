@@ -35,11 +35,14 @@ public:
 
     void RemoveItemMenuItem(std::string menuItem){itemMenuItems.erase(menuItem);}
 
+    void SetItemCount(std::string item, int count);
+
 
 private:
 
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> attackMenuItems;
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> itemMenuItems;
+    std::unordered_map<std::string, int> itemCount;
     std::string playerMove = "";
 
 };

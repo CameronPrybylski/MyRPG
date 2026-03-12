@@ -395,9 +395,10 @@ void Battle::LoadPlayerInfo()
             player->SetXPNeeded(item.value()["xpNeeded"]);
             int itemCount = 0;
             int initialConsItemCnt = 0;
+            std::string conItemKey = "";
             for(auto conItem : item.value()["items"].items())
             {
-                std::string conItemKey = conItem.key();
+                conItemKey = conItem.key();
                 itemCount = conItem.value();
                 initialConsItemCnt = player->ConsumableItemCount(conItemKey);
                 for(int i = 0; i < itemCount - initialConsItemCnt; i++)
@@ -409,6 +410,7 @@ void Battle::LoadPlayerInfo()
                     }
                 }
             }
+            menu->SetItemCount(conItemKey, itemCount);
         }
     }
     if(player->ConsumableItemCount("Potion") < 1)

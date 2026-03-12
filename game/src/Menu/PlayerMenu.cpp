@@ -83,6 +83,11 @@ void PlayerMenu::Render(Renderer &renderer, const Camera &camera)
         for(auto itemsMenuItem : itemsMenuItems)
         {
             itemsMenuItem.second->Render(renderer, camera);
+            if(itemsMenuItem.first.find("Back") == std::string::npos)
+            {
+                std::unique_ptr<MenuItem> itemCountMenuItem = std::make_unique<MenuItem>("ItemCount", itemsMenuItem.second->GetEndPosition() + glm::vec3(25.0f, 0.0f, 0.0f), itemsMenuItem.second->transform.scale, itemsMenuItem.second->color, itemsMenuItem.second->GetFontPath(), "x" + std::to_string(items[itemsMenuItem.second->GetText()]));
+                itemCountMenuItem->Render(renderer, camera);
+            }
         }
     }
     else if(menuName == "EquipmentMenuItems")
