@@ -190,7 +190,7 @@ void Level::LoadPhysics(PhysicsSystem& physics)
 
 void Level::OnEvent(const Input &input)
 {
-    if(input.IsKeyDown("V"))
+    if(input.IsKeyDown("Escape"))
     {
         SaveState();
         EndScene("menu");
