@@ -261,9 +261,9 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     {
         npcs[player->npcTalkingTo]->SetTalking(true);
         dialogueBox->SetInUse(true);
-        glm::vec3 newPosition = npcs[player->npcTalkingTo]->transform.position + glm::vec3(0.0f, 150.0f, -0.5f);
+        glm::vec3 newPosition = npcs[player->npcTalkingTo]->transform.position + glm::vec3(0.0f, 150.0f, 0.5f);
         dialogueBox->transform.position = newPosition;
-        dialogueBox->SetTextPosition(newPosition);
+        dialogueBox->SetTextPosition(newPosition + glm::vec3(10.0f, 0.0f, 0.0f));
         dialogueBox->SetBordersPosition(newPosition);
         dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
     }

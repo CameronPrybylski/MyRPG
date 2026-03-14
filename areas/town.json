@@ -147,7 +147,7 @@
         "dialogue" : [
             {
                 "name": "dialogueBox",
-                "position": [600.0, 800.0, -1.0],
+                "position": [600.0, 800.0, 0.6],
                 "scale": [500.0, 125.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
