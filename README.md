@@ -153,12 +153,6 @@ Planned improvements include:
 
 ------------------------------------------------------------------------
 
-## Screenshots
-
-*(Add gameplay screenshots or GIFs here)*
-
-------------------------------------------------------------------------
-
 ## Author
 
 **Cameron Prybylski**
