@@ -101,9 +101,9 @@ void Battle::LoadBattle()
                 player = std::make_shared<PlayerInBattle>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
-                go = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,false);
-                player->AddItem("sword", go);
-                AddObject("sword", go);
+                //std::shared_ptr<GameObject> got = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,false);
+                //player->AddItem("sword", got);
+                //AddObject("sword", got);
             }
             else if(objs.key() == "enemies"){
                 int attackDamage = obst.value("attackDamage", 0);
@@ -155,6 +155,11 @@ void Battle::LoadBattle()
     rightScreenEdge = screenWidth;
     bottomScreenEdge = 0.0f;
     topScreenEdge = screenHeight;
+
+    // Sort using a lambda that dereferences the shared pointers
+    std::sort(objectList.begin(), objectList.end(), [](const std::shared_ptr<GameObject>& a, const std::shared_ptr<GameObject>& b) {
+        return a->transform.position.z < b->transform.position.z; // Access members using the arrow operator
+    });
 
     if(!initialStart)
     {
@@ -241,21 +246,26 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     player->SetMove(menu->GetPlayerMove());
 
     std::vector<std::string> deadEnemies;
-    for(auto enemy : enemies)
+    for(auto itr = enemies.begin(); itr != enemies.end();)
     {
-        if(enemy.second->GetMove())
+        auto enemy = itr;
+        if(enemy->second->GetMove())
         {
-            HandleEnemyMove(enemy.second);
+            HandleEnemyMove(enemy->second);
             playerMove = true;
         }
-        if(!enemy.second->IsAlive())
+        if(!enemy->second->IsAlive())
         {
-            deadEnemies.push_back(enemy.second->name);
-            enemies.erase(enemy.first);
-            player->AddToXP(enemy.second->GetXP());
+            deadEnemies.push_back(enemy->second->name);
+            player->AddToXP(enemy->second->GetXP());
             player->CheckXP();
+            itr = enemies.erase(itr);
         }
-        enemy.second->SetMove(!playerMove);
+        else
+        {
+            enemy->second->SetMove(!playerMove);
+            itr++;
+        }
     }
 
     if(deadEnemies.size() > 0)
@@ -291,7 +301,7 @@ void Battle::HandlePlayerMove()
     player->SetMove(menu->GetPlayerMove());
     if(menu->GetPlayerMove().find("Attack") != std::string::npos && menu->GetPlayerMove().find("Magic") == std::string::npos)
     {
-        if(enemies[menu->GetPlayerMove().substr(6)] != nullptr)
+        if(enemies.find(menu->GetPlayerMove().substr(6)) != enemies.end())
         {
             enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
         }
