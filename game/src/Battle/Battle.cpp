@@ -259,6 +259,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
             deadEnemies.push_back(enemy->second->name);
             player->AddToXP(enemy->second->GetXP());
             player->CheckXP();
+            //erase returns iterator to the next element in map
             itr = enemies.erase(itr);
         }
         else
