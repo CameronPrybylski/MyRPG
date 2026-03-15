@@ -3,6 +3,8 @@
 #include <Game/Sword.h>
 #include <Game/Weapon.h>
 
+class ConsumableItem;
+
 class PlayerInBattle : public GameObject {
 
 public:
@@ -16,6 +18,7 @@ public:
 
     void Hit(glm::vec2 collisionNormal, float dt);
     void AddItem(std::string name, std::shared_ptr<GameObject> item);
+    void AddConsumableItem(std::string name, std::shared_ptr<ConsumableItem> item);
     void AddWeapon(std::string name, std::shared_ptr<Weapon> weapon);
     void PositionSword();
 
@@ -24,9 +27,16 @@ public:
         playerMove = move;
     }
 
+    std::string GetMove(){return playerMove;}
+
     void SetHP(int hp)
     {
         this->hp = hp;
+    }
+
+    void SetMaxHP(int maxHP)
+    {
+        this->maxHP = maxHP;
     }
 
     int GetHP()
@@ -34,10 +44,17 @@ public:
         return hp;
     }
 
+    int GetMaxHP()
+    {
+        return maxHP;
+    }
+
     int GetAttackDamage()
     {
         return strength * equippedWeapon->GetDamage();
     }
+
+    int GetMagicDamage(std::string magicType);
 
     void TakeDamage(int damage)
     {
@@ -46,13 +63,16 @@ public:
 
     int GetLevel(){return level;}
     int GetXP(){return xp;}
+    int GetXPNeeded(){return xpNeeded;}
     int GetStrength(){return strength;}
 
     void SetLevel(int level){this->level = level;}
     void SetXP(int xp){this->xp = xp;}
+    void SetXPNeeded(int xpNeeded){this->xpNeeded = xpNeeded;}
     void SetStrength(int strength){this->strength = strength;}
 
     void AddToXP(int addedXP){xp += addedXP;}
+    void CheckXP();
 
     bool hit = false;
 
@@ -65,16 +85,29 @@ public:
 
     float timeSinceHit = 0.0f;
 
-    std::unordered_map<std::string, std::shared_ptr<GameObject>> items;
+    std::unordered_map<std::string, std::vector<std::shared_ptr<GameObject>>> items;
+    void UseItem(std::string playerMove);
+    int ConsumableItemCount(std::string item)
+    {
+        return consumableItems[item].size();
+    }
+
+    std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> GetConsumableItems(){return this->consumableItems;}
+
+
 private:
     int hp;
+    int maxHP;
     bool alive = true;
     std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons;
+    std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> consumableItems;
     std::shared_ptr<Weapon> equippedWeapon;
     
     int level;
     int strength;
     int xp;
+    int xpNeeded;
+    int xpIncrement;
 
 
 };

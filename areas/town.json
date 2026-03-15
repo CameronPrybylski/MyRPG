@@ -1,55 +1,73 @@
 {
     "objects" : {
-        "aground" : [
-            {
-                "name": "obstacle9",
-                "position": [1000.0, 2505.0, -1.0],
-                "scale": [18000.0, 5000.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 0.0],
-                "isStatic": true,
-                "texturePath" : ""
-            }
-        ],
         "obstacles": [
             {
                 "name": "obstacle1",
-                "position": [0.0, 400.0, 0.0],
-                "scale": [10.0, 800.0, 0.0],
+                "position": [625.0, 240.0, -0.5],
+                "scale": [50.0, 480.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 1.0, 1.0],
+                "color": [0.3, 0.3, 0.3, 1.0],
                 "isStatic": true,
                 "texturePath" : ""
             },
             {
                 "name": "obstacle2",
-                "position": [400.0, 150.0, 0.0],
-                "scale": [400.0, 50.0, 0.0],
+                "position": [625.0, 1020.0, -0.5],
+                "scale": [50.0, 480.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 0.0, 0.0, 1.0],
+                "color": [0.3, 0.3, 0.3, 1.0],
                 "isStatic": true,
                 "texturePath" : ""
             },
             {
-                "name": "obstacle3",
-                "position": [400.0, 75.0, 0.0],
-                "scale": [400.0, 50.0, 0.0],
+                "name": "obstacle5",
+                "position": [625.0, 630.0, -0.5],
+                "scale": [300.0, 300.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 1.0, 1.0],
+                "color": [0.3, 0.3, 0.3, 1.0],
                 "isStatic": true,
                 "texturePath" : ""
             },
             {
-                "name": "obstacle4",
-                "position": [1000.0, 75.0, 0.0],
-                "scale": [50.0, 50.0, 0.0],
+                "name": "obstacle6",
+                "position": [295.0, 220.0, -0.6],
+                "scale": [610.0, 50.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 1.0, 1.0],
+                "color": [0.3, 0.3, 0.3, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "obstacle7",
+                "position": [15.0, 310.0, -0.5],
+                "scale": [50.0, 130.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.3, 0.3, 0.3, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "obstacle8",
+                "position": [15.0, 440.0, 0.0],
+                "scale": [250.0, 125.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.275, 0.135, 0.035, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "obstacle9",
+                "position": [750.0, 1000.0, -1.0],
+                "scale": [2000.0, 2000.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 1.0, 0.0, 0.25],
                 "isStatic": true,
                 "texturePath" : ""
             }
@@ -57,19 +75,19 @@
         "player" : [
             {
                 "name": "player",
-                "position": [650.5, 50.0, 0.0],
-                "scale": [60.0, 50.0, 50.0],
+                "position": [625.0, 50.0, 0.0],
+                "scale": [50.0, 50.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
-                "texturePath" : "/textures/WarriorOverworld.png"
+                "texturePath" : "/textures/FighterOverworld.png"
             }
         ],
         "saveSpots" : [
             {
                 "name": "saveSpot1",
-                "position": [600.0, 300.0, 0.0],
+                "position": [800.0, 300.0, 0.0],
                 "scale": [60.0, 50.0, 50.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -81,8 +99,18 @@
         "towns" : [
             {
                 "name": "overworld",
-                "position": [533.5, 0.0, 0.0],
-                "scale": [300.0, 10.0, 50.0],
+                "position": [625.0, -5.0, 0.0],
+                "scale": [50.0, 10.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 1.0, 0.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "prancingpony",
+                "position": [15.0, 375.0, 0.0],
+                "scale": [50.0, 10.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 1.0, 0.0, 1.0],
@@ -92,20 +120,20 @@
         ],
         "npcs" : [
             {
-                "name": "npcBob",
-                "position": [600.0, 600.0, 0.0],
+                "name": "npcNerrick",
+                "position": [300.0, 300.0, 0.0],
                 "scale": [50.0, 50.0, 50.0],
                 "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [100.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 0.0, 1.0],
+                "velocity": [0.0, 100.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": false,
-                "texturePath" : "",
-                "dialogue" : ["Hello!", "How are you?", "My name is bob.", "I am the owner of the prancing pony inn."], 
+                "texturePath" : "/textures/Nerrick_sprite.png",
+                "dialogue" : ["Hello! How are you?", "My name is Nerrick.", "I am the owner", "of the prancing pony inn.", "Yo."], 
                 "maxDist" : 500.0
             },
             {
                 "name": "npcTom",
-                "position": [800.0, 600.0, 0.0],
+                "position": [1100.0, 400.0, 0.0],
                 "scale": [50.0, 50.0, 50.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [-100.0, 0.0, 0.0],
@@ -119,7 +147,7 @@
         "dialogue" : [
             {
                 "name": "dialogueBox",
-                "position": [600.0, 800.0, -1.0],
+                "position": [600.0, 800.0, 0.6],
                 "scale": [500.0, 125.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -129,8 +157,8 @@
             },
             {
                 "name": "textPos",
-                "position": [600.0, 800.0, 0.0],
-                "scale": [30.0, 15.0, 0.0],
+                "position": [300.0, 800.0, 0.0],
+                "scale": [22.0, 15.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
@@ -145,6 +173,7 @@
         "nextLevel" : "battle",
         "savescene" : "savescene",
         "area" : "town1",
-        "combatArea" : false
+        "combatArea" : false,
+        "moveCamera" : true
     }
 }

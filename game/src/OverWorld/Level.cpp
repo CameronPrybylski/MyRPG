@@ -49,6 +49,8 @@ void Level::LoadLevel(std::string filepath)
     savescene = j["levelParams"]["savescene"];
     areaName = j["levelParams"]["area"];
     combatArea = j["levelParams"]["combatArea"];
+    moveCamera = j["levelParams"]["moveCamera"];
+    glm::vec3 initialPosition;
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -76,6 +78,7 @@ void Level::LoadLevel(std::string filepath)
                 AddObject(obst.value("name", "Unnamed"), go);
             }
             else if(objs.key() == "player"){
+                initialPosition = position;
                 player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
@@ -107,7 +110,7 @@ void Level::LoadLevel(std::string filepath)
             else if(objs.key() == "npcs"){
                 std::vector<std::string> dialogue = obst["dialogue"];
                 float maxDist = obst["maxDist"];
-                std::shared_ptr<NPC> npc = std::make_shared<NPC>(position, scale, velocity, color, "", name, isStatic, dialogue, maxDist);
+                std::shared_ptr<NPC> npc = std::make_shared<NPC>(position, scale, velocity, color, texturePath, name, isStatic, dialogue, maxDist);
                 npcs[name] = npc;
                 go = npc;
                 AddObject(obst.value("name", "Unnamed"), go);
@@ -127,16 +130,37 @@ void Level::LoadLevel(std::string filepath)
                     dialogueBox->SetCurrentText(textPos);
                 }
             }
-            /*
             else if(objs.key() == "aground"){
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
                 go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
                 AddObject(obst.value("name", "Unnamed"), go);
             }
-            */
         }
     }
-    
+
+    gameOver = false;
+    if(!initialStart)
+    {
+        LoadState();
+    }
+    if(loadGame)
+    {
+        LoadGame();
+    }
+
+    // Sort using a lambda that dereferences the shared pointers
+    std::sort(objectList.begin(), objectList.end(), [](const std::shared_ptr<GameObject>& a, const std::shared_ptr<GameObject>& b) {
+        return a->transform.position.z < b->transform.position.z; // Access members using the arrow operator
+    });
+
+    player->transform.position.x = (leftScreenEdge + rightScreenEdge) / 2;
+    player->transform.position.y = (bottomScreenEdge + topScreenEdge) / 2;
+
+    if(enterArea)
+    {
+        player->transform.position = initialPosition;
+    }
+
     float minX, maxX, minY, maxY;
     minX = player->transform.position.x - screenWidth / 2;
     maxX = player->transform.position.x + screenWidth / 2;
@@ -148,16 +172,6 @@ void Level::LoadLevel(std::string filepath)
     rightScreenEdge = maxX;
     bottomScreenEdge = minY;
     topScreenEdge = maxY;
-
-    gameOver = false;
-    if(!initialStart)
-    {
-        LoadState();
-    }
-    if(loadGame)
-    {
-        LoadGame();
-    }
 
 }
 
@@ -176,7 +190,7 @@ void Level::LoadPhysics(PhysicsSystem& physics)
 
 void Level::OnEvent(const Input &input)
 {
-    if(input.IsKeyDown("V"))
+    if(input.IsKeyDown("Escape"))
     {
         SaveState();
         EndScene("menu");
@@ -193,8 +207,12 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(collisions, dt);
     initialStart = false;
+    enterArea = false;
 
-    UpdateCamera();
+    if(moveCamera)
+    {
+        UpdateCamera();
+    }
 
     for(auto& obj : objectList)
     {
@@ -242,12 +260,12 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     if(player->talkingToNPC && !dialogueBox->InUse())
     {
         npcs[player->npcTalkingTo]->SetTalking(true);
-        dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
         dialogueBox->SetInUse(true);
-        glm::vec3 newPosition = npcs[player->npcTalkingTo]->transform.position + glm::vec3(0.0f, 150.0f, 0.0f);
+        glm::vec3 newPosition = npcs[player->npcTalkingTo]->transform.position + glm::vec3(0.0f, 150.0f, 0.5f);
         dialogueBox->transform.position = newPosition;
-        dialogueBox->SetTextPosition(newPosition);
+        dialogueBox->SetTextPosition(newPosition + glm::vec3(10.0f, 0.0f, 0.0f));
         dialogueBox->SetBordersPosition(newPosition);
+        dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
     }
     if(dialogueBox != nullptr && dialogueBox->GetIndex() >= dialogueBox->GetDialogue().size() && dialogueBox->InUse())
     {
@@ -443,4 +461,9 @@ void Level::LoadGame()
     camera.Create(leftScreenEdge, rightScreenEdge, bottomScreenEdge, topScreenEdge, -1.0f, 1.0f);
     loadGame = false;
     initialStart = false;
+}
+
+void Level::Reset()
+{
+    initialStart = true;
 }

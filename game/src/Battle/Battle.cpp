@@ -5,6 +5,11 @@
 #include <Game/PlayerInBattle.h>
 #include <Game/Obstacle.h>
 #include <Game/EnemyInBattle.h>
+#include <Game/Goblin.h>
+#include <Game/Potion.h>
+
+#include <random>
+#include <chrono>
 
 Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), saveGameFilePath(saveGameFilePath), root(root)
 {
@@ -24,7 +29,37 @@ void Battle::Init()
 
 void Battle::LoadBattle()
 {
-    std::ifstream file(filepath);
+
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 gen(seed);
+    std::uniform_int_distribution<> distrib(1, 2);
+    int random_num = distrib(gen);
+    
+    std::string newFilePath = filepath;
+    int whereToInsert = 0;
+    for(int i = 0; i < newFilePath.length(); i++)
+    {
+        if(newFilePath[i] == '.')
+        {
+            whereToInsert = i;
+            break;
+        }
+    }
+
+    newFilePath.insert(whereToInsert, std::to_string(random_num));
+
+    if(random_num == 1)
+    {
+        playerMove = true;
+    }
+    else
+    {
+        playerMove = false;
+    }
+
+    enemies.clear();
+    
+    std::ifstream file(newFilePath);
     if (!file.is_open()) {
         throw std::runtime_error("Failed to open level file.");
     }
@@ -66,17 +101,15 @@ void Battle::LoadBattle()
                 player = std::make_shared<PlayerInBattle>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
-                go = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,false);
-                player->AddItem("sword", go);
-                AddObject("sword", go);
+                //std::shared_ptr<GameObject> got = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,false);
+                //player->AddItem("sword", got);
+                //AddObject("sword", got);
             }
             else if(objs.key() == "enemies"){
                 int attackDamage = obst.value("attackDamage", 0);
                 int xp = obst.value("xp", 0);
-                std::shared_ptr<EnemyInBattle> enemy = std::make_shared<EnemyInBattle>(position, scale, color, texturePath, name, attackDamage, xp);
-                go = enemy;
-                AddObject(obst.value("name", "Unnamed"), go);
-                enemies[name] = enemy;
+                std::shared_ptr<EnemyInBattle> enemy = CreateEnemy(position, scale, color, texturePath, name, attackDamage, xp);
+                AddEnemy(enemy);
             }
             else if(objs.key() == "menu"){
                 if(name == "menu")
@@ -95,10 +128,24 @@ void Battle::LoadBattle()
                 {
                     menu->AddAttackMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
                 }
+                else if(name.find("magicMenuItem") != std::string::npos)
+                {
+                    menu->AddMagicMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                }
+                else if(name.find("itemMenuItem") != std::string::npos)
+                {
+                    menu->AddItemMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                }
                 else if(name == "cursor" && menu != nullptr)
                 {
                     menu->AddCursor(name, position, scale, color, texturePath);
                 }
+            }
+            else if(objs.key() == "aground")
+            {
+                glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+                go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
+                AddObject(obst.value("name", "Unnamed"), go);
             }
         }
     }
@@ -109,20 +156,52 @@ void Battle::LoadBattle()
     bottomScreenEdge = 0.0f;
     topScreenEdge = screenHeight;
 
+    // Sort using a lambda that dereferences the shared pointers
+    std::sort(objectList.begin(), objectList.end(), [](const std::shared_ptr<GameObject>& a, const std::shared_ptr<GameObject>& b) {
+        return a->transform.position.z < b->transform.position.z; // Access members using the arrow operator
+    });
+
     if(!initialStart)
     {
         LoadPlayerInfo();
     }
-    else
+    else if(!loadBattle)
     {
         SavePlayerInfo();
     }
-
-    if(loadBattle && initialStart)
+    if(loadBattle)
     {
         LoadGame();
     }
 
+}
+
+std::shared_ptr<EnemyInBattle> Battle::CreateEnemy(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, int attackDamage, int xp)
+{
+    if(name.find("Goblin") != std::string::npos)
+    {
+        return std::make_shared<Goblin>(position, scale, color, texturePath, name, attackDamage, xp);
+    }
+    else
+    {
+        return std::make_shared<EnemyInBattle>(position, scale, color, texturePath, name, attackDamage, xp);
+    }
+}
+
+void Battle::AddEnemy(std::shared_ptr<EnemyInBattle> enemy)
+{
+    std::shared_ptr<GameObject> go;
+    go = enemy;
+    if(enemy->name.find("Goblin") != std::string::npos)
+    {
+        AddObject(enemy->name, go);
+        enemies[enemy->name] = enemy;
+    }
+    else
+    {
+        AddObject(enemy->name, go);
+        enemies[enemy->name] = enemy;
+    }
 }
 
 void Battle::LoadPhysics(PhysicsSystem& physics)
@@ -160,31 +239,43 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
         obj->Update(input, dt);
     }
 
-    menu->SetPlayerMove("");
+    if(!(menu->GetPlayerMove().find("Magic") != std::string::npos && menu->GetPlayerMove().find("Attack") == std::string::npos))
+    {
+        menu->SetPlayerMove("");
+    }
     player->SetMove(menu->GetPlayerMove());
 
     std::vector<std::string> deadEnemies;
-    for(auto enemy : enemies)
+    for(auto itr = enemies.begin(); itr != enemies.end();)
     {
-        if(enemy.second->GetMove())
+        auto enemy = itr;
+        if(enemy->second->GetMove())
         {
-            HandleEnemyMove(enemy.second);
+            HandleEnemyMove(enemy->second);
             playerMove = true;
         }
-        if(!enemy.second->IsAlive())
+        if(!enemy->second->IsAlive())
         {
-            deadEnemies.push_back(enemy.second->name);
-            player->AddToXP(enemy.second->GetXP());
+            deadEnemies.push_back(enemy->second->name);
+            player->AddToXP(enemy->second->GetXP());
+            player->CheckXP();
+            //erase returns iterator to the next element in map
+            itr = enemies.erase(itr);
         }
-        enemy.second->SetMove(!playerMove);
+        else
+        {
+            enemy->second->SetMove(!playerMove);
+            itr++;
+        }
     }
 
     if(deadEnemies.size() > 0)
     {
         menu->SetDeadEnemies(deadEnemies);
     }
-    if(deadEnemies.size() == enemies.size())
+    if(enemies.size() == 0)
     {
+        LootBattle();
         SavePlayerInfo();
         initialStart = false;
         EndScene("overworld");
@@ -193,6 +284,10 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     menu->UpdatePlayerHP(player->GetHP());
     if(player->GetHP() <= 0)
     {
+        initialStart = true;
+        enemies.clear();
+        deadEnemies.clear();
+        Init();
         EndScene("gameOver");
     }
 }
@@ -205,9 +300,42 @@ void Battle::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 void Battle::HandlePlayerMove()
 {
     player->SetMove(menu->GetPlayerMove());
-    if(menu->GetPlayerMove().find("Attack") != std::string::npos)
+    if(menu->GetPlayerMove().find("Attack") != std::string::npos && menu->GetPlayerMove().find("Magic") == std::string::npos)
     {
-        enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+        if(enemies.find(menu->GetPlayerMove().substr(6)) != enemies.end())
+        {
+            enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+        }
+        //enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+    }
+    else if(menu->GetPlayerMove().find("Magic") != std::string::npos )
+    {
+        if(menu->GetPlayerMove().find("Attack") != std::string::npos)
+        {
+            size_t indexOfAttack = menu->GetPlayerMove().find("Attack");
+            int indexOfEnemy = indexOfAttack + 6;
+            if(enemies.find(menu->GetPlayerMove().substr(indexOfEnemy)) != enemies.end())
+            {
+                std::string magicType = menu->GetPlayerMove().substr(5);
+                enemies[menu->GetPlayerMove().substr(indexOfEnemy)]->TakeDamage(player->GetMagicDamage(magicType));
+            }
+        }
+        else
+        {
+            return;
+        }
+    }
+    else if(menu->GetPlayerMove().find("UseItem") != std::string::npos)
+    {
+        player->UseItem(menu->GetPlayerMove());
+        std::string UseItemStr = "UseItem";
+        std::string playerMove = player->GetMove();
+        std::string itemUse = playerMove.substr(UseItemStr.length(), playerMove.length() - UseItemStr.length());
+        
+        if(player->ConsumableItemCount(itemUse) < 1)
+        {
+            menu->RemoveItemMenuItem(itemUse);
+        }
     }
     playerMove = false;
 }
@@ -224,6 +352,33 @@ void Battle::UpdateCamera()
 
 }
 
+void Battle::LootBattle()
+{
+    
+    unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+    std::mt19937 gen(seed);
+    std::uniform_int_distribution<> distrib(1, 1);
+    int random_num = distrib(gen);
+    
+    std::shared_ptr<ConsumableItem> conItem;
+    std::string conItemStr = "";
+    switch (random_num)
+    {
+        case 1:
+            conItem = std::make_shared<Potion>();
+            conItemStr = "Potion";
+            break;
+        
+        default:
+            break;
+    }
+    
+    if(conItemStr != "")
+    {
+        player->AddConsumableItem(conItemStr, conItem);
+    }
+}
+
 void Battle::SavePlayerInfo()
 {
     std::ofstream levelSave(saveFilePath);
@@ -232,14 +387,26 @@ void Battle::SavePlayerInfo()
     }
 
     nlohmann::json saveData;
+    
+    std::unordered_map<std::string, int> conItemMap;
+    /*
+    for(auto itr = player->GetConsumableItems().begin(); itr != player->GetConsumableItems().end(); itr++)
+    {
+        conItemMap[itr->first] = itr->second.size();
+    }
+    */
     saveData["Player"] = nlohmann::json::object_t({
-        {"hp", player->GetHP()}, 
+        {"hp", player->GetHP()},
+        {"maxhp", player->GetMaxHP()},
         {"level", player->GetLevel()},
         {"strength", player->GetStrength()},
-        {"xp", player->GetXP()}
+        {"xp", player->GetXP()},
+        {"xpNeeded", player->GetXPNeeded()},
+        {"items", nlohmann::json::object_t({{"Potion", player->ConsumableItemCount("Potion")}})}
     });
     
     levelSave << saveData;
+    initialStart = false;
 }
 
 void Battle::LoadPlayerInfo()
@@ -256,10 +423,34 @@ void Battle::LoadPlayerInfo()
         if(item.key() == "Player")
         {
             player->SetHP(item.value()["hp"]);
+            player->SetMaxHP(item.value()["maxhp"]);
             player->SetStrength(item.value()["strength"]);
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
+            player->SetXPNeeded(item.value()["xpNeeded"]);
+            int itemCount = 0;
+            int initialConsItemCnt = 0;
+            std::string conItemKey = "";
+            for(auto conItem : item.value()["items"].items())
+            {
+                conItemKey = conItem.key();
+                itemCount = conItem.value();
+                initialConsItemCnt = player->ConsumableItemCount(conItemKey);
+                for(int i = 0; i < itemCount - initialConsItemCnt; i++)
+                {
+                    if(conItemKey == "Potion")
+                    {
+                        std::shared_ptr<ConsumableItem> conItem = std::make_shared<Potion>();
+                        player->AddConsumableItem("Potion", conItem);
+                    }
+                }
+            }
+            menu->SetItemCount(conItemKey, itemCount);
         }
+    }
+    if(player->ConsumableItemCount("Potion") < 1)
+    {
+        menu->RemoveItemMenuItem("Potion");
     }
 }
 
@@ -279,11 +470,28 @@ void Battle::LoadGame()
         if(item.key() == "PlayerBattle")
         {
             player->SetHP(item.value()["hp"]);
+            player->SetMaxHP(item.value()["maxhp"]);
             player->SetStrength(item.value()["strength"]);
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
+            player->SetXPNeeded(item.value()["xpNeeded"]);
+            for(auto conItem : item.value()["items"].items())
+            {
+                std::string conItemKey = conItem.key();
+                int itemCount = item.value()["items"][conItem.key()];
+                for(int i = 0; i < itemCount; i++)
+                {
+                    std::shared_ptr<ConsumableItem> conItem;
+                    if(conItemKey == "Potion")
+                    {
+                        conItem = std::make_shared<Potion>();
+                    }
+                    player->AddConsumableItem(conItemKey, conItem);
+                }
+            }
         }
     }
 
     loadBattle = false;
+    initialStart = false;
 }

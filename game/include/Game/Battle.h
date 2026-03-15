@@ -23,6 +23,8 @@ public:
 
     void HandlePlayerMove();
     void HandleEnemyMove(std::shared_ptr<EnemyInBattle> enemy);
+    virtual std::shared_ptr<EnemyInBattle> CreateEnemy(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, int attackDamage, int xp);
+    void AddEnemy(std::shared_ptr<EnemyInBattle> enemy);
 
     void SavePlayerInfo();
     void LoadPlayerInfo();
@@ -30,6 +32,8 @@ public:
 
     void SetSaveSlot(std::string saveSlot){this->saveSlot = saveSlot;}
     void SetLoadGame(bool loadBattle){this->loadBattle = loadBattle;}
+
+    void LootBattle();
 
 private:
     std::string filepath;

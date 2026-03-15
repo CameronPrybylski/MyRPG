@@ -3,6 +3,9 @@
 #include <Engine/Scene/GameObject.h>
 #include <Engine/Renderer/TextTexture.h>
 
+class StringText;
+class LetterText;
+
 
 class MenuItem : public GameObject {
 
@@ -21,13 +24,23 @@ public:
 
     void ChangeText(std::string newText);
 
+    void SetPosition(glm::vec3 position);
+
     std::string GetFontPath(){return fontPath;}
 
     std::string GetText(){return text;}
+
+    int GetFontSize();
+
+    glm::vec3 GetEndPosition();
+
+    std::vector<std::shared_ptr<LetterText>> GetLetters();
 
 private:
     TextTexture textTexture;
     std::string text;
     std::string fontPath;
+
+    std::shared_ptr<StringText> stringText;
 
 };

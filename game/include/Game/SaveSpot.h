@@ -16,6 +16,7 @@ public:
 
 private:
     bool saveGame;
+    bool enterInput = false;
 
 
 };

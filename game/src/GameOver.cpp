@@ -1,5 +1,6 @@
 #include <Game/GameOver.h>
 #include <Game/Obstacle.h>
+#include <Game/Level.h>
 
 GameOver::GameOver(float screenWidth, float screenHeight, std::string root) : Scene(screenWidth, screenHeight), root(root)
 {
@@ -25,7 +26,8 @@ void GameOver::OnEvent(const Input &input)
 {
     if(input.IsKeyDown("space"))
     {
-        EndScene("overworld");
+        Level::Reset();
+        EndScene("title");
     }
 }
 

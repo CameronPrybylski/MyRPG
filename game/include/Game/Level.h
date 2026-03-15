@@ -38,6 +38,8 @@ public:
     static void SetSaveSlot(std::string SaveSlot){saveSlot = SaveSlot;}
     static void SetLoadGame(bool LoadGame){loadGame = LoadGame;}
 
+    static void Reset();
+
 private:
     std::shared_ptr<Player> player;
     std::vector<std::shared_ptr<Enemy>> enemies; 
@@ -62,5 +64,8 @@ private:
     std::string root;
 
     bool combatArea;
+
+    bool moveCamera = true;
+    bool enterArea = true;
 
 };

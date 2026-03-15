@@ -1,5 +1,7 @@
 #include <Engine/Scene/Scene.h>
 
+#include <Game/FinalFantasyText.h>
+
 #include <Game/SaveScene.h>
 #include <Game/Obstacle.h>
 #include <Game/SaveMenu.h>
@@ -88,6 +90,20 @@ void SaveScene::LoadSaveScene()
                 else if(name == "cursor" && menu != nullptr)
                 {
                     menu->AddCursor(name, position, scale, color, texturePath);
+                }
+            }
+            else if(objs.key() == "title" && !save){
+                if(name == "title")
+                {
+                    title = std::make_shared<FinalFantasyText>(obst.value("text", "Unnamed"), position, color, texturePath, std::stoi(obst.value("fontSize", "Unnamed")));
+                    go = title;
+                    AddObject(obst.value("name", "Unnamed"), go);
+                }
+                else if(name == "studio")
+                {
+                    studio = std::make_shared<FinalFantasyText>(obst.value("text", "Unnamed"), position, color, texturePath, std::stoi(obst.value("fontSize", "Unnamed")));
+                    go = studio;
+                    AddObject(obst.value("name", "Unnamed"), go);
                 }
             }
         }
@@ -193,7 +209,8 @@ void SaveScene::SaveGame()
                 {"hp", item.value()["hp"]},
                 {"level", item.value()["level"]},
                 {"strength", item.value()["strength"]},
-                {"xp", item.value()["xp"]}    
+                {"xp", item.value()["xp"]},
+                {"items", item.value()["items"]}//nlohmann::json::object_t({{"Potion", item.value()["items"]["Potion"]}})}
             });
         }
     }

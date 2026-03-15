@@ -38,9 +38,44 @@ void BattleMenu::OnEvent(const Input &input)
             {
                 if(cursor->transform.position.y == attackMenuItem.second->transform.position.y)
                 {
-                    if(attackMenuItem.second->GetText() != "Back")
+                    if(playerMove.find("Magic") != std::string::npos)
+                    {
+                        playerMove += "Attack" + attackMenuItem.second->GetText();
+                    }
+                    else if(attackMenuItem.second->GetText() != "Back")
                     {
                         playerMove = "Attack" + attackMenuItem.second->GetText();
+                    }
+                    menuName = "MenuItems";
+                }
+            }
+        }
+        else if(menuName == "MagicMenuItems")
+        {
+            for(auto magicMenuItem : magicMenuItems)
+            {
+                if(cursor->transform.position.y == magicMenuItem.second->transform.position.y)
+                {
+                    if(magicMenuItem.second->GetText() != "Back")
+                    {
+                        playerMove = "Magic" + magicMenuItem.second->GetText();
+                        menuName = "AttackMenuItems";
+                        break;
+                    }
+                    menuName = "MenuItems";
+                }
+            }
+        }
+        else if(menuName == "ItemsMenuItems")
+        {
+            for(auto itemMenuItem : itemMenuItems)
+            {
+                if(cursor->transform.position.y == itemMenuItem.second->transform.position.y)
+                {
+                    if(itemMenuItem.second->GetText() != "Back" )
+                    {
+                        playerMove = "UseItem" + itemMenuItem.second->GetText();
+                        itemCount[itemMenuItem.second->GetText()]--;
                     }
                     menuName = "MenuItems";
                 }
@@ -71,6 +106,25 @@ void BattleMenu::Render(Renderer &renderer, const Camera &camera)
             attackMenuItem.second->Render(renderer, camera);
         }
     }
+    else if(menuName == "MagicMenuItems")
+    {
+        for(auto magicMenuItem : magicMenuItems)
+        {
+            magicMenuItem.second->Render(renderer, camera);
+        }
+    }
+    else if(menuName == "ItemsMenuItems")
+    {
+        for(auto itemMenuItem : itemMenuItems)
+        {
+            itemMenuItem.second->Render(renderer, camera);
+            if(itemMenuItem.first.find("Back") == std::string::npos)
+            {
+                std::unique_ptr<MenuItem> itemCountMenuItem = std::make_unique<MenuItem>("ItemCount", itemMenuItem.second->GetEndPosition() + glm::vec3(25.0f, 0.0f, 0.0f), itemMenuItem.second->transform.scale, itemMenuItem.second->color, itemMenuItem.second->GetFontPath(), "x" + std::to_string(itemCount[itemMenuItem.second->GetText()]));
+                itemCountMenuItem->Render(renderer, camera);
+            }
+        }
+    }
     else
     {
         menuName = "MenuItems";
@@ -93,6 +147,18 @@ void BattleMenu::AddAttackMenuItem(std::string name, glm::vec3 position, glm::ve
     attackMenuItems[text] = menuItem;
 }
 
+void BattleMenu::AddMagicMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
+{
+    std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
+    magicMenuItems[text] = menuItem;
+}
+
+void BattleMenu::AddItemMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
+{
+    std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
+    itemMenuItems[text] = menuItem;
+}
+
 void BattleMenu::SetDeadEnemies(std::vector<std::string> deadEnemies)
 {
     for(std::string enemyName : deadEnemies)
@@ -104,4 +170,9 @@ void BattleMenu::SetDeadEnemies(std::vector<std::string> deadEnemies)
 void BattleMenu::UpdatePlayerHP(int hp)
 {
     menuItems["menuItemPlayerHP"]->ChangeText("HP: " + std::to_string(hp));
+}
+
+void BattleMenu::SetItemCount(std::string item, int count)
+{
+    itemCount[item] = count;
 }

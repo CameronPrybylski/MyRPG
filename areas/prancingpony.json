@@ -1,0 +1,125 @@
+{
+    "objects" : {
+        "obstacles": [
+            {
+                "name": "obstacle1",
+                "position": [145.0, 400.0, 0.0],
+                "scale": [10.0, 600.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.275, 0.135, 0.035, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "obstacle2",
+                "position": [445.0, 705.0, 0.0],
+                "scale": [610.0, 10.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.275, 0.135, 0.035, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "obstacle3",
+                "position": [755.0, 400.0, 0.0],
+                "scale": [10.0, 620.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.275, 0.135, 0.035, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "obstacle4",
+                "position": [445.0, 95.0, 0.0],
+                "scale": [610.0, 10.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.275, 0.135, 0.035, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "obstacle5",
+                "position": [450.0, 400.0, -1.0],
+                "scale": [600.0, 600.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.5, 0.35, 0.05, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            }
+        ],
+        "player" : [
+            {
+                "name": "player",
+                "position": [740.0, 600.0, 0.0],
+                "scale": [50.0, 50.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": false,
+                "texturePath" : "/textures/FighterOverworld.png"
+            }
+        ],
+        "towns" : [
+            {
+                "name": "town1",
+                "position": [745.0, 600.0, 0.0],
+                "scale": [10.0, 100.0, 0.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 1.0, 0.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            }
+        ],
+        "npcs" : [
+            {
+                "name": "npcMerrick",
+                "position": [300.0, 300.0, 0.0],
+                "scale": [50.0, 50.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [100.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 0.0],
+                "isStatic": true,
+                "texturePath" : "/textures/Nerrick_sprite.png",
+                "dialogue" : ["Hello!", "My name is Merrick.", "You may have met my Brother", "We co-own this here inn."], 
+                "maxDist" : 500.0
+            }
+        ],
+        "dialogue" : [
+            {
+                "name": "dialogueBox",
+                "position": [700.0, 800.0, -0.5],
+                "scale": [250.0, 62.5, 0.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 0.5, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "textPos",
+                "position": [400.0, 800.0, -0.5],
+                "scale": [11.0, 7.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Hi"
+            }
+        ]
+    },
+    "levelParams" : {
+        "completionDist" : 3500.0,
+        "nextLevel" : "battle",
+        "savescene" : "savescene",
+        "area" : "prancingpony",
+        "combatArea" : false,
+        "moveCamera" : true
+    }
+}

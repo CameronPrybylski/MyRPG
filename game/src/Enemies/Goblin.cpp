@@ -1,40 +1,25 @@
-#include <Game/EnemyInBattle.h>
+#include <Game/Goblin.h>
 #include <random>
 #include <chrono>
 
-EnemyInBattle::EnemyInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, int attackDamage, int xp)
-{
-    mesh = AssetManager::GetMesh("quadMesh");
-    transform.position = position;
-    transform.scale = scale;
-    this->color = color;
-    this->isAlive = true;
-    this->name = name;
-    this->type = "Enemy";
-    hp = 5;
-    this->attackDamage = attackDamage;
-    this->xp = xp;
-    if(texturePath != ""){
-        shaderName = "textureShader";
-        texture.Create(texturePath);
-    }else{
-        shaderName = "objectShader";
-    }
-}
-
-EnemyInBattle::~EnemyInBattle()
+Goblin::Goblin(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, int attackDamage, int xp)
+ : EnemyInBattle(position, scale, color, texturePath, name, attackDamage, xp)
 {
 }
 
-void EnemyInBattle::OnEvent(const Input &input)
+Goblin::~Goblin()
 {
 }
 
-void EnemyInBattle::Update(float dt)
+void Goblin::OnEvent(const Input &input)
 {
 }
 
-void EnemyInBattle::Update(const Input &input, float dt)
+void Goblin::Update(float dt)
+{
+}
+
+void Goblin::Update(const Input &input, float dt)
 {
     if(hp <= 0)
     {
@@ -50,7 +35,7 @@ void EnemyInBattle::Update(const Input &input, float dt)
     }
 }
 
-void EnemyInBattle::MakeMove()
+void Goblin::MakeMove()
 {
     unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
     // 2. Create a random number engine (e.g., Mersenne Twister)
@@ -65,13 +50,13 @@ void EnemyInBattle::MakeMove()
         transform.position.x -= 100.0f;
 }
 
-void EnemyInBattle::TakeDamage(int damage)
+void Goblin::TakeDamage(int damage)
 {
     //Why is this 1 should be 2 or whatever damage was set to
     hp -= damage;
 }
 
-void EnemyInBattle::Render(Renderer &renderer, const Camera &camera)
+void Goblin::Render(Renderer &renderer, const Camera &camera)
 {
     if(isAlive)
     {
@@ -86,6 +71,6 @@ void EnemyInBattle::Render(Renderer &renderer, const Camera &camera)
     }
 }
 
-void EnemyInBattle::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
+void Goblin::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
 {
 }

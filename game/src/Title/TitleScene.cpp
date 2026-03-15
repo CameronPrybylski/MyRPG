@@ -1,7 +1,10 @@
 #include <Engine/Scene/Scene.h>
+#include <Game/FinalFantasyText.h>
+
 
 #include <Game/TitleScene.h>
 #include <Game/TitleMenu.h>
+#include <Game/MenuItem.h>
 #include <Game/Obstacle.h>
 
 
@@ -96,6 +99,23 @@ void TitleScene::LoadTitle()
                 else if(name == "cursor" && menu != nullptr)
                 {
                     menu->AddCursor(name, position, scale, color, texturePath);
+                }
+            }
+            else if(objs.key() == "title"){
+                if(name == "title")
+                {
+                    //title = std::make_shared<MenuItem>(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                    title = std::make_shared<FinalFantasyText>(obst.value("text", "Unnamed"), position, color, texturePath, std::stoi(obst.value("fontSize", "Unnamed")));
+                    title->Init();
+                    go = title;
+                    AddObject(obst.value("name", "Unnamed"), go);
+                }
+                else if(name == "studio")
+                {
+                    studio = std::make_shared<FinalFantasyText>(obst.value("text", "Unnamed"), position, color, texturePath, std::stoi(obst.value("fontSize", "Unnamed")));
+                    studio->Init();
+                    go = studio;
+                    AddObject(obst.value("name", "Unnamed"), go);
                 }
             }
         }
