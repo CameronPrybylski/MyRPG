@@ -112,6 +112,28 @@
                 "text" : "Back"
             },
             {
+                "name": "magicMenuItem1",
+                "position": [100.0, 135.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Fire"
+            },
+            {
+                "name": "magicMenuItem2",
+                "position": [95.0, 55.0, 0.0],
+                "scale": [22.0, 30.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Back"
+            },
+            {
                 "name": "itemMenuItem1",
                 "position": [100.0, 135.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],

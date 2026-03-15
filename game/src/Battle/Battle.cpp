@@ -128,6 +128,10 @@ void Battle::LoadBattle()
                 {
                     menu->AddAttackMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
                 }
+                else if(name.find("magicMenuItem") != std::string::npos)
+                {
+                    menu->AddMagicMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                }
                 else if(name.find("itemMenuItem") != std::string::npos)
                 {
                     menu->AddItemMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
@@ -230,7 +234,10 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
         obj->Update(input, dt);
     }
 
-    menu->SetPlayerMove("");
+    if(!(menu->GetPlayerMove().find("Magic") != std::string::npos && menu->GetPlayerMove().find("Attack") == std::string::npos))
+    {
+        menu->SetPlayerMove("");
+    }
     player->SetMove(menu->GetPlayerMove());
 
     std::vector<std::string> deadEnemies;
@@ -282,13 +289,30 @@ void Battle::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 void Battle::HandlePlayerMove()
 {
     player->SetMove(menu->GetPlayerMove());
-    if(menu->GetPlayerMove().find("Attack") != std::string::npos)
+    if(menu->GetPlayerMove().find("Attack") != std::string::npos && menu->GetPlayerMove().find("Magic") == std::string::npos)
     {
         if(enemies[menu->GetPlayerMove().substr(6)] != nullptr)
         {
             enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
         }
         //enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+    }
+    else if(menu->GetPlayerMove().find("Magic") != std::string::npos )
+    {
+        if(menu->GetPlayerMove().find("Attack") != std::string::npos)
+        {
+            size_t indexOfAttack = menu->GetPlayerMove().find("Attack");
+            int indexOfEnemy = indexOfAttack + 6;
+            if(enemies.find(menu->GetPlayerMove().substr(indexOfEnemy)) != enemies.end())
+            {
+                std::string magicType = menu->GetPlayerMove().substr(5);
+                enemies[menu->GetPlayerMove().substr(indexOfEnemy)]->TakeDamage(player->GetMagicDamage(magicType));
+            }
+        }
+        else
+        {
+            return;
+        }
     }
     else if(menu->GetPlayerMove().find("UseItem") != std::string::npos)
     {

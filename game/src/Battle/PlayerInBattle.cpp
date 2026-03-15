@@ -172,3 +172,12 @@ void PlayerInBattle::UseItem(std::string playerMove)
         }
     }
 }
+
+int PlayerInBattle::GetMagicDamage(std::string magicType)
+{
+    if(magicType.find("Fire") != std::string::npos)
+    {
+        return 20;
+    }
+    return 0;
+}

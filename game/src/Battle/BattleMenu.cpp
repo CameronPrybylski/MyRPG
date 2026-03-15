@@ -38,9 +38,29 @@ void BattleMenu::OnEvent(const Input &input)
             {
                 if(cursor->transform.position.y == attackMenuItem.second->transform.position.y)
                 {
-                    if(attackMenuItem.second->GetText() != "Back")
+                    if(playerMove.find("Magic") != std::string::npos)
+                    {
+                        playerMove += "Attack" + attackMenuItem.second->GetText();
+                    }
+                    else if(attackMenuItem.second->GetText() != "Back")
                     {
                         playerMove = "Attack" + attackMenuItem.second->GetText();
+                    }
+                    menuName = "MenuItems";
+                }
+            }
+        }
+        else if(menuName == "MagicMenuItems")
+        {
+            for(auto magicMenuItem : magicMenuItems)
+            {
+                if(cursor->transform.position.y == magicMenuItem.second->transform.position.y)
+                {
+                    if(magicMenuItem.second->GetText() != "Back")
+                    {
+                        playerMove = "Magic" + magicMenuItem.second->GetText();
+                        menuName = "AttackMenuItems";
+                        break;
                     }
                     menuName = "MenuItems";
                 }
@@ -86,6 +106,13 @@ void BattleMenu::Render(Renderer &renderer, const Camera &camera)
             attackMenuItem.second->Render(renderer, camera);
         }
     }
+    else if(menuName == "MagicMenuItems")
+    {
+        for(auto magicMenuItem : magicMenuItems)
+        {
+            magicMenuItem.second->Render(renderer, camera);
+        }
+    }
     else if(menuName == "ItemsMenuItems")
     {
         for(auto itemMenuItem : itemMenuItems)
@@ -118,6 +145,12 @@ void BattleMenu::AddAttackMenuItem(std::string name, glm::vec3 position, glm::ve
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     attackMenuItems[text] = menuItem;
+}
+
+void BattleMenu::AddMagicMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
+{
+    std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
+    magicMenuItems[text] = menuItem;
 }
 
 void BattleMenu::AddItemMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
