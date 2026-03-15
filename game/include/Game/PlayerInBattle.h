@@ -54,6 +54,8 @@ public:
         return strength * equippedWeapon->GetDamage();
     }
 
+    int GetMagicDamage(std::string magicType);
+
     void TakeDamage(int damage)
     {
         hp -= damage;
