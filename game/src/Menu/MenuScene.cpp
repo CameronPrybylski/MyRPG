@@ -183,6 +183,8 @@ void MenuScene::PlayerInfo()
         {
             playerInfoMap["HP"] = item.value()["hp"];
             maxHP = item.value()["maxhp"];
+            playerInfoMap["MP"] = item.value()["mp"];
+            maxMP = item.value()["maxmp"];
             playerInfoMap["Level"] = item.value()["level"];
             playerInfoMap["Strength"] = item.value()["strength"];
             playerInfoMap["XP"] = item.value()["xp"];
@@ -220,6 +222,8 @@ void MenuScene::SetPlayerInfo()
     saveData["Player"] = nlohmann::json::object_t({
         {"hp", playerInfoMap["HP"]},
         {"maxhp", maxHP}, 
+        {"mp", playerInfoMap["MP"]},
+        {"maxmp", maxMP}, 
         {"level", playerInfoMap["Level"]},
         {"strength", playerInfoMap["Strength"]},
         {"xp", playerInfoMap["XP"]},

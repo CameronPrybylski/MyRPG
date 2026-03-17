@@ -34,6 +34,8 @@ public:
 
     void UpdatePlayerHP(int hp);
 
+    void UpdatePlayerMP(int mp);
+
     void RemoveItemMenuItem(std::string menuItem){itemMenuItems.erase(menuItem);}
 
     void SetItemCount(std::string item, int count);

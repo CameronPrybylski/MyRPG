@@ -69,6 +69,17 @@
                 "text" : "HP: "
             },
             {
+                "name": "menuItemPlayerMP",
+                "position": [700.0, 85.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "MP: "
+            },
+            {
                 "name": "cursor",
                 "position": [50.0, 135.0, 0.0],
                 "scale": [10.0, 5.0, 0.0],
@@ -165,7 +176,10 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": false,
-                "texturePath" : "/textures/FighterBattle.png"
+                "texturePath" : "/textures/FighterBattle.png",
+                "spell" : {"Fire" : {"Damage" : 3, "MPCost" : 5}}
+                            
+                
             }
         ],
         "enemies" : [

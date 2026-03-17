@@ -7,6 +7,7 @@
 #include <Game/EnemyInBattle.h>
 #include <Game/Goblin.h>
 #include <Game/Potion.h>
+#include <Game/Spell.h>
 
 #include <random>
 #include <chrono>
@@ -101,9 +102,10 @@ void Battle::LoadBattle()
                 player = std::make_shared<PlayerInBattle>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
-                //std::shared_ptr<GameObject> got = std::make_shared<Sword>(position, glm::vec3(180.0f, 180.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,false);
-                //player->AddItem("sword", got);
-                //AddObject("sword", got);
+                for(const auto& spell : obst["spell"].items())
+                {
+                    player->AddSpell(spell.key(), std::make_shared<Spell>(spell.value()["Damage"], spell.value()["MPCost"]));
+                }
             }
             else if(objs.key() == "enemies"){
                 int attackDamage = obst.value("attackDamage", 0);
@@ -282,6 +284,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     }
     
     menu->UpdatePlayerHP(player->GetHP());
+    menu->UpdatePlayerMP(player->GetMP());
     if(player->GetHP() <= 0)
     {
         initialStart = true;
@@ -317,7 +320,15 @@ void Battle::HandlePlayerMove()
             if(enemies.find(menu->GetPlayerMove().substr(indexOfEnemy)) != enemies.end())
             {
                 std::string magicType = menu->GetPlayerMove().substr(5);
-                enemies[menu->GetPlayerMove().substr(indexOfEnemy)]->TakeDamage(player->GetMagicDamage(magicType));
+                int magicDamage = player->GetMagicDamage(magicType);
+                if(magicDamage == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    enemies[menu->GetPlayerMove().substr(indexOfEnemy)]->TakeDamage(magicDamage);
+                }
             }
         }
         else
@@ -397,7 +408,9 @@ void Battle::SavePlayerInfo()
     */
     saveData["Player"] = nlohmann::json::object_t({
         {"hp", player->GetHP()},
+        {"mp", player->GetMP()},
         {"maxhp", player->GetMaxHP()},
+        {"maxmp", player->GetMaxMP()},
         {"level", player->GetLevel()},
         {"strength", player->GetStrength()},
         {"xp", player->GetXP()},
@@ -423,7 +436,9 @@ void Battle::LoadPlayerInfo()
         if(item.key() == "Player")
         {
             player->SetHP(item.value()["hp"]);
+            player->SetMP(item.value()["mp"]);
             player->SetMaxHP(item.value()["maxhp"]);
+            player->SetMaxMP(item.value()["maxmp"]);
             player->SetStrength(item.value()["strength"]);
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
@@ -470,7 +485,9 @@ void Battle::LoadGame()
         if(item.key() == "PlayerBattle")
         {
             player->SetHP(item.value()["hp"]);
+            player->SetMP(item.value()["mp"]);
             player->SetMaxHP(item.value()["maxhp"]);
+            player->SetMaxMP(item.value()["maxmp"]);
             player->SetStrength(item.value()["strength"]);
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
