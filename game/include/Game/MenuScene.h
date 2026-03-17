@@ -33,6 +33,7 @@ private:
     std::unordered_map<std::string, int> items;
     
     int maxHP;
+    int maxMP;
     int xpNeeded;
 
     std::string root;

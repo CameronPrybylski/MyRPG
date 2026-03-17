@@ -172,6 +172,11 @@ void BattleMenu::UpdatePlayerHP(int hp)
     menuItems["menuItemPlayerHP"]->ChangeText("HP: " + std::to_string(hp));
 }
 
+void BattleMenu::UpdatePlayerMP(int mp)
+{
+    menuItems["menuItemPlayerMP"]->ChangeText("MP: " + std::to_string(mp));
+}
+
 void BattleMenu::SetItemCount(std::string item, int count)
 {
     itemCount[item] = count;

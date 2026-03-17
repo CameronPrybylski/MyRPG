@@ -4,6 +4,7 @@
 #include <Game/Weapon.h>
 
 class ConsumableItem;
+class Spell;
 
 class PlayerInBattle : public GameObject {
 
@@ -20,6 +21,7 @@ public:
     void AddItem(std::string name, std::shared_ptr<GameObject> item);
     void AddConsumableItem(std::string name, std::shared_ptr<ConsumableItem> item);
     void AddWeapon(std::string name, std::shared_ptr<Weapon> weapon);
+    void AddSpell(std::string name, std::shared_ptr<Spell> spell);
     void PositionSword();
 
     void SetMove(std::string move)
@@ -47,6 +49,26 @@ public:
     int GetMaxHP()
     {
         return maxHP;
+    }
+
+    void SetMP(int mp)
+    {
+        this->mp = mp;
+    }
+
+    void SetMaxMP(int maxMP)
+    {
+        this->maxMP = maxMP;
+    }
+
+    int GetMP()
+    {
+        return mp;
+    }
+
+    int GetMaxMP()
+    {
+        return maxMP;
     }
 
     int GetAttackDamage()
@@ -100,11 +122,15 @@ private:
     int maxHP;
     bool alive = true;
     std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons;
+    std::unordered_map<std::string, std::shared_ptr<Spell>> spells;
     std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> consumableItems;
     std::shared_ptr<Weapon> equippedWeapon;
     
     int level;
     int strength;
+    int magicLevel;
+    int mp;
+    int maxMP;
     int xp;
     int xpNeeded;
     int xpIncrement;

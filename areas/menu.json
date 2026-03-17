@@ -79,8 +79,19 @@
                 "text" : "HP"
             },
             {
+                "name": "menuItemMP",
+                "position": [500.0, 550.0, 0.0],
+                "scale": [33.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "MP"
+            },
+            {
                 "name": "menuItem2",
-                "position": [450.0, 550.0, 0.0],
+                "position": [450.0, 500.0, 0.0],
                 "scale": [33.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -91,7 +102,7 @@
             },
             {
                 "name": "menuItem3",
-                "position": [400.0, 500.0, 0.0],
+                "position": [400.0, 450.0, 0.0],
                 "scale": [33.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -102,7 +113,7 @@
             },
             {
                 "name": "menuItem4",
-                "position": [500.0, 450.0, 0.0],
+                "position": [500.0, 400.0, 0.0],
                 "scale": [33.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
