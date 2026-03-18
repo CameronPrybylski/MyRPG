@@ -60,7 +60,7 @@ void Battle::LoadBattle()
 
     enemies.clear();
     
-    std::ifstream file(newFilePath);
+    std::ifstream file(filepath);
     if (!file.is_open()) {
         throw std::runtime_error("Failed to open level file.");
     }
@@ -98,21 +98,6 @@ void Battle::LoadBattle()
                 go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, "", name, isStatic);
                 AddObject(obst.value("name", "Unnamed"), go);
             }
-            else if(objs.key() == "player"){
-                player = std::make_shared<PlayerInBattle>(position, scale, color, texturePath, name, isStatic);
-                go = player;
-                AddObject(obst.value("name", "Unnamed"), go);
-                for(const auto& spell : obst["spell"].items())
-                {
-                    player->AddSpell(spell.key(), std::make_shared<Spell>(spell.value()["Damage"], spell.value()["MPCost"]));
-                }
-            }
-            else if(objs.key() == "enemies"){
-                int attackDamage = obst.value("attackDamage", 0);
-                int xp = obst.value("xp", 0);
-                std::shared_ptr<EnemyInBattle> enemy = CreateEnemy(position, scale, color, texturePath, name, attackDamage, xp);
-                AddEnemy(enemy);
-            }
             else if(objs.key() == "menu"){
                 if(name == "menu")
                 {
@@ -125,10 +110,6 @@ void Battle::LoadBattle()
                 else if(name.find("menuItem") != std::string::npos)
                 {
                     menu->AddMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
-                }
-                else if(name.find("attackMenuItem") != std::string::npos)
-                {
-                    menu->AddAttackMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
                 }
                 else if(name.find("magicMenuItem") != std::string::npos)
                 {
@@ -143,6 +124,63 @@ void Battle::LoadBattle()
                     menu->AddCursor(name, position, scale, color, texturePath);
                 }
             }
+        }
+    }
+
+
+
+    file.close();
+
+    std::ifstream file2(newFilePath);
+    if (!file2.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json j2;
+    file2 >> j2;
+
+    for (const auto& objs : j2["objects"].items()) {
+        for(const auto& obst : objs.value()){
+            std::shared_ptr<GameObject> go;
+            std::string name = obst.value("name", "Unnamed");
+            glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
+            glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+            glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+            glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
+            glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
+            bool isStatic = obst.value("isStatic", false);
+            std::string texturePath = obst.value("texturePath", "Unnamed");
+
+            if(texturePath.find("font") != std::string::npos)
+            {
+                texturePath = root + texturePath;
+            }
+            else if(texturePath.find("textures") != std::string::npos)
+            {
+                texturePath = root + texturePath;
+            }
+            
+            if(objs.key() == "enemies"){
+                int attackDamage = obst.value("attackDamage", 0);
+                int xp = obst.value("xp", 0);
+                std::shared_ptr<EnemyInBattle> enemy = CreateEnemy(position, scale, color, texturePath, name, attackDamage, xp);
+                AddEnemy(enemy);
+            }
+            else if(objs.key() == "player"){
+                player = std::make_shared<PlayerInBattle>(position, scale, color, texturePath, name, isStatic);
+                go = player;
+                AddObject(obst.value("name", "Unnamed"), go);
+                for(const auto& spell : obst["spell"].items())
+                {
+                    player->AddSpell(spell.key(), std::make_shared<Spell>(spell.value()["Damage"], spell.value()["MPCost"]));
+                }
+            }
+            else if(objs.key() == "menu"){
+                if(name.find("attackMenuItem") != std::string::npos)
+                {
+                    menu->AddAttackMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                }
+            }
             else if(objs.key() == "aground")
             {
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
@@ -151,6 +189,7 @@ void Battle::LoadBattle()
             }
         }
     }
+
     camera.Create(0.0f, screenWidth, 0.0f, screenHeight, -1.0f, 1.0f);
     
     leftScreenEdge = 0.0f;
