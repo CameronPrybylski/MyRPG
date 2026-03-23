@@ -399,7 +399,6 @@ void Battle::UpdateCamera()
 {
     glm::vec3 playerPositionChange(0.0f);
     camera.OnUpdate(playerPositionChange);
-
 }
 
 void Battle::LootBattle()
@@ -454,8 +453,20 @@ void Battle::SavePlayerInfo()
         {"strength", player->GetStrength()},
         {"xp", player->GetXP()},
         {"xpNeeded", player->GetXPNeeded()},
-        {"items", nlohmann::json::object_t({{"Potion", player->ConsumableItemCount("Potion")}})}
+        {"items", nlohmann::json::object_t({{"Potion", player->ConsumableItemCount("Potion")}})},
+        {"equippedWeapon", nlohmann::json::object_t({{player->GetEquippedWeapon()->GetName(), player->GetEquippedWeapon()->GetDamage()}})},
+        {"weapons", nlohmann::json::object_t({{player->GetEquippedWeapon()->GetName(), player->GetEquippedWeapon()->GetDamage()}})}
     });
+
+    std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons = player->GetWeapons();
+    std::unordered_map<std::string, int> weaponDamages;
+
+    for(auto weapon = weapons.begin(); weapon != weapons.end(); weapon++)
+    {
+        weaponDamages[weapon->second->GetName()] = weapon->second->GetDamage();
+    }
+
+    saveData["Player"]["weapons"] = weaponDamages;
     
     levelSave << saveData;
     initialStart = false;
@@ -482,6 +493,16 @@ void Battle::LoadPlayerInfo()
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
             player->SetXPNeeded(item.value()["xpNeeded"]);
+            for(auto weapon : item.value()["equippedWeapon"].items())
+            {
+                std::string weaponKey = weapon.key();
+                int weaponDamage = weapon.value();
+                player->ChangeWeapon(weaponKey);
+            }
+            for(auto weapon : item.value()["weapons"].items())
+            {
+                player->AddWeapon(weapon.key(), std::make_shared<Weapon>(weapon.value(), weapon.key()));
+            }
             int itemCount = 0;
             int initialConsItemCnt = 0;
             std::string conItemKey = "";
@@ -531,6 +552,16 @@ void Battle::LoadGame()
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
             player->SetXPNeeded(item.value()["xpNeeded"]);
+            for(auto weapon : item.value()["equippedWeapon"].items())
+            {
+                std::string weaponKey = weapon.key();
+                int weaponDamage = weapon.value();
+                player->ChangeWeapon(weaponKey);
+            }
+            for(auto weapon : item.value()["weapons"].items())
+            {
+                player->AddWeapon(weapon.key(), std::make_shared<Weapon>(weapon.value(), weapon.key()));
+            }
             for(auto conItem : item.value()["items"].items())
             {
                 std::string conItemKey = conItem.key();

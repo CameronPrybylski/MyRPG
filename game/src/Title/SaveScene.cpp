@@ -207,10 +207,13 @@ void SaveScene::SaveGame()
         {
            saveData[saveNumber]["PlayerBattle"] = nlohmann::json::object_t({
                 {"hp", item.value()["hp"]},
+                {"mp", item.value()["mp"]},
                 {"level", item.value()["level"]},
                 {"strength", item.value()["strength"]},
                 {"xp", item.value()["xp"]},
-                {"items", item.value()["items"]}//nlohmann::json::object_t({{"Potion", item.value()["items"]["Potion"]}})}
+                {"items", item.value()["items"]},//nlohmann::json::object_t({{"Potion", item.value()["items"]["Potion"]}})}
+                {"equippedWeapon", item.value()["equippedWeapon"]},
+                {"weapons", item.value()["weapons"]}
             });
         }
     }

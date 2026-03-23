@@ -21,6 +21,7 @@ public:
     void SetPlayerMenu();
 
     void UseItem();
+    void ChangeWeapon();
 
 private:
     std::string nextScene;
@@ -31,10 +32,14 @@ private:
     std::shared_ptr<Menu> activeMenu;
     std::map<std::string, int> playerInfoMap;
     std::unordered_map<std::string, int> items;
+    std::unordered_map<std::string, int> weapons;
+
     
     int maxHP;
     int maxMP;
     int xpNeeded;
+    std::string equippedWeaponName;
+    int equippedWeaponDamage;
 
     std::string root;
 };

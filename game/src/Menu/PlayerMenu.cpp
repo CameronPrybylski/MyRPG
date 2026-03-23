@@ -48,26 +48,24 @@ void PlayerMenu::OnEvent(const Input &input)
                 }
             }
         }
-        /*
         else if(menuName == "EquipmentMenuItems")
         {
-            for(auto itemMenuItem : itemMenuItems)
+            for(auto equipmentMenuItem : equipmentMenuItems)
             {
-                if(cursor->transform.position.y == itemMenuItem.second->transform.position.y)
+                if(cursor->transform.position.y == equipmentMenuItem.second->transform.position.y)
                 {
-                    if(itemMenuItem.second->GetText() != "Back")
+                    if(equipmentMenuItem.second->GetText() != "Back")
                     {
-                        playerMove = "UseItem" + itemMenuItem.second->GetText();
+                        playerMove = "ChangeWeapon" + equipmentMenuItem.second->GetText();
                     }
                     menuName = "MenuItems";
                 }
             }
         }
-        */
-       else
-       {
+        else
+        {
             menuName = "MenuItems";
-       }
+        }
     }
 }
 
@@ -103,6 +101,12 @@ void PlayerMenu::AddItemsMenuItem(std::string name, glm::vec3 position, glm::vec
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     itemsMenuItems[text] = menuItem;
+}
+
+void PlayerMenu::AddEquipmentMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
+{
+    std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
+    equipmentMenuItems[text] = menuItem;
 }
 
 void PlayerMenu::SetItemsMenuItemsSize()

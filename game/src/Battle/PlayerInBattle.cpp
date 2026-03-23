@@ -25,7 +25,9 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     this->color = color;
     this->name = name;
 
-    equippedWeapon = std::make_shared<Weapon>(3);
+    equippedWeapon = std::make_shared<Weapon>(3,"Sword");
+    weapons["Sword"] = equippedWeapon;
+    weapons["Bow"] = std::make_shared<Weapon>(3, "Bow");
 }
 
 PlayerInBattle::~PlayerInBattle()
@@ -101,6 +103,14 @@ void PlayerInBattle::AddConsumableItem(std::string name, std::shared_ptr<Consuma
 void PlayerInBattle::AddWeapon(std::string name, std::shared_ptr<Weapon> weapon)
 {
     weapons[name] = weapon;
+}
+
+void PlayerInBattle::ChangeWeapon(std::string weaponName)
+{
+    if(weapons.count(weaponName))
+    {
+        equippedWeapon = weapons[weaponName];
+    }
 }
 
 void PlayerInBattle::AddSpell(std::string name, std::shared_ptr<Spell> spell)

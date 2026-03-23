@@ -111,10 +111,14 @@ void MenuScene::LoadMenuScene()
             }
             else if(objs.key() == "playerMenu")
             {
-                if(name.find("menuItem") != std::string::npos && menu != nullptr)
+                if(name.find("itemMenuItem") != std::string::npos && menu != nullptr)
                 {
                     menu->AddItemsMenuItem( obst.value("text", "Unnamed"), position, scale, color, texturePath, obst.value("text", "Unnamed"));
                     menu->AddItem(obst.value("text", "Unnamed"));
+                }
+                else if(name.find("equipmentMenuItem") != std::string::npos && menu != nullptr)
+                {
+                    menu->AddEquipmentMenuItem( obst.value("text", "Unnamed"), position, scale, color, texturePath, obst.value("text", "Unnamed"));
                 }
             }
         }
@@ -138,6 +142,7 @@ void MenuScene::OnEvent(const Input &input)
 {
     if(input.IsKeyDown("Escape"))
     {
+        SetPlayerInfo();
         EndScene(nextScene);
     }
     if(input.IsKeyDown("D"))
@@ -164,6 +169,10 @@ void MenuScene::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     {
         UseItem();
     }
+    else if(menu->GetPlayerMove().find("ChangeWeapon") != std::string::npos)
+    {
+        ChangeWeapon();
+    }
 }
 
 void MenuScene::PlayerInfo()
@@ -189,6 +198,15 @@ void MenuScene::PlayerInfo()
             playerInfoMap["Strength"] = item.value()["strength"];
             playerInfoMap["XP"] = item.value()["xp"];
             xpNeeded = item.value()["xpNeeded"];
+            for(auto weapon : item.value()["equippedWeapon"].items())
+            {
+                equippedWeaponName = weapon.key();
+                equippedWeaponDamage = weapon.value();
+            }
+            for(auto weapon : item.value()["weapons"].items())
+            {
+                weapons[weapon.key()] = weapon.value();
+            }
             for(auto conItem : item.value()["items"].items())
             {
                 std::string conItemKey = conItem.key();
@@ -228,7 +246,9 @@ void MenuScene::SetPlayerInfo()
         {"strength", playerInfoMap["Strength"]},
         {"xp", playerInfoMap["XP"]},
         {"xpNeeded", xpNeeded},
-        {"items", items}
+        {"items", items},
+        {"equippedWeapon", nlohmann::json::object_t({{equippedWeaponName, equippedWeaponDamage}})},
+        {"weapons", weapons}
     });
 
     battleSave << saveData;
@@ -262,4 +282,13 @@ void MenuScene::UseItem()
         SetPlayerMenu();
         SetPlayerInfo();
     }
+}
+
+void MenuScene::ChangeWeapon()
+{
+    std::string ChangeWeaponStr = "ChangeWeapon";
+    std::string playerMove = menu->GetPlayerMove();
+    std::string weapon = playerMove.substr(ChangeWeaponStr.length(), playerMove.length() - ChangeWeaponStr.length());
+    /*To do : Set Weapon Damage*/
+    equippedWeaponName = weapon;
 }
