@@ -146,7 +146,7 @@
                 "cursorMinMaxHeight" : [800.0, 0.0]
             },
             {
-                "name": "menuItem1",
+                "name": "itemMenuItem1",
                 "position": [125.0, 600.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
@@ -157,8 +157,43 @@
                 "text" : "Potion"
             },
             {
-                "name": "menuItem2",
+                "name": "itemMenuItem2",
                 "position": [125.0, 560.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Back"
+            },
+            {
+                "name": "equipmentMenuItem1",
+                "position": [125.0, 600.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "weaponDamage": 3,
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Sword"
+            },
+            {
+                "name": "equipmentMenuItem2",
+                "position": [125.0, 560.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "weaponDamage": 3,
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Bow"
+            },
+            {
+                "name": "equipmentMenuItem3",
+                "position": [125.0, 520.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],

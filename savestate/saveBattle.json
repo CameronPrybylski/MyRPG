@@ -1,1 +1,1 @@
-{"Player":{"hp":15,"items":{"Potion":7},"level":3,"maxhp":40,"maxmp":20,"mp":6,"strength":3,"xp":90,"xpNeeded":100}}
+{"Player":{"equippedWeapon":{"Sword":3},"hp":18,"items":{"Potion":1},"level":1,"maxhp":20,"maxmp":10,"mp":10,"strength":1,"weapons":{"Bow":3,"Sword":3},"xp":10,"xpNeeded":50}}

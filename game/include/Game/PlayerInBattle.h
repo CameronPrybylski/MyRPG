@@ -96,6 +96,17 @@ public:
     void AddToXP(int addedXP){xp += addedXP;}
     void CheckXP();
 
+    void ChangeWeapon(std::string weaponName);
+    std::shared_ptr<Weapon> GetEquippedWeapon()
+    {
+        return equippedWeapon;
+    }
+
+    std::unordered_map<std::string, std::shared_ptr<Weapon>> GetWeapons()
+    {
+        return weapons;
+    }
+
     bool hit = false;
 
     bool usingSword = false;
