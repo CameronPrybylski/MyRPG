@@ -1,1 +1,1 @@
-{"Player":{"equippedWeapon":{"Sword":3},"hp":18,"items":{"Potion":1},"level":1,"maxhp":20,"maxmp":10,"mp":10,"strength":1,"weapons":{"Bow":3,"Sword":3},"xp":10,"xpNeeded":50}}
+{"Player":{"equippedWeapon":{"Sword":3},"hp":20,"items":{"Ether":3,"Potion":1},"level":1,"maxhp":20,"maxmp":10,"mp":10,"strength":1,"weapons":{"Bow":3,"Sword":3},"xp":30,"xpNeeded":50}}

@@ -33,10 +33,9 @@ private:
     std::map<std::string, int> playerInfoMap;
     std::unordered_map<std::string, int> items;
     std::unordered_map<std::string, int> weapons;
+    std::unordered_map<std::string, std::unordered_map<std::string, std::string>> itemStats;
+    void SetItemStats(std::string item);
 
-    
-    int maxHP;
-    int maxMP;
     int xpNeeded;
     std::string equippedWeaponName;
     int equippedWeaponDamage;

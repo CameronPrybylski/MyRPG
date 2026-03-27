@@ -7,6 +7,7 @@
 #include <Game/EnemyInBattle.h>
 #include <Game/Goblin.h>
 #include <Game/Potion.h>
+#include <Game/Ether.h>
 #include <Game/Spell.h>
 
 #include <random>
@@ -425,6 +426,7 @@ void Battle::LootBattle()
     if(conItemStr != "")
     {
         player->AddConsumableItem(conItemStr, conItem);
+        player->AddConsumableItem("Ether", std::make_shared<Ether>());
     }
 }
 
@@ -437,13 +439,6 @@ void Battle::SavePlayerInfo()
 
     nlohmann::json saveData;
     
-    std::unordered_map<std::string, int> conItemMap;
-    /*
-    for(auto itr = player->GetConsumableItems().begin(); itr != player->GetConsumableItems().end(); itr++)
-    {
-        conItemMap[itr->first] = itr->second.size();
-    }
-    */
     saveData["Player"] = nlohmann::json::object_t({
         {"hp", player->GetHP()},
         {"mp", player->GetMP()},
@@ -458,6 +453,14 @@ void Battle::SavePlayerInfo()
         {"weapons", nlohmann::json::object_t({{player->GetEquippedWeapon()->GetName(), player->GetEquippedWeapon()->GetDamage()}})}
     });
 
+    SavePlayerItems(saveData);
+    
+    levelSave << saveData;
+    initialStart = false;
+}
+
+void Battle::SavePlayerItems(nlohmann::json& saveData)
+{
     std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons = player->GetWeapons();
     std::unordered_map<std::string, int> weaponDamages;
 
@@ -467,9 +470,16 @@ void Battle::SavePlayerInfo()
     }
 
     saveData["Player"]["weapons"] = weaponDamages;
-    
-    levelSave << saveData;
-    initialStart = false;
+
+    std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> conItems = player->GetConsumableItems();
+    std::unordered_map<std::string, int> conItemCount;
+
+    for(auto item = conItems.begin(); item != conItems.end(); item++)
+    {
+        conItemCount[item->first] = item->second.size(); 
+    }
+
+    saveData["Player"]["items"] = conItemCount;
 }
 
 void Battle::LoadPlayerInfo()
@@ -518,9 +528,14 @@ void Battle::LoadPlayerInfo()
                         std::shared_ptr<ConsumableItem> conItem = std::make_shared<Potion>();
                         player->AddConsumableItem("Potion", conItem);
                     }
+                    else if(conItemKey == "Ether")
+                    {
+                        std::shared_ptr<ConsumableItem> conItem = std::make_shared<Ether>();
+                        player->AddConsumableItem("Ether", conItem);
+                    }
                 }
+                menu->SetItemCount(conItemKey, itemCount);
             }
-            menu->SetItemCount(conItemKey, itemCount);
         }
     }
     if(player->ConsumableItemCount("Potion") < 1)

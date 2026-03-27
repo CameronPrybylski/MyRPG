@@ -191,9 +191,9 @@ void MenuScene::PlayerInfo()
         if(item.key() == "Player")
         {
             playerInfoMap["HP"] = item.value()["hp"];
-            maxHP = item.value()["maxhp"];
+            playerInfoMap["maxHP"] = item.value()["maxhp"];
             playerInfoMap["MP"] = item.value()["mp"];
-            maxMP = item.value()["maxmp"];
+            playerInfoMap["maxMP"] = item.value()["maxmp"];
             playerInfoMap["Level"] = item.value()["level"];
             playerInfoMap["Strength"] = item.value()["strength"];
             playerInfoMap["XP"] = item.value()["xp"];
@@ -211,6 +211,7 @@ void MenuScene::PlayerInfo()
             {
                 std::string conItemKey = conItem.key();
                 items[conItem.key()] = item.value()["items"][conItem.key()];
+                SetItemStats(conItemKey);
                 if(items[conItem.key()] < 1)
                 {
                     menu->RemoveAllItems(conItem.key());
@@ -239,9 +240,9 @@ void MenuScene::SetPlayerInfo()
     nlohmann::json saveData;
     saveData["Player"] = nlohmann::json::object_t({
         {"hp", playerInfoMap["HP"]},
-        {"maxhp", maxHP}, 
+        {"maxhp", playerInfoMap["maxHP"]}, 
         {"mp", playerInfoMap["MP"]},
-        {"maxmp", maxMP}, 
+        {"maxmp", playerInfoMap["maxMP"]}, 
         {"level", playerInfoMap["Level"]},
         {"strength", playerInfoMap["Strength"]},
         {"xp", playerInfoMap["XP"]},
@@ -260,21 +261,55 @@ void MenuScene::SetPlayerMenu()
     background->UpdateMenuItems(playerInfoMap);
 }
 
+void MenuScene::SetItemStats(std::string item)
+{
+    std::unordered_map<std::string, std::string> stats;
+    std::string maxStat = "";
+    std::string stat = "";
+    std::string number = "";
+
+    if(item == "Potion")
+    {
+        maxStat = "maxHP";
+        stat = "HP";
+        number = "5";
+    }
+    else if(item == "Ether")
+    {
+        maxStat = "maxMP";
+        stat = "MP";
+        number = "5";
+    }
+
+    stats["maxStat"] = maxStat;
+    stats["stat"] = stat;
+    stats["number"] = number;
+    itemStats[item] = stats;
+}
+
 void MenuScene::UseItem()
 {
     std::string UseItemStr = "UseItem";
     std::string playerMove = menu->GetPlayerMove();
     std::string itemUse = playerMove.substr(UseItemStr.length(), playerMove.length() - UseItemStr.length());
-    
-    if(itemUse == "Potion")
+    bool itemUsed = false;
+    if(itemStats.count(itemUse))
     {
-        if(playerInfoMap["HP"] + 5 <= maxHP)
+        std::string strStat = itemStats[itemUse]["stat"];
+        int iStat = std::stoi(itemStats[itemUse]["number"]);
+        std::string strMaxStat = itemStats[itemUse]["maxStat"];
+
+        if(playerInfoMap[strStat] + iStat <= playerInfoMap[strMaxStat])
         {
-            playerInfoMap["HP"] += 5;
+            playerInfoMap[strStat] += iStat;
+        }
+        else if(playerInfoMap[strStat] < playerInfoMap[strMaxStat])
+        {
+            playerInfoMap[strStat] = playerInfoMap[strMaxStat];
         }
         else
         {
-            playerInfoMap["HP"] = maxHP;
+            return;
         }
         items[itemUse]--;
         menu->SetPlayerMove("");

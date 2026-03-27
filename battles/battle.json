@@ -90,39 +90,6 @@
                 "texturePath" : ""
             },
             {
-                "name": "attackMenuItem1",
-                "position": [100.0, 135.0, 0.0],
-                "scale": [22.0, 35.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "EnemyGoblin1"
-            },
-            {
-                "name": "attackMenuItem2",
-                "position": [100.0, 95.0, 0.0],
-                "scale": [22.0, 35.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Enemy1"
-            },
-            {
-                "name": "attackMenuItem3",
-                "position": [95.0, 55.0, 0.0],
-                "scale": [22.0, 30.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Back"
-            },
-            {
                 "name": "magicMenuItem1",
                 "position": [100.0, 135.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
@@ -157,6 +124,17 @@
             },
             {
                 "name": "itemMenuItem2",
+                "position": [100.0, 95.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Ether"
+            },
+            {
+                "name": "itemMenuItem3",
                 "position": [95.0, 55.0, 0.0],
                 "scale": [22.0, 30.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
