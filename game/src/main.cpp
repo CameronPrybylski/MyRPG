@@ -30,6 +30,7 @@ int main()
         std::shared_ptr<Level> overworld = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/overworld.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str(), std::string(root));
         std::shared_ptr<Level> town1 = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/town.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), std::string(root) + "/savestate/saveBattle.json", (std::string(root) + "/savestate/saveGame.json").c_str(), std::string(root));
         std::shared_ptr<Level> prancingpony = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/prancingpony.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), std::string(root) + "/savestate/saveBattle.json", (std::string(root) + "/savestate/saveGame.json").c_str(), std::string(root));
+        std::shared_ptr<Level> castle = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/castle.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), std::string(root) + "/savestate/saveBattle.json", (std::string(root) + "/savestate/saveGame.json").c_str(), std::string(root));
         std::shared_ptr<Battle> battle = std::make_shared<Battle>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/battles/battle.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str(), std::string(root));
         std::shared_ptr<Scene> savescene = std::make_shared<SaveScene>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/save.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), true, overworld, battle, std::string(root));
         std::shared_ptr<Scene> gameOver = std::make_shared<GameOver>(app.GetScreenWidth(), app.GetScreenHeight(), std::string(root));
@@ -45,6 +46,7 @@ int main()
         app.AddScene("overworld", level);
         app.AddScene("town1", town1);
         app.AddScene("prancingpony", prancingpony);
+        app.AddScene("castle", castle);
         app.AddScene("battle", battleScene);
         app.AddScene("gameOver", gameOver);
         app.SetScene("title");

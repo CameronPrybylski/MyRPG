@@ -223,7 +223,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     {
         gameOver = true;
     }
-    if(player->GetDistance() >= 500.0f)
+    if(player->GetDistance() >= 1000.0f)
     {
         player->SetDistance(0.0f);
         if(combatArea)
