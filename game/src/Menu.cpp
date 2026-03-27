@@ -200,7 +200,10 @@ void Menu::UpdateMenuItems(std::map<std::string, int> menuItemsMap)
 {
     for(auto item : menuItemsMap)
     {
-        menuItems[item.first]->ChangeText(item.first + ": " + std::to_string(item.second));
+        if(menuItems.count(item.first))
+        {
+            menuItems[item.first]->ChangeText(item.first + ": " + std::to_string(item.second));
+        }
     }
 
     SetMenuItemsSize();

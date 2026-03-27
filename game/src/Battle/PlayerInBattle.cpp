@@ -1,5 +1,6 @@
 #include <Game/PlayerInBattle.h>
 #include <Game/ConsumableItem.h>
+#include <Game/Spell.h>
 #include <thread>
 #include <chrono>
 
@@ -13,6 +14,9 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     hp = 20;
     maxHP = hp;
     strength = 1;
+    magicLevel = 1;
+    mp = 10;
+    maxMP = mp;
     level = 1;
     xp = 0;
     xpNeeded = 50;
@@ -21,7 +25,9 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     this->color = color;
     this->name = name;
 
-    equippedWeapon = std::make_shared<Weapon>(3);
+    equippedWeapon = std::make_shared<Weapon>(3,"Sword");
+    weapons["Sword"] = equippedWeapon;
+    weapons["Bow"] = std::make_shared<Weapon>(3, "Bow");
 }
 
 PlayerInBattle::~PlayerInBattle()
@@ -99,6 +105,19 @@ void PlayerInBattle::AddWeapon(std::string name, std::shared_ptr<Weapon> weapon)
     weapons[name] = weapon;
 }
 
+void PlayerInBattle::ChangeWeapon(std::string weaponName)
+{
+    if(weapons.count(weaponName))
+    {
+        equippedWeapon = weapons[weaponName];
+    }
+}
+
+void PlayerInBattle::AddSpell(std::string name, std::shared_ptr<Spell> spell)
+{
+    spells[name] = spell;
+}
+
 void PlayerInBattle::PositionSword()
 {
     Transform swordTransform = items["sword"][0]->transform;
@@ -144,9 +163,17 @@ void PlayerInBattle::CheckXP()
     {
         level++;
         strength++;
+        magicLevel++;
         double hpRatio = (double)hp / (double)maxHP;
         maxHP += 10;
         hp = hpRatio * maxHP;
+        double mpRatio = (double)mp / (double)maxMP;
+        maxMP += 5;
+        mp = mpRatio * maxMP;
+        if(mp <= 0)
+        {
+            mp = 0.5 * (double)maxMP;
+        }
         xpNeeded += (level * xpIncrement);
     }
 }
@@ -170,14 +197,32 @@ void PlayerInBattle::UseItem(std::string playerMove)
                 hp = maxHP;
             }
         }
+        else if(itemEffect.first == "mp")
+        {
+            if(mp + itemEffect.second < maxMP)
+            {
+                mp += itemEffect.second;
+            }
+            else
+            {
+                mp = maxMP;
+            }
+        }
     }
 }
 
 int PlayerInBattle::GetMagicDamage(std::string magicType)
 {
-    if(magicType.find("Fire") != std::string::npos)
+    for(auto itr = spells.begin(); itr != spells.end(); itr++)
     {
-        return 20;
+        if(magicType.find(itr->first) != std::string::npos)
+        {
+            if(mp >= itr->second->GetMPCost())
+            {
+                mp -= itr->second->GetMPCost();
+                return magicLevel * itr->second->GetDamage();
+            }
+        }
     }
     return 0;
 }

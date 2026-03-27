@@ -14,71 +14,6 @@
         ],
         "menu" : [
             {
-                "name": "menu",
-                "position": [533.5, 75.0, 0.0],
-                "scale": [1067.0, 150.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 1.0, 0.5],
-                "isStatic": true,
-                "texturePath" : "",
-                "cursorMinMaxHeight" : [55.0, 135.0]
-            },
-            {
-                "name": "menuItem1",
-                "position": [100.0, 135.0, 0.0],
-                "scale": [22.0, 35.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Attack"
-            },
-            {
-                "name": "menuItem2",
-                "position": [100.0, 95.0, 0.0],
-                "scale": [22.0, 35.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Magic"
-            },
-            {
-                "name": "menuItem3",
-                "position": [100.0, 55.0, 0.0],
-                "scale": [22.0, 35.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Items"
-            },
-            {
-                "name": "menuItemPlayerHP",
-                "position": [700.0, 135.0, 0.0],
-                "scale": [22.0, 35.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "HP: "
-            },
-            {
-                "name": "cursor",
-                "position": [50.0, 135.0, 0.0],
-                "scale": [10.0, 5.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : ""
-            },
-            {
                 "name": "attackMenuItem1",
                 "position": [95.0, 135.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
@@ -110,50 +45,6 @@
                 "isStatic": true,
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Back"
-            },
-            {
-                "name": "magicMenuItem1",
-                "position": [100.0, 135.0, 0.0],
-                "scale": [22.0, 35.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Fire"
-            },
-            {
-                "name": "magicMenuItem2",
-                "position": [95.0, 55.0, 0.0],
-                "scale": [22.0, 30.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Back"
-            },
-            {
-                "name": "itemMenuItem1",
-                "position": [100.0, 135.0, 0.0],
-                "scale": [22.0, 35.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Potion"
-            },
-            {
-                "name": "itemMenuItem2",
-                "position": [95.0, 55.0, 0.0],
-                "scale": [22.0, 30.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Back"
             }
         ],
         "player" : [
@@ -165,7 +56,8 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": false,
-                "texturePath" : "/textures/FighterBattle.png"
+                "texturePath" : "/textures/FighterBattle.png",
+                "spell" : {"Fire" : {"Damage" : 3, "MPCost" : 5}}
             }
         ],
         "enemies" : [
@@ -194,8 +86,5 @@
                 "xp" : 10
             }
         ]
-    },
-    "levelParams" : {
-        "nextLevel" : "overworld"
     }
 }

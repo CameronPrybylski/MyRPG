@@ -21,7 +21,9 @@ add_executable(MyRPG
     src/Battle/MenuItem.cpp
     src/Battle/EnemyInBattle.cpp
     src/Battle/Weapon.cpp
+    src/Battle/Spell.cpp
     src/Battle/Potion.cpp
+    src/Battle/Ether.cpp
     src/Enemies/Goblin.cpp
     src/Title/TitleScene.cpp
     src/Title/TitleMenu.cpp

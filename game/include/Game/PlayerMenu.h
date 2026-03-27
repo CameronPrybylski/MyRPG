@@ -17,6 +17,8 @@ public:
     void AddItemsMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text);
     void SetItemsMenuItemsSize();
 
+    void AddEquipmentMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text);
+
     std::string GetPlayerMove(){return playerMove;}
     void SetPlayerMove(std::string playerMove){this->playerMove = playerMove;}
 

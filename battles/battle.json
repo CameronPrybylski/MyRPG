@@ -69,6 +69,17 @@
                 "text" : "HP: "
             },
             {
+                "name": "menuItemPlayerMP",
+                "position": [700.0, 85.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "MP: "
+            },
+            {
                 "name": "cursor",
                 "position": [50.0, 135.0, 0.0],
                 "scale": [10.0, 5.0, 0.0],
@@ -79,7 +90,7 @@
                 "texturePath" : ""
             },
             {
-                "name": "attackMenuItem1",
+                "name": "magicMenuItem1",
                 "position": [100.0, 135.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
@@ -87,21 +98,10 @@
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "EnemyGoblin1"
+                "text" : "Fire"
             },
             {
-                "name": "attackMenuItem2",
-                "position": [100.0, 95.0, 0.0],
-                "scale": [22.0, 35.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Enemy1"
-            },
-            {
-                "name": "attackMenuItem3",
+                "name": "magicMenuItem2",
                 "position": [95.0, 55.0, 0.0],
                 "scale": [22.0, 30.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
@@ -124,6 +124,17 @@
             },
             {
                 "name": "itemMenuItem2",
+                "position": [100.0, 95.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Ether"
+            },
+            {
+                "name": "itemMenuItem3",
                 "position": [95.0, 55.0, 0.0],
                 "scale": [22.0, 30.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
@@ -132,44 +143,6 @@
                 "isStatic": true,
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Back"
-            }
-        ],
-        "player" : [
-            {
-                "name": "player",
-                "position": [800.0, 600.0, 0.0],
-                "scale": [80.0, 100.0, 50.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 0.0],
-                "isStatic": false,
-                "texturePath" : "/textures/FighterBattle.png"
-            }
-        ],
-        "enemies" : [
-            {
-                "name": "EnemyGoblin1",
-                "position": [200.0, 600.0, 0.0],
-                "scale": [100.0, 100.0, 0.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 0.0],
-                "isStatic": false,
-                "texturePath" : "/textures/Goblin-ff1-nes.png",
-                "attackDamage" : 1,
-                "xp" : 10
-            },
-            {
-                "name": "Enemy1",
-                "position": [200.0, 300.0, 0.0],
-                "scale": [100.0, 100.0, 0.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": false,
-                "texturePath" : "",
-                "attackDamage" : 1,
-                "xp" : 10
             }
         ]
     },

@@ -111,10 +111,14 @@ void MenuScene::LoadMenuScene()
             }
             else if(objs.key() == "playerMenu")
             {
-                if(name.find("menuItem") != std::string::npos && menu != nullptr)
+                if(name.find("itemMenuItem") != std::string::npos && menu != nullptr)
                 {
                     menu->AddItemsMenuItem( obst.value("text", "Unnamed"), position, scale, color, texturePath, obst.value("text", "Unnamed"));
                     menu->AddItem(obst.value("text", "Unnamed"));
+                }
+                else if(name.find("equipmentMenuItem") != std::string::npos && menu != nullptr)
+                {
+                    menu->AddEquipmentMenuItem( obst.value("text", "Unnamed"), position, scale, color, texturePath, obst.value("text", "Unnamed"));
                 }
             }
         }
@@ -138,6 +142,7 @@ void MenuScene::OnEvent(const Input &input)
 {
     if(input.IsKeyDown("Escape"))
     {
+        SetPlayerInfo();
         EndScene(nextScene);
     }
     if(input.IsKeyDown("D"))
@@ -164,6 +169,10 @@ void MenuScene::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     {
         UseItem();
     }
+    else if(menu->GetPlayerMove().find("ChangeWeapon") != std::string::npos)
+    {
+        ChangeWeapon();
+    }
 }
 
 void MenuScene::PlayerInfo()
@@ -182,15 +191,27 @@ void MenuScene::PlayerInfo()
         if(item.key() == "Player")
         {
             playerInfoMap["HP"] = item.value()["hp"];
-            maxHP = item.value()["maxhp"];
+            playerInfoMap["maxHP"] = item.value()["maxhp"];
+            playerInfoMap["MP"] = item.value()["mp"];
+            playerInfoMap["maxMP"] = item.value()["maxmp"];
             playerInfoMap["Level"] = item.value()["level"];
             playerInfoMap["Strength"] = item.value()["strength"];
             playerInfoMap["XP"] = item.value()["xp"];
             xpNeeded = item.value()["xpNeeded"];
+            for(auto weapon : item.value()["equippedWeapon"].items())
+            {
+                equippedWeaponName = weapon.key();
+                equippedWeaponDamage = weapon.value();
+            }
+            for(auto weapon : item.value()["weapons"].items())
+            {
+                weapons[weapon.key()] = weapon.value();
+            }
             for(auto conItem : item.value()["items"].items())
             {
                 std::string conItemKey = conItem.key();
                 items[conItem.key()] = item.value()["items"][conItem.key()];
+                SetItemStats(conItemKey);
                 if(items[conItem.key()] < 1)
                 {
                     menu->RemoveAllItems(conItem.key());
@@ -219,12 +240,16 @@ void MenuScene::SetPlayerInfo()
     nlohmann::json saveData;
     saveData["Player"] = nlohmann::json::object_t({
         {"hp", playerInfoMap["HP"]},
-        {"maxhp", maxHP}, 
+        {"maxhp", playerInfoMap["maxHP"]}, 
+        {"mp", playerInfoMap["MP"]},
+        {"maxmp", playerInfoMap["maxMP"]}, 
         {"level", playerInfoMap["Level"]},
         {"strength", playerInfoMap["Strength"]},
         {"xp", playerInfoMap["XP"]},
         {"xpNeeded", xpNeeded},
-        {"items", items}
+        {"items", items},
+        {"equippedWeapon", nlohmann::json::object_t({{equippedWeaponName, equippedWeaponDamage}})},
+        {"weapons", weapons}
     });
 
     battleSave << saveData;
@@ -236,21 +261,55 @@ void MenuScene::SetPlayerMenu()
     background->UpdateMenuItems(playerInfoMap);
 }
 
+void MenuScene::SetItemStats(std::string item)
+{
+    std::unordered_map<std::string, std::string> stats;
+    std::string maxStat = "";
+    std::string stat = "";
+    std::string number = "";
+
+    if(item == "Potion")
+    {
+        maxStat = "maxHP";
+        stat = "HP";
+        number = "5";
+    }
+    else if(item == "Ether")
+    {
+        maxStat = "maxMP";
+        stat = "MP";
+        number = "5";
+    }
+
+    stats["maxStat"] = maxStat;
+    stats["stat"] = stat;
+    stats["number"] = number;
+    itemStats[item] = stats;
+}
+
 void MenuScene::UseItem()
 {
     std::string UseItemStr = "UseItem";
     std::string playerMove = menu->GetPlayerMove();
     std::string itemUse = playerMove.substr(UseItemStr.length(), playerMove.length() - UseItemStr.length());
-    
-    if(itemUse == "Potion")
+    bool itemUsed = false;
+    if(itemStats.count(itemUse))
     {
-        if(playerInfoMap["HP"] + 5 <= maxHP)
+        std::string strStat = itemStats[itemUse]["stat"];
+        int iStat = std::stoi(itemStats[itemUse]["number"]);
+        std::string strMaxStat = itemStats[itemUse]["maxStat"];
+
+        if(playerInfoMap[strStat] + iStat <= playerInfoMap[strMaxStat])
         {
-            playerInfoMap["HP"] += 5;
+            playerInfoMap[strStat] += iStat;
+        }
+        else if(playerInfoMap[strStat] < playerInfoMap[strMaxStat])
+        {
+            playerInfoMap[strStat] = playerInfoMap[strMaxStat];
         }
         else
         {
-            playerInfoMap["HP"] = maxHP;
+            return;
         }
         items[itemUse]--;
         menu->SetPlayerMove("");
@@ -258,4 +317,13 @@ void MenuScene::UseItem()
         SetPlayerMenu();
         SetPlayerInfo();
     }
+}
+
+void MenuScene::ChangeWeapon()
+{
+    std::string ChangeWeaponStr = "ChangeWeapon";
+    std::string playerMove = menu->GetPlayerMove();
+    std::string weapon = playerMove.substr(ChangeWeaponStr.length(), playerMove.length() - ChangeWeaponStr.length());
+    /*To do : Set Weapon Damage*/
+    equippedWeaponName = weapon;
 }
