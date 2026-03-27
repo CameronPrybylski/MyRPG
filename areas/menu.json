@@ -165,6 +165,17 @@
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": true,
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Ether"
+            },
+            {
+                "name": "itemMenuItem3",
+                "position": [125.0, 520.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Back"
             },
             {

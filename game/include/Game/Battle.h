@@ -48,6 +48,8 @@ private:
     bool loadBattle = false;
     std::string saveSlot;
 
+    void SavePlayerItems(nlohmann::json& saveData);
+
     std::string root;
 
 

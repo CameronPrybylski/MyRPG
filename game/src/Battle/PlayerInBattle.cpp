@@ -197,6 +197,17 @@ void PlayerInBattle::UseItem(std::string playerMove)
                 hp = maxHP;
             }
         }
+        else if(itemEffect.first == "mp")
+        {
+            if(mp + itemEffect.second < maxMP)
+            {
+                mp += itemEffect.second;
+            }
+            else
+            {
+                mp = maxMP;
+            }
+        }
     }
 }
 
