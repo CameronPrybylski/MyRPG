@@ -13,7 +13,7 @@ class DialogueBox;
 class Level : public Scene {
 
 public:
-    Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath, std::string root);
+    Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath, std::string currentAreaPath, std::string root);
     //Level(std::unordered_map<std::string, std::shared_ptr<GameObject>> objects);
     ~Level();
 
@@ -52,6 +52,7 @@ private:
     std::string saveFilePath;
     std::string saveBattleFilePath;
     std::string saveGameFilePath;
+    std::string currentAreaPath;
     static bool initialStart;
     std::set<std::string> deadEnemies;
     std::string savescene;
@@ -67,5 +68,8 @@ private:
 
     bool moveCamera = true;
     bool enterArea = true;
+
+    void PreviousArea();
+    void SaveArea(std::string previousArea);
 
 };

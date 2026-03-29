@@ -10,11 +10,12 @@ bool Level::loadGame = false;
 std::string Level::saveSlot = "";
 bool Level::initialStart = true;
 
-Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), root(root)
+Level::Level(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveBattleFilePath, std::string saveGameFilePath, std::string currentAreaPath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), root(root)
 {
     this->saveFilePath = saveFilePath;
     this->saveBattleFilePath = saveBattleFilePath;
     this->saveGameFilePath = saveGameFilePath;
+    this->currentAreaPath = currentAreaPath;
     initialStart = true;
     Init();
 }
@@ -31,6 +32,26 @@ void Level::Init()
 
 void Level::LoadLevel(std::string filepath)
 {
+    std::ifstream areaFile(currentAreaPath);
+    if (!areaFile.is_open()) {
+        throw std::runtime_error("Failed to open area file.");
+    }
+
+    nlohmann::json areaJ;
+    areaFile >> areaJ;
+
+    std::string previousArea;
+    if(areaJ.contains("PreviousArea"))
+    {
+        previousArea = areaJ["PreviousArea"];
+    }
+    else
+    {
+        previousArea = areaJ["CurrentArea"];
+    }
+
+    areaFile.close();
+
 
     std::ifstream file(filepath);
     if (!file.is_open()) {
@@ -50,7 +71,7 @@ void Level::LoadLevel(std::string filepath)
     areaName = j["levelParams"]["area"];
     combatArea = j["levelParams"]["combatArea"];
     moveCamera = j["levelParams"]["moveCamera"];
-    glm::vec3 initialPosition;
+    glm::vec3 initialPosition = {0.0f, 0.0f, -1.0f};
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -78,13 +99,16 @@ void Level::LoadLevel(std::string filepath)
                 AddObject(obst.value("name", "Unnamed"), go);
             }
             else if(objs.key() == "player"){
-                initialPosition = position;
+                if(initialPosition[2] == -1.0f)
+                {
+                    initialPosition = position;
+                }
                 player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
                 go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,true);
                 player->AddItem("sword", go);
-                //AddObject("sword", go);
+                std::unordered_map<std::string, glm::vec3> startPositions;
             }
             else if(objs.key() == "enemies"){
                 if(deadEnemies.count(name) == 0)
@@ -106,6 +130,10 @@ void Level::LoadLevel(std::string filepath)
                 go = town;
                 AddObject(obst.value("name", "Unnamed"), go);
                 towns[name] = town;
+                if(name == previousArea)
+                {
+                    initialPosition = position;
+                }
             }
             else if(objs.key() == "npcs"){
                 std::vector<std::string> dialogue = obst["dialogue"];
@@ -148,6 +176,8 @@ void Level::LoadLevel(std::string filepath)
         LoadGame();
     }
 
+    SaveArea(previousArea);
+
     // Sort using a lambda that dereferences the shared pointers
     std::sort(objectList.begin(), objectList.end(), [](const std::shared_ptr<GameObject>& a, const std::shared_ptr<GameObject>& b) {
         return a->transform.position.z < b->transform.position.z; // Access members using the arrow operator
@@ -172,7 +202,6 @@ void Level::LoadLevel(std::string filepath)
     rightScreenEdge = maxX;
     bottomScreenEdge = minY;
     topScreenEdge = maxY;
-
 }
 
 void Level::LoadPhysics(PhysicsSystem& physics)
@@ -254,6 +283,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
         {
             town.second->SetEnterTown(false);
             SaveState();
+            PreviousArea();
             EndScene(town.first);
         }
     }
@@ -466,4 +496,51 @@ void Level::LoadGame()
 void Level::Reset()
 {
     initialStart = true;
+}
+
+void Level::PreviousArea()
+{
+    std::ifstream currentAreaIn(currentAreaPath);
+    if (!currentAreaIn.is_open()) {
+        throw std::runtime_error("Failed to open area file.");
+    }
+
+    nlohmann::json currentAreaData;
+    currentAreaIn >> currentAreaData;
+    currentAreaData["PreviousArea"] = areaName;
+    
+    currentAreaIn.close();
+
+    std::ofstream currentAreaOut(currentAreaPath);
+    if (!currentAreaOut.is_open()) {
+        throw std::runtime_error("Failed to open area file.");
+    }
+
+    currentAreaOut << currentAreaData;
+    
+    currentAreaOut.close();
+}
+
+void Level::SaveArea(std::string previousArea)
+{
+    std::ifstream currentAreaIn(currentAreaPath);
+    if (!currentAreaIn.is_open()) {
+        throw std::runtime_error("Failed to open area file.");
+    }
+
+    nlohmann::json currentAreaData;
+    currentAreaIn >> currentAreaData;
+    currentAreaData["CurrentArea"] = areaName;
+    currentAreaData["PreviousArea"] = previousArea;
+    
+    currentAreaIn.close();
+
+    std::ofstream currentAreaOut(currentAreaPath);
+    if (!currentAreaOut.is_open()) {
+        throw std::runtime_error("Failed to open area file.");
+    }
+
+    currentAreaOut << currentAreaData;
+    
+    currentAreaOut.close();
 }
