@@ -23,8 +23,8 @@
             },
             {
                 "name": "obstacle3",
-                "position": [755.0, 400.0, 0.0],
-                "scale": [10.0, 620.0, 0.0],
+                "position": [755.0, 680.0, 0.0],
+                "scale": [10.0, 60.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.275, 0.135, 0.035, 1.0],
@@ -33,6 +33,16 @@
             },
             {
                 "name": "obstacle4",
+                "position": [755.0, 320.0, 0.0],
+                "scale": [10.0, 460.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.275, 0.135, 0.035, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            },
+            {
+                "name": "obstacle5",
                 "position": [445.0, 95.0, 0.0],
                 "scale": [610.0, 10.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
@@ -42,7 +52,7 @@
                 "texturePath" : ""
             },
             {
-                "name": "obstacle5",
+                "name": "obstacle6",
                 "position": [450.0, 400.0, -1.0],
                 "scale": [600.0, 600.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
@@ -68,10 +78,10 @@
             {
                 "name": "town1",
                 "position": [745.0, 600.0, 0.0],
-                "scale": [10.0, 100.0, 0.0],
+                "scale": [50.0, 100.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 1.0, 0.0, 1.0],
+                "color": [0.0, 1.0, 0.0, 0.5],
                 "isStatic": true,
                 "texturePath" : ""
             }
