@@ -93,7 +93,8 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
-                "texturePath" : "/textures/FighterOverworld.png"
+                "texturePath" : "/textures/FighterOverworld.png",
+                "startPositiontown1": [600.0, 750.0, 0.0]
             }
         ],
         "saveSpots" : [
