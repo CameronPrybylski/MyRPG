@@ -9,6 +9,7 @@ add_executable(MyRPG
     src/FinalFantasyText.cpp
     src/OverWorld/Player.cpp
     src/OverWorld/SaveSpot.cpp
+    src/OverWorld/TreasureChest.cpp
     src/OverWorld/TownSpot.cpp
     src/Battle/PlayerInBattle.cpp
     src/Obstacle.cpp

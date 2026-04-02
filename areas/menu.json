@@ -123,6 +123,17 @@
                 "text" : "XP"
             },
             {
+                "name": "menuItem4",
+                "position": [500.0, 350.0, 0.0],
+                "scale": [33.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Gil"
+            },
+            {
                 "name": "cursor",
                 "position": [375.0, 600.0, 0.0],
                 "scale": [10.0, 5.0, 0.0],

@@ -198,6 +198,7 @@ void MenuScene::PlayerInfo()
             playerInfoMap["Strength"] = item.value()["strength"];
             playerInfoMap["XP"] = item.value()["xp"];
             xpNeeded = item.value()["xpNeeded"];
+            playerInfoMap["Gil"] = item.value()["gil"];
             for(auto weapon : item.value()["equippedWeapon"].items())
             {
                 equippedWeaponName = weapon.key();
@@ -249,7 +250,8 @@ void MenuScene::SetPlayerInfo()
         {"xpNeeded", xpNeeded},
         {"items", items},
         {"equippedWeapon", nlohmann::json::object_t({{equippedWeaponName, equippedWeaponDamage}})},
-        {"weapons", weapons}
+        {"weapons", weapons},
+        {"gil", playerInfoMap["Gil"]}
     });
 
     battleSave << saveData;

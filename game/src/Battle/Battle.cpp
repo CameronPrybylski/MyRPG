@@ -450,7 +450,8 @@ void Battle::SavePlayerInfo()
         {"xpNeeded", player->GetXPNeeded()},
         {"items", nlohmann::json::object_t({{"Potion", player->ConsumableItemCount("Potion")}})},
         {"equippedWeapon", nlohmann::json::object_t({{player->GetEquippedWeapon()->GetName(), player->GetEquippedWeapon()->GetDamage()}})},
-        {"weapons", nlohmann::json::object_t({{player->GetEquippedWeapon()->GetName(), player->GetEquippedWeapon()->GetDamage()}})}
+        {"weapons", nlohmann::json::object_t({{player->GetEquippedWeapon()->GetName(), player->GetEquippedWeapon()->GetDamage()}})},
+        {"gil", player->GetGil()}
     });
 
     SavePlayerItems(saveData);
@@ -503,6 +504,7 @@ void Battle::LoadPlayerInfo()
             player->SetLevel(item.value()["level"]);
             player->SetXP(item.value()["xp"]);
             player->SetXPNeeded(item.value()["xpNeeded"]);
+            player->SetGil(item.value()["gil"]);
             for(auto weapon : item.value()["equippedWeapon"].items())
             {
                 std::string weaponKey = weapon.key();
