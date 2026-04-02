@@ -9,6 +9,7 @@ Player::Player(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string
     rigidBody.isStatic = isStatic;
     rigidBody.mass = 1.0f;
     hp = 10;
+    gil = 0;
     this->texturePath = texturePath;
     if(texturePath != ""){
         shaderName = "textureShader";

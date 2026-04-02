@@ -1,6 +1,7 @@
 #include <Game/Level.h>
 #include <Game/Obstacle.h>
 #include <Game/SaveSpot.h>
+#include <Game/TreasureChest.h>
 #include <Game/TownSpot.h>
 #include <Game/NPC.h>
 #include <Game/DialogueBox.h>
@@ -124,6 +125,14 @@ void Level::LoadLevel(std::string filepath)
                 go = saveSpot;
                 AddObject(obst.value("name", "Unnamed"), go);
                 saveSpots[name] = saveSpot;
+            }
+            else if(objs.key() == "treasureChests"){
+                std::shared_ptr<TreasureChest> treasureChest = std::make_shared<TreasureChest>(position, scale, color, "", name);
+                go = treasureChest;
+                AddObject(obst.value("name", "Unnamed"), go);
+                treasureChests[name] = treasureChest;
+                std::unordered_map<std::string, int> contents = obst.at("contents");
+                treasureChest->SetContents(contents);
             }
             else if(objs.key() == "towns"){
                 std::shared_ptr<TownSpot> town = std::make_shared<TownSpot>(position, scale, color, "", name);
@@ -277,6 +286,15 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
             SaveGame(saveSpot.first);
         }
     }
+    for(auto treasureChest = treasureChests.begin(); treasureChest != treasureChests.end(); treasureChest++)
+    {
+        if(treasureChest->second->GetOpenChest() && !treasureChest->second->Empty())
+        {
+            treasureChest->second->SetOpenChest(false);
+            treasureChest->second->SetEmpty(true);
+            OpenChest(treasureChest->first);
+        }
+    }
     for(auto town : towns)
     {
         if(town.second->EnterTown())
@@ -367,6 +385,21 @@ void Level::UpdateCamera()
     
 }
 
+void Level::OpenChest(std::string treasureChestName)
+{
+    if(treasureChests.count(treasureChestName))
+    {
+        std::unordered_map<std::string, int> contents = treasureChests[treasureChestName]->GetContents();
+        for(auto content : contents)
+        {
+            if(content.first == "Gil")
+            {
+                player->AddGil(content.second);
+            }
+        }
+    }
+}
+
 void Level::SaveState()
 {
     std::ifstream loadState(saveFilePath);
@@ -378,9 +411,18 @@ void Level::SaveState()
     loadState >> saveData;
     player->transform.position = player->rigidBody.previousPosition;
     nlohmann::json::array_t position = {player->transform.position.x, player->transform.position.y, player->transform.position.z};
-    saveData[areaName]["Player"] = nlohmann::json::object_t({{"position", position}, {"hp", player->hp}});
+    saveData[areaName]["Player"] = nlohmann::json::object_t({{"position", position}, {"hp", player->hp}, {"gil", player->GetGil()}});
     saveData[areaName]["Camera"] = nlohmann::json::object_t({{"leftScreenEdge", leftScreenEdge}, {"rightScreenEdge", rightScreenEdge}, {"topScreenEdge", topScreenEdge}, {"bottomScreenEdge", bottomScreenEdge}});
     saveData[areaName]["Enemy"] = nlohmann::json::object_t({{"enemyFighting", player->enemyFighting}});
+
+    std::unordered_map<std::string, bool> emptyChests;
+
+    for(auto treasureChest = treasureChests.begin(); treasureChest != treasureChests.end(); treasureChest++)
+    {
+        emptyChests[treasureChest->first] = treasureChest->second->Empty();
+    }
+
+    saveData[areaName]["TreasureChests"] = emptyChests;
 
     std::ofstream levelSave(saveFilePath);
     if (!levelSave.is_open()) {
@@ -399,6 +441,29 @@ void Level::SaveState()
     
     currentArea << currentAreaData;
 
+    SaveBattleState();
+
+}
+
+void Level::SaveBattleState()
+{
+    std::ifstream battleSaveIn(saveBattleFilePath);
+    if (!battleSaveIn.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json saveData;
+    battleSaveIn >> saveData;
+    battleSaveIn.close();
+
+    std::ofstream battleSaveOut(saveBattleFilePath);
+    if (!battleSaveOut.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+    
+    saveData["Player"]["gil"] = player->GetGil();
+
+    battleSaveOut << saveData;
 }
 
 void Level::LoadState()
@@ -425,10 +490,21 @@ void Level::LoadState()
         {
             position = {item.value()["position"][0], item.value()["position"][1], item.value()["position"][2]};
             player->SetHP(item.value()["hp"]);
+            if(item.value().contains("gil"))
+            {
+                player->SetGil(item.value()["gil"]);
+            }
         }
         else if(item.key() == "Enemy")
         {
             RemoveEnemy(item.value()["enemyFighting"]);
+        }
+        else if(item.key() == "TreasureChests")
+        {
+            for(auto treasureChest = treasureChests.begin(); treasureChest != treasureChests.end(); treasureChest++)
+            {
+                treasureChest->second->SetEmpty(item.value()[treasureChest->first]);
+            }
         }
     }
     player->rigidBody.previousPosition = player->transform.position;
@@ -480,10 +556,21 @@ void Level::LoadGame()
         {
             position = {item.value()["position"][0], item.value()["position"][1], item.value()["position"][2]};
             player->SetHP(item.value()["hp"]);
+            if(item.value().contains("gil"))
+            {
+                player->SetGil(item.value()["gil"]);
+            }
         }
         else if(item.key() == "Enemy")
         {
             RemoveEnemy(item.value()["enemyFighting"]);
+        }
+        else if(item.key() == "TreasureChests")
+        {
+            for(auto treasureChest = treasureChests.begin(); treasureChest != treasureChests.end(); treasureChest++)
+            {
+                treasureChest->second->SetEmpty(item.value()[treasureChest->first]);
+            }
         }
     }
     player->rigidBody.previousPosition = player->transform.position;

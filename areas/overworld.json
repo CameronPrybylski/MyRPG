@@ -109,6 +109,19 @@
                 "texturePath" : ""
             }
         ],
+        "treasureChests" : [
+            {
+                "name": "treasureChest1",
+                "position": [1000.0, 300.0, 0.0],
+                "scale": [60.0, 50.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "",
+                "contents" : {"Gil" : 10}
+            }
+        ],
         "towns" : [
             {
                 "name": "town1",

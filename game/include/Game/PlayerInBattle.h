@@ -127,6 +127,8 @@ public:
 
     std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> GetConsumableItems(){return this->consumableItems;}
 
+    int GetGil(){return this->gil;}
+    void SetGil(int gil){this->gil = gil;}
 
 private:
     int hp;
@@ -145,6 +147,8 @@ private:
     int xp;
     int xpNeeded;
     int xpIncrement;
+
+    int gil;
 
 
 };

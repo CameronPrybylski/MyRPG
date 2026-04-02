@@ -6,6 +6,7 @@
 #include <set>
 
 class SaveSpot;
+class TreasureChest;
 class TownSpot;
 class NPC;
 class DialogueBox;
@@ -26,10 +27,13 @@ public:
     void OnCollision(std::vector<CollisionEvent> collisions, float dt);
 
     void SaveState();
+    void SaveBattleState();
     void LoadState();
 
     void SaveGame(std::string saveSpot);
     void LoadGame();
+
+    void OpenChest(std::string treasureChestName);
 
     void RemoveEnemy(std::string enemyName);
 
@@ -44,6 +48,7 @@ private:
     std::shared_ptr<Player> player;
     std::vector<std::shared_ptr<Enemy>> enemies; 
     std::unordered_map<std::string, std::shared_ptr<SaveSpot>> saveSpots;
+    std::unordered_map<std::string, std::shared_ptr<TreasureChest>> treasureChests;
     std::unordered_map<std::string, std::shared_ptr<TownSpot>> towns;
     bool gameOver = false;
     std::string filepath;

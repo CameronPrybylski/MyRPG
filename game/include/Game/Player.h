@@ -41,4 +41,14 @@ public:
     float GetDistance(){return distance;}
     void SetDistance(float distance){this->distance = distance;}
 
+    int gil;
+
+    void AddGil(int gil)
+    {
+        this->gil += gil;
+    }
+
+    int GetGil(){return this->gil;}
+    void SetGil(int gil){this->gil = gil;}
+
 };
