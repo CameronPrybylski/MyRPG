@@ -509,6 +509,7 @@ void Battle::LoadPlayerInfo()
             {
                 std::string weaponKey = weapon.key();
                 int weaponDamage = weapon.value();
+                player->AddWeapon(weapon.key(), std::make_shared<Weapon>(weapon.value(), weapon.key()));
                 player->ChangeWeapon(weaponKey);
             }
             for(auto weapon : item.value()["weapons"].items())

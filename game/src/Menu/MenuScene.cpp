@@ -332,6 +332,7 @@ void MenuScene::ChangeWeapon()
     std::string weapon = playerMove.substr(ChangeWeaponStr.length(), playerMove.length() - ChangeWeaponStr.length());
     /*To do : Set Weapon Damage*/
     equippedWeaponName = weapon;
+    equippedWeaponDamage = weapons[equippedWeaponName];
 }
 
 void MenuScene::AddEquipmentItem(std::string text)

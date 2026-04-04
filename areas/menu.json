@@ -199,7 +199,7 @@
                 "weaponDamage": 3,
                 "isStatic": true,
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Sword"
+                "text" : "ShortSword"
             },
             {
                 "name": "equipmentMenuItem2",

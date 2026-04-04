@@ -27,6 +27,15 @@ void PlayerMenu::OnEvent(const Input &input)
                 if(cursor->transform.position.y == menuItem.second->transform.position.y)
                 {
                     menuName = menuItem.second->GetText() + "MenuItems";
+                    if(menuName == "ItemsMenuItems")
+                    {
+                        ResetCursorMinMax(itemsMenuItems);
+                    }
+                    else if(menuName == "EquipmentMenuItems")
+                    {
+                        ResetCursorMinMax(equipmentMenuItems);
+                    }
+                    break;
                 }
             }
         }
@@ -44,7 +53,9 @@ void PlayerMenu::OnEvent(const Input &input)
                     {
                         menuName = "MenuItems";
                         playerMove = "";
+                        ResetCursorMinMax(menuItems);
                     }
+                    break;
                 }
             }
         }
@@ -59,14 +70,37 @@ void PlayerMenu::OnEvent(const Input &input)
                         playerMove = "ChangeWeapon" + equipmentMenuItem.second->GetText();
                     }
                     menuName = "MenuItems";
+                    ResetCursorMinMax(menuItems);
+                    break;
                 }
             }
         }
         else
         {
             menuName = "MenuItems";
+            ResetCursorMinMax(menuItems);
         }
     }
+}
+
+void PlayerMenu::ResetCursorMinMax(std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems)
+{
+    float minCursor = cursorMaxHeight;
+    float maxCursor = cursorMinHeight;
+    for(auto menuItem : menuItems)
+    {
+        if(menuItem.second->transform.position.y < minCursor)
+        {
+            minCursor = menuItem.second->transform.position.y;
+        }
+        if(menuItem.second->transform.position.y > maxCursor)
+        {
+            maxCursor = menuItem.second->transform.position.y;
+        }
+    }
+    cursorMaxHeight = maxCursor;
+    cursorMinHeight = minCursor;
+    cursor->transform.position.y = cursorMaxHeight;
 }
 
 void PlayerMenu::Update(const Input &input, float dt)

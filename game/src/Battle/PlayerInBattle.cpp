@@ -25,8 +25,8 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     this->color = color;
     this->name = name;
 
-    equippedWeapon = std::make_shared<Weapon>(3,"Sword");
-    weapons["Sword"] = equippedWeapon;
+    equippedWeapon = std::make_shared<Weapon>(3,"ShortSword");
+    weapons["ShortSword"] = equippedWeapon;
     weapons["Bow"] = std::make_shared<Weapon>(3, "Bow");
 }
 

@@ -130,7 +130,7 @@
                 "color": [0.275, 0.135, 0.035, 1.0],
                 "isStatic": true,
                 "texturePath" : "",
-                "contents" : {"WeaponShortSword" : 3}
+                "contents" : {"WeaponSword" : 5}
             }
         ],
         "towns" : [
