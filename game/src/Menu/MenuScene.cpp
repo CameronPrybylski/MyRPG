@@ -6,8 +6,11 @@
 #include <Game/Menu.h>
 #include <Game/PlayerMenu.h>
 
+std::string MenuScene::menuFilePath = "";
+
 MenuScene::MenuScene(float screenWidth, float screenHeight, std::string filepath, std::string battleFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), battleFilePath(battleFilePath), root(root)
 {
+    menuFilePath = filepath;
 }
 
 MenuScene::~MenuScene()
@@ -16,6 +19,7 @@ MenuScene::~MenuScene()
 
 void MenuScene::Init()
 {
+    filepath = menuFilePath;
     LoadMenuScene();
 }
 
@@ -328,4 +332,50 @@ void MenuScene::ChangeWeapon()
     std::string weapon = playerMove.substr(ChangeWeaponStr.length(), playerMove.length() - ChangeWeaponStr.length());
     /*To do : Set Weapon Damage*/
     equippedWeaponName = weapon;
+}
+
+void MenuScene::AddEquipmentItem(std::string text)
+{
+
+    std::ifstream menuFileIn(menuFilePath);
+    if (!menuFileIn.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json menuJson;
+    menuFileIn >> menuJson;
+    menuFileIn.close();
+
+    int equipmentItemCount = 0;
+
+    nlohmann::json::object_t bottomItem;
+
+    for(auto playerMenuItem : menuJson["objects"]["playerMenu"].items())
+    {
+        std::string playerMenuItemName = playerMenuItem.value()["name"];        
+        if(playerMenuItemName.find("equipmentMenuItem") != std::string::npos)
+        {
+            equipmentItemCount++;
+            bottomItem = playerMenuItem.value();
+        }
+    }
+
+    bottomItem["name"] = "equipmentMenuItem" + std::to_string(equipmentItemCount + 1);
+    glm::vec3 newPosition = {bottomItem["position"][0], bottomItem["position"][1], bottomItem["position"][2]};
+    bottomItem["position"][1] = newPosition[1] + 200.0f;
+    bottomItem["text"] = text;
+
+    std::string strMenu = "menu";
+    int menuIndex = menuFilePath.find(strMenu);
+    menuFilePath.insert(menuIndex, "new");
+
+    std::ofstream menuFileOut(menuFilePath);
+    if (!menuFileOut.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    menuJson["objects"]["playerMenu"].push_back(bottomItem);
+
+    menuFileOut << menuJson;
+    menuFileOut.close();
 }

@@ -23,6 +23,9 @@ public:
     void UseItem();
     void ChangeWeapon();
 
+    static void AddEquipmentItem(std::string text);
+    static std::string menuFilePath;
+
 private:
     std::string nextScene;
     std::string filepath;
