@@ -83,26 +83,6 @@ void PlayerMenu::OnEvent(const Input &input)
     }
 }
 
-void PlayerMenu::ResetCursorMinMax(std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems)
-{
-    float minCursor = cursorMaxHeight;
-    float maxCursor = cursorMinHeight;
-    for(auto menuItem : menuItems)
-    {
-        if(menuItem.second->transform.position.y < minCursor)
-        {
-            minCursor = menuItem.second->transform.position.y;
-        }
-        if(menuItem.second->transform.position.y > maxCursor)
-        {
-            maxCursor = menuItem.second->transform.position.y;
-        }
-    }
-    cursorMaxHeight = maxCursor;
-    cursorMinHeight = minCursor;
-    cursor->transform.position.y = cursorMaxHeight;
-}
-
 void PlayerMenu::Update(const Input &input, float dt)
 {
 }

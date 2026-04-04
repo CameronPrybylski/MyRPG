@@ -65,5 +65,7 @@ protected:
 
     void CreateBorders();
 
+    virtual void ResetCursorMinMax(std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems);
+
     
 };

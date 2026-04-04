@@ -61,5 +61,4 @@ private:
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> equipmentMenuItems;
     std::unordered_map<std::string, int> items;
     std::string playerMove;
-    void ResetCursorMinMax(std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems);
 };
