@@ -6,6 +6,7 @@
 #include <Game/NPC.h>
 #include <Game/DialogueBox.h>
 #include <Game/MenuItem.h>
+#include <Game/MenuScene.h>
 
 bool Level::loadGame = false;
 std::string Level::saveSlot = "";
@@ -396,8 +397,42 @@ void Level::OpenChest(std::string treasureChestName)
             {
                 player->AddGil(content.second);
             }
+            else if(content.first.find("Weapon") != std::string::npos)
+            {
+                std::string strWeapon = "Weapon";
+                std::string weaponName = content.first.substr(strWeapon.length());
+                AddWeapon(weaponName, content.second);
+            }
         }
     }
+}
+
+void Level::AddWeapon(std::string weaponName, int weaponDamage)
+{
+    std::ifstream battleSaveIn(saveBattleFilePath);
+    if (!battleSaveIn.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json saveData;
+    battleSaveIn >> saveData;
+
+    battleSaveIn.close();
+
+    if(saveData["Player"]["weapons"][weaponName].size() == 0)
+        saveData["Player"]["weapons"][weaponName] = weaponDamage;
+
+    std::ofstream battleSaveOut(saveBattleFilePath);
+    if (!battleSaveOut.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    battleSaveOut << saveData;
+
+    battleSaveOut.close();
+
+    MenuScene::AddEquipmentItem(weaponName);
+
 }
 
 void Level::SaveState()

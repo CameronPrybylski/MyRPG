@@ -39,6 +39,8 @@ public:
 
     void UpdateCamera();
 
+    void AddWeapon(std::string weaponName, int weaponDamage);
+
     static void SetSaveSlot(std::string SaveSlot){saveSlot = SaveSlot;}
     static void SetLoadGame(bool LoadGame){loadGame = LoadGame;}
 
