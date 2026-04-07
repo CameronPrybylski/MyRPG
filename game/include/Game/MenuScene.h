@@ -23,7 +23,7 @@ public:
     void UseItem();
     void ChangeWeapon();
 
-    static void AddEquipmentItem(std::string text);
+    static void AddEquipmentItem(std::string text, std::string description);
     static std::string menuFilePath;
 
 private:
@@ -31,13 +31,14 @@ private:
     std::string filepath;
     std::string battleFilePath;
     std::shared_ptr<PlayerMenu> menu;
-    std::shared_ptr<Menu> background;
+    std::shared_ptr<PlayerMenu> background;
     std::shared_ptr<Menu> activeMenu;
     std::map<std::string, int> playerInfoMap;
     std::unordered_map<std::string, int> items;
     std::unordered_map<std::string, int> weapons;
     std::unordered_map<std::string, std::unordered_map<std::string, std::string>> itemStats;
     void SetItemStats(std::string item);
+    void UpdateDescriptions();
 
     int xpNeeded;
     std::string equippedWeaponName;

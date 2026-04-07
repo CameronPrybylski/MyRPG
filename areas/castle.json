@@ -50,6 +50,16 @@
                 "color": [0.4, 0.4, 0.4, 1.0],
                 "isStatic": true,
                 "texturePath" : ""
+            },
+            {
+                "name": "obstacle6",
+                "position": [450.0, 800.0, -0.5],
+                "scale": [100.0, 125.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.2, 0.1, 0.05, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
             }
         ],
         "player" : [
@@ -100,13 +110,25 @@
                 "texturePath" : "/textures/Nerrick_sprite.png",
                 "dialogue" : ["Hello!", "My name is Merrick.", "You may have met my Brother", "We co-own this here inn."], 
                 "maxDist" : 500.0
+            },
+            {
+                "name": "npcKingCornelia",
+                "position": [450.0, 785.0, 0.0],
+                "scale": [50.0, 50.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [100.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 0.0],
+                "isStatic": true,
+                "texturePath" : "/textures/KingofCornelia-ff1-nes.png",
+                "dialogue" : ["Hello!", "I am the King of Cornealia."], 
+                "maxDist" : 500.0
             }
         ],
         "dialogue" : [
             {
                 "name": "dialogueBox",
                 "position": [700.0, 800.0, -0.5],
-                "scale": [250.0, 62.5, 0.0],
+                "scale": [300.0, 75.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 0.0, 0.5, 1.0],
@@ -116,7 +138,7 @@
             {
                 "name": "textPos",
                 "position": [400.0, 800.0, -0.5],
-                "scale": [11.0, 7.0, 0.0],
+                "scale": [12.0, 7.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],

@@ -430,8 +430,8 @@ void Level::AddWeapon(std::string weaponName, int weaponDamage)
     battleSaveOut << saveData;
 
     battleSaveOut.close();
-
-    MenuScene::AddEquipmentItem(weaponName);
+    std::string description = "Damage of " + std::to_string(weaponDamage);
+    MenuScene::AddEquipmentItem(weaponName, description);
 
 }
 
