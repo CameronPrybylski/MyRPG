@@ -95,7 +95,7 @@ void PlayerMenu::Render(Renderer &renderer, const Camera &camera)
         for(auto itemsMenuItem : itemsMenuItems)
         {
             itemsMenuItem.second->Render(renderer, camera);
-            if(itemsMenuItem.first.find("Back") == std::string::npos)
+            if(itemsMenuItem.first.find("Back") == std::string::npos && descriptions.empty())
             {
                 std::unique_ptr<MenuItem> itemCountMenuItem = std::make_unique<MenuItem>("ItemCount", itemsMenuItem.second->GetEndPosition() + glm::vec3(25.0f, 0.0f, 0.0f), itemsMenuItem.second->transform.scale, itemsMenuItem.second->color, itemsMenuItem.second->GetFontPath(), "x" + std::to_string(items[itemsMenuItem.second->GetText()]));
                 itemCountMenuItem->Render(renderer, camera);
@@ -126,4 +126,47 @@ void PlayerMenu::AddEquipmentMenuItem(std::string name, glm::vec3 position, glm:
 void PlayerMenu::SetItemsMenuItemsSize()
 {
     
+}
+
+std::string PlayerMenu::CurrentItem()
+{
+    std::unordered_map<std::string, std::shared_ptr<MenuItem>> currentMenuItems;
+    if(menuName == "MenuItems")
+    {
+        return "";
+    }
+    else if(menuName == "ItemsMenuItems")
+    {
+        currentMenuItems = itemsMenuItems;
+    }
+    else if(menuName == "EquipmentMenuItems")
+    {
+        currentMenuItems = equipmentMenuItems;
+    }
+    for(auto currentMenuItem : currentMenuItems)
+    {
+        if(cursor->transform.position.y == currentMenuItem.second->transform.position.y)
+        {
+            return currentMenuItem.second->GetText();
+        }
+    }
+    return "";
+}
+
+void PlayerMenu::ChangeDescription()
+{
+    if(!descriptions.empty() && menuName != "MenuItems")
+    {
+        std::unordered_map<std::string, std::shared_ptr<MenuItem>> currentMenuItems;
+        if(menuName == "ItemsMenuItems")
+        {
+            currentMenuItems = itemsMenuItems;
+        }
+        else if(menuName == "EquipmentMenuItems")
+        {
+            currentMenuItems = equipmentMenuItems;
+        }
+        if(description.length())
+            currentMenuItems.begin()->second->ChangeText(description);
+    }
 }

@@ -22,6 +22,9 @@ public:
     std::string GetPlayerMove(){return playerMove;}
     void SetPlayerMove(std::string playerMove){this->playerMove = playerMove;}
 
+    std::string GetMenuName(){return this->menuName;}
+    void SetMenuName(std::string menuName){this->menuName = menuName;}
+
     void SetItemCount(std::string item, int count)
     {
         items[item] = count;
@@ -55,10 +58,21 @@ public:
         items[item] = 0;
         itemsMenuItems.erase(item);
     }
+
+    std::unordered_map<std::string, std::shared_ptr<MenuItem>> GetItemMenuItems(){return this->itemsMenuItems;}
+    std::unordered_map<std::string, std::shared_ptr<MenuItem>> GetEquipmentMenuItems(){return this->equipmentMenuItems;}
+
+    void AddDescription(std::string text, std::string description){descriptions[text] = description;}
+    void SetDescription(std::string item){description = descriptions[item];}
+    void ChangeDescription();
+
+    std::string CurrentItem();
     
 private:
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> itemsMenuItems;
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> equipmentMenuItems;
     std::unordered_map<std::string, int> items;
+    std::unordered_map<std::string, std::string> descriptions;
+    std::string description;
     std::string playerMove;
 };

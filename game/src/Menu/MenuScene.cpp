@@ -93,7 +93,7 @@ void MenuScene::LoadMenuScene()
                 if(name == "background")
                 {
                     //go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
-                    background = std::make_shared<Menu>(position, scale, color, "", name);
+                    background = std::make_shared<PlayerMenu>(position, scale, color, "", name);
                     background->SetCursorMinHeight(200.0f);
                     background->SetCursorMaxHeight(600.0f);
                     background->SetActive(false);
@@ -115,14 +115,30 @@ void MenuScene::LoadMenuScene()
             }
             else if(objs.key() == "playerMenu")
             {
+                glm::vec3 descriptionPosition;
+                std::string description;
                 if(name.find("itemMenuItem") != std::string::npos && menu != nullptr)
                 {
                     menu->AddItemsMenuItem( obst.value("text", "Unnamed"), position, scale, color, texturePath, obst.value("text", "Unnamed"));
                     menu->AddItem(obst.value("text", "Unnamed"));
+                    descriptionPosition = { obst["descriptionPosition"][0], obst["descriptionPosition"][1], obst["descriptionPosition"][2]};
+                    description = obst.value("description", "Unamed");
+                    if(background->GetItemMenuItems().size() <= 0)
+                    {
+                        background->AddItemsMenuItem(description, descriptionPosition, scale, color, texturePath, description);
+                    }
+                    background->AddDescription(obst.value("text", "Unnamed"), description);
                 }
                 else if(name.find("equipmentMenuItem") != std::string::npos && menu != nullptr)
                 {
                     menu->AddEquipmentMenuItem( obst.value("text", "Unnamed"), position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                    descriptionPosition = { obst["descriptionPosition"][0], obst["descriptionPosition"][1], obst["descriptionPosition"][2]};
+                    description = obst.value("description", "Unamed");
+                    if(background->GetEquipmentMenuItems().size() <= 0)
+                    {
+                        background->AddEquipmentMenuItem(description, descriptionPosition, scale, color, texturePath, description);
+                    }
+                    background->AddDescription(obst.value("text", "Unnamed"), description);
                 }
             }
         }
@@ -161,10 +177,13 @@ void MenuScene::OnEvent(const Input &input)
         background->SetActive(false);
         menu->SetActive(true);
     }
+
     for(auto item : objectList)
     {
         item->OnEvent(input);
     }
+
+    UpdateDescriptions();
 }
 
 void MenuScene::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
@@ -177,6 +196,13 @@ void MenuScene::OnUpdate(const Input &input, PhysicsSystem &physics, float dt)
     {
         ChangeWeapon();
     }
+}
+
+void MenuScene::UpdateDescriptions()
+{
+    background->SetMenuName(menu->GetMenuName());
+    background->SetDescription(menu->CurrentItem());
+    background->ChangeDescription();
 }
 
 void MenuScene::PlayerInfo()
@@ -335,7 +361,7 @@ void MenuScene::ChangeWeapon()
     equippedWeaponDamage = weapons[equippedWeaponName];
 }
 
-void MenuScene::AddEquipmentItem(std::string text)
+void MenuScene::AddEquipmentItem(std::string text, std::string description)
 {
 
     std::ifstream menuFileIn(menuFilePath);
@@ -365,6 +391,7 @@ void MenuScene::AddEquipmentItem(std::string text)
     glm::vec3 newPosition = {bottomItem["position"][0], bottomItem["position"][1], bottomItem["position"][2]};
     bottomItem["position"][1] = newPosition[1] + 200.0f;
     bottomItem["text"] = text;
+    bottomItem["description"] = description;
 
     std::string strMenu = "menu";
     int menuIndex = menuFilePath.find(strMenu);
