@@ -12,13 +12,9 @@ BattleMenu::~BattleMenu()
 
 void BattleMenu::OnEvent(const Input &input)
 {
-    if(input.IsKeyDown("W") && cursor->transform.position.y < cursorMaxHeight)
+    if(input.IsKeyDown("W") || input.IsKeyDown("S"))
     {
-        cursor->transform.position.y += 20.0f;
-    }
-    if(input.IsKeyDown("S") && cursor->transform.position.y > cursorMinHeight)
-    {
-        cursor->transform.position.y -= 20.0f;
+        MoveCursor(input);
     }
     if(input.IsKeyDown("RETURN"))
     {
@@ -145,18 +141,21 @@ void BattleMenu::AddAttackMenuItem(std::string name, glm::vec3 position, glm::ve
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     attackMenuItems[text] = menuItem;
+    menuItemsMap["AttackMenuItems"] = attackMenuItems;
 }
 
 void BattleMenu::AddMagicMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     magicMenuItems[text] = menuItem;
+    menuItemsMap["MagicMenuItems"] = attackMenuItems;
 }
 
 void BattleMenu::AddItemMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     itemMenuItems[text] = menuItem;
+    menuItemsMap["ItemsMenuItems"] = attackMenuItems;
 }
 
 void BattleMenu::SetDeadEnemies(std::vector<std::string> deadEnemies)

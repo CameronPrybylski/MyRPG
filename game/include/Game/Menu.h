@@ -56,6 +56,7 @@ public:
 protected:
 
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems;
+    std::unordered_map<std::string, std::unordered_map<std::string, std::shared_ptr<MenuItem>>> menuItemsMap;
     std::shared_ptr<GameObject> cursor;
     float cursorMinHeight;
     float cursorMaxHeight;
@@ -66,6 +67,9 @@ protected:
     void CreateBorders();
 
     virtual void ResetCursorMinMax(std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems);
+
+    void MoveCursor(const Input& input);
+
 
     
 };

@@ -10,6 +10,7 @@ Menu::Menu(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string tex
     this->name = name;
 
     menuName = "MenuItems";
+    menuItemsMap[menuName] = menuItems;
 
     mesh = AssetManager::GetMesh("quadMesh");
 
@@ -51,6 +52,49 @@ void Menu::OnEvent(const Input &input)
         }
     }
 
+}
+
+void Menu::MoveCursor(const Input& input)
+{
+    if(!active)
+    {
+        return;
+    }
+    std::unordered_map<std::string, std::shared_ptr<MenuItem>> genericMenuItems;
+    bool down = false;
+    bool upOrDown = false;
+    float minMax;
+
+    genericMenuItems = menuItemsMap.at(menuName);
+    
+    if(input.IsKeyDown("W") && cursor->transform.position.y < cursorMaxHeight && active)
+    {
+        upOrDown = true;
+        minMax = cursorMaxHeight;
+    }
+    if(input.IsKeyDown("S") && cursor->transform.position.y > cursorMinHeight && active)
+    {
+        upOrDown = true;
+        down = true;
+        minMax = cursorMinHeight;
+    }
+    if(upOrDown)
+    {
+        for(auto item : genericMenuItems)
+        {
+            //Cursor move down aka 'S'
+            if(down && cursor->transform.position.y > item.second->transform.position.y && item.second->transform.position.y > minMax)
+            {
+                minMax = item.second->transform.position.y;
+            }
+            //Cursor move up aka 'W'
+            else if(cursor->transform.position.y < item.second->transform.position.y && item.second->transform.position.y < minMax)
+            {
+                minMax = item.second->transform.position.y;
+            }
+        }
+        cursor->transform.position.y = minMax;
+    }
 }
 
 void Menu::ResetCursorMinMax(std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems)
@@ -112,6 +156,7 @@ void Menu::AddMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, gl
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     menuItems[name] = menuItem;
+    menuItemsMap["MenuItems"] = menuItems;
 }
 
 void Menu::AddCursor(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath)
