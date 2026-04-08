@@ -12,13 +12,10 @@ TitleMenu::~TitleMenu()
 
 void TitleMenu::OnEvent(const Input &input)
 {
-    if(input.IsKeyDown("W") && cursor->transform.position.y < cursorMaxHeight)
+
+    if(input.IsKeyDown("W") || input.IsKeyDown("S"))
     {
-        cursor->transform.position.y += 20.0f;
-    }
-    if(input.IsKeyDown("S") && cursor->transform.position.y > cursorMinHeight)
-    {
-        cursor->transform.position.y -= 20.0f;
+        MoveCursor(input);
     }
     if(input.IsKeyDown("RETURN"))
     {
@@ -130,6 +127,7 @@ void TitleMenu::AddLoadMenuItem(std::string name, glm::vec3 position, glm::vec3 
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     loadMenuItems[text] = menuItem;
+    menuItemsMap["Load GameMenuItems"] = loadMenuItems;
 }
 
 void TitleMenu::SetMenuItemsSize()

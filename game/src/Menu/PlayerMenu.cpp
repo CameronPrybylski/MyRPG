@@ -3,6 +3,8 @@
 
 PlayerMenu::PlayerMenu(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name) : Menu(position, scale, color, texturePath, name)
 {
+    menuItemsMap["ItemsMenuItems"] = itemsMenuItems;
+    menuItemsMap["EquipmentMenuItems"] = equipmentMenuItems;
 }
 
 PlayerMenu::~PlayerMenu()
@@ -10,13 +12,9 @@ PlayerMenu::~PlayerMenu()
 }
 void PlayerMenu::OnEvent(const Input &input)
 {
-    if(input.IsKeyDown("W") && cursor->transform.position.y < cursorMaxHeight && active)
+    if(input.IsKeyDown("W") || input.IsKeyDown("S"))
     {
-        cursor->transform.position.y += 20.0f;
-    }
-    if(input.IsKeyDown("S") && cursor->transform.position.y > cursorMinHeight && active)
-    {
-        cursor->transform.position.y -= 20.0f;
+        MoveCursor(input);
     }
     if(input.IsKeyDown("RETURN") && active)
     {
@@ -115,12 +113,14 @@ void PlayerMenu::AddItemsMenuItem(std::string name, glm::vec3 position, glm::vec
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     itemsMenuItems[text] = menuItem;
+    menuItemsMap["ItemsMenuItems"] = itemsMenuItems;
 }
 
 void PlayerMenu::AddEquipmentMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
 {
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     equipmentMenuItems[text] = menuItem;
+    menuItemsMap["EquipmentMenuItems"] = equipmentMenuItems;
 }
 
 void PlayerMenu::SetItemsMenuItemsSize()
