@@ -36,10 +36,14 @@ public:
 
     std::vector<std::shared_ptr<LetterText>> GetLetters();
 
+    void SetSelectable(bool selectable){this->selectable = selectable;}
+    bool GetSelectable(){return this->selectable;}
+
 private:
     TextTexture textTexture;
     std::string text;
     std::string fontPath;
+    bool selectable = true;
 
     std::shared_ptr<StringText> stringText;
 

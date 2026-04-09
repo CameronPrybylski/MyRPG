@@ -9,6 +9,7 @@
 #include <Game/Potion.h>
 #include <Game/Ether.h>
 #include <Game/Spell.h>
+#include <Game/MenuItem.h>
 
 #include <random>
 #include <chrono>
@@ -111,6 +112,7 @@ void Battle::LoadBattle()
                 else if(name.find("menuItem") != std::string::npos)
                 {
                     menu->AddMenuItem(name, position, scale, color, texturePath, obst.value("text", "Unnamed"));
+                    menu->GetMenuItem(name)->SetSelectable(obst.value("selectable", false));
                 }
                 else if(name.find("magicMenuItem") != std::string::npos)
                 {

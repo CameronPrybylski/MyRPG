@@ -83,12 +83,12 @@ void Menu::MoveCursor(const Input& input)
         for(auto item : genericMenuItems)
         {
             //Cursor move down aka 'S'
-            if(down && cursor->transform.position.y > item.second->transform.position.y && item.second->transform.position.y > minMax)
+            if(down && item.second->GetSelectable() && cursor->transform.position.y > item.second->transform.position.y && item.second->transform.position.y > minMax)
             {
                 minMax = item.second->transform.position.y;
             }
             //Cursor move up aka 'W'
-            else if(cursor->transform.position.y < item.second->transform.position.y && item.second->transform.position.y < minMax)
+            else if(item.second->GetSelectable() && cursor->transform.position.y < item.second->transform.position.y && item.second->transform.position.y < minMax)
             {
                 minMax = item.second->transform.position.y;
             }
