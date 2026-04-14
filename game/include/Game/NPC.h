@@ -17,11 +17,15 @@ public:
     void SetTalking(bool talking){this->talking = talking;}
     std::vector<std::string> GetDialogue(){return dialogue;}
 
+    void SetDialogueTree(std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree){this->dialogueTree = dialogueTree;}
+
+
 private:
     std::vector<std::string> dialogue;
     bool talking = false;
     glm::vec3 velocity;
     float maxDist;
     float distance = 0;
+    std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree;
 
 };

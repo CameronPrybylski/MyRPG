@@ -1,1 +1,1 @@
-{"Player":{"equippedWeapon":{"Sword":5},"gil":0,"hp":17,"items":{"Ether":5,"Potion":5},"level":3,"maxhp":40,"maxmp":20,"mp":20,"strength":3,"weapons":{"Bow":3,"ShortSword":3,"Sword":5},"xp":80,"xpNeeded":100}}
+{"Player":{"equippedWeapon":{"ShortSword":3},"gil":0,"hp":20,"items":{"Potion":0},"level":1,"maxhp":20,"maxmp":10,"mp":10,"strength":1,"weapons":{"Bow":3,"ShortSword":3},"xp":0,"xpNeeded":50}}

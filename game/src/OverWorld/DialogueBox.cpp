@@ -1,5 +1,6 @@
 #include <Game/DialogueBox.h>
 #include <Game/MenuItem.h>
+#include <Game/Menu.h>
 #include <Game/Obstacle.h>
 #include <Engine/Scene/LetterText.h>
 
@@ -33,7 +34,62 @@ void DialogueBox::OnEvent(const Input &input)
         {
             currentText->ChangeText(dialogue[index]);
         }
+        if(index == dialogue.size() - 1)
+        {
+            selectMenuActive = true;
+            selectMenu->SetActive(true);
+        }
+        else
+        {
+            selectMenuActive = false;
+            selectMenu->SetActive(false);
+        }
     }
+    if(selectMenuActive && selectMenu != nullptr)
+    {
+        selectMenu->OnEvent(input);
+        if(input.IsKeyDown("RETURN") )
+        {
+            for(int i = 0; i < dialogueTree.size(); i++)
+            {
+                std::string selectMenuName = selectMenu->GetMenuName();
+                std::string strMenuName = "MenuItems";
+                size_t end = selectMenuName.find(strMenuName);
+                std::string dialogueOption = selectMenuName.substr(0, end);
+                if(dialogueTree[i].count(dialogueOption))
+                {
+                    ResetDialogue(i, dialogueOption);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void DialogueBox::ResetDialogue(int indexOfD, std::string dialogueOption)
+{
+    dialogue = dialogueTree[indexOfD][dialogueOption];
+    this->index = 0;
+    currentText->ChangeText(dialogue[this->index]);
+    selectMenuActive = false;
+    selectMenu->SetActive(false);
+
+    std::vector<std::string> newMenuItemsText;
+    
+    if(2*indexOfD + 1 < dialogueTree.size())
+    {
+        newMenuItemsText.push_back(dialogueTree[2*indexOfD + 1].begin()->first);
+        newMenuItemsText.push_back(dialogueTree[2*indexOfD + 2].begin()->first);
+    }
+    else
+    {
+        selectMenu->SetDefaultMenuName();
+        newMenuItemsText.push_back(dialogueTree[1].begin()->first);
+        newMenuItemsText.push_back(dialogueTree[2].begin()->first);
+    }
+
+    selectMenu->SetMenuItemsText(newMenuItemsText);
+
 }
 
 void DialogueBox::Update(const Input &input, float dt)
@@ -51,6 +107,8 @@ void DialogueBox::Render(Renderer &renderer, const Camera &camera)
             border->Render(renderer, camera);
         }
         indexRendered = index;
+        if(selectMenuActive && selectMenu != nullptr)
+            selectMenu->Render(renderer, camera);
     }
 }
 
@@ -155,4 +213,24 @@ void DialogueBox::SetBordersPosition(glm::vec3 position)
 {
     borders.clear();
     CreateBorders();
+}
+
+void DialogueBox::AddSelectMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text)
+{
+    selectMenu->AddMenuItem(name, position, scale, color, fontPath, text);
+}
+
+void DialogueBox::AddSelectMenu(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name)
+{
+    selectMenu = std::make_shared<Menu>(position, scale, color, "", name);
+}
+
+void DialogueBox::SetMenuActive(bool active)
+{
+    this->selectMenu->SetActive(active);
+}
+
+void DialogueBox::SetDialogueTree(std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree)
+{
+    this->dialogueTree = dialogueTree;
 }

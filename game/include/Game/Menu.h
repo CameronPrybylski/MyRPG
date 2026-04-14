@@ -45,12 +45,21 @@ public:
 
 
     std::shared_ptr<MenuItem> GetMenuItem(std::string name){return menuItems[name];}
+    std::unordered_map<std::string, std::shared_ptr<MenuItem>> GetMenuItems(){return this->menuItems;}
+    void SetMenuItems(std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems){this->menuItems = menuItems;}
+
+    void SetMenuItemsText(std::vector<std::string> newMenuItemsText);
+    void SetDefaultMenuName(){this->menuName = defaultMenuName;}
+
+    std::string GetMenuName(){return this->menuName;}
 
     virtual void SetMenuItemsSize();
 
     virtual void UpdateMenuItems(std::map<std::string, int> menuItemsMap);
 
     virtual void DrawBorders(Renderer &renderer, const Camera &camera);
+
+    virtual int GetNumberOfMenuItems(){return this->menuItems.size();}
 
 
 protected:
@@ -63,6 +72,7 @@ protected:
     std::string menuName;
     std::vector<std::shared_ptr<GameObject>> borders;
     bool active = true;
+    const std::string defaultMenuName = "MenuItems";
 
     void CreateBorders();
 
