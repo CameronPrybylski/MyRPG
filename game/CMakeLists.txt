@@ -16,7 +16,6 @@ add_executable(MyRPG
     src/OverWorld/Enemy.cpp
     src/OverWorld/NPC.cpp
     src/OverWorld/DialogueBox.cpp
-    src/OverWorld/DialogueTree.cpp
     src/Sword.cpp
     src/Battle/Battle.cpp
     src/Battle/BattleMenu.cpp

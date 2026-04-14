@@ -3,7 +3,6 @@
 #include <Game/Menu.h>
 #include <Game/Obstacle.h>
 #include <Engine/Scene/LetterText.h>
-#include <Game/DialogueTree.h>
 
 DialogueBox::DialogueBox(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name)
 {
