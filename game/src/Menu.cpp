@@ -30,13 +30,9 @@ Menu::~Menu()
 
 void Menu::OnEvent(const Input &input)
 {
-    if(input.IsKeyDown("W") && cursor->transform.position.y < cursorMaxHeight && active)
+    if(input.IsKeyDown("W") || input.IsKeyDown("S"))
     {
-        cursor->transform.position.y += 20.0f;
-    }
-    if(input.IsKeyDown("S") && cursor->transform.position.y > cursorMinHeight && active)
-    {
-        cursor->transform.position.y -= 20.0f;
+        MoveCursor(input);
     }
     if(input.IsKeyDown("RETURN") && active)
     {
@@ -50,6 +46,14 @@ void Menu::OnEvent(const Input &input)
                 }
             }
         }
+        else
+        {
+            menuName = "MenuItems";
+        }
+    }
+    if(!active)
+    {
+        menuName = "MenuItems";
     }
 
 }
@@ -64,9 +68,11 @@ void Menu::MoveCursor(const Input& input)
     bool down = false;
     bool upOrDown = false;
     float minMax;
+    if(menuItemsMap.count(menuName))
+        genericMenuItems = menuItemsMap.at(menuName);
+    else
+        return;
 
-    genericMenuItems = menuItemsMap.at(menuName);
-    
     if(input.IsKeyDown("W") && cursor->transform.position.y < cursorMaxHeight && active)
     {
         upOrDown = true;
@@ -132,15 +138,7 @@ void Menu::Render(Renderer &renderer, const Camera &camera)
             menuItem.second->Render(renderer, camera);
         }
     }
-    /*
-    else
-    {
-        menuName = "MenuItems";
-        for(auto menuItem : menuItems)
-        {
-            menuItem.second->Render(renderer, camera);
-        }
-    }*/
+
     if(active)
         renderer.DrawQuad(*cursor->mesh, cursor->transform, camera, AssetManager::GetShader(cursor->shaderName), cursor->color);
 
@@ -157,6 +155,14 @@ void Menu::AddMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, gl
     std::shared_ptr<MenuItem> menuItem = std::make_shared<MenuItem>(name, position, scale, color, fontPath, text);
     menuItems[name] = menuItem;
     menuItemsMap["MenuItems"] = menuItems;
+    if(position.y < cursorMinHeight)
+    {
+        cursorMinHeight = position.y;
+    }
+    if(position.y > cursorMaxHeight)
+    {
+        cursorMaxHeight = position.y;
+    }
 }
 
 void Menu::AddCursor(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath)
@@ -234,4 +240,19 @@ void Menu::UpdateMenuItems(std::map<std::string, int> menuItemsMap)
     }
 
     SetMenuItemsSize();
+}
+
+void Menu::SetMenuItemsText(std::vector<std::string> newMenuItemsText)
+{
+    if(menuItems.size() == newMenuItemsText.size())
+    {
+        int i = 0;
+        for(auto menuItem : menuItems)
+        {
+            if(newMenuItemsText[i] != "")
+                menuItem.second->ChangeText(newMenuItemsText[i]);
+            i++;
+        }
+        menuName = "MenuItems";
+    }
 }

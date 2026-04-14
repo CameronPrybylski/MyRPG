@@ -7,6 +7,7 @@
 #include <Game/DialogueBox.h>
 #include <Game/MenuItem.h>
 #include <Game/MenuScene.h>
+#include <Game/Menu.h>
 
 bool Level::loadGame = false;
 std::string Level::saveSlot = "";
@@ -149,6 +150,19 @@ void Level::LoadLevel(std::string filepath)
                 std::vector<std::string> dialogue = obst["dialogue"];
                 float maxDist = obst["maxDist"];
                 std::shared_ptr<NPC> npc = std::make_shared<NPC>(position, scale, velocity, color, texturePath, name, isStatic, dialogue, maxDist);
+                std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree;
+                if(obst.count("dialogueTree"))
+                {
+                    for(int i = 0; i < obst.at("dialogueTree").size(); i++)
+                    {
+                        dialogueTree.push_back(obst.at("dialogueTree")[i]);
+                    }
+                    npc->SetDialogueTree(dialogueTree);
+                    if(dialogueBox != nullptr)
+                    {
+                        dialogueBox->SetDialogueTree(dialogueTree);
+                    }
+                }
                 npcs[name] = npc;
                 go = npc;
                 AddObject(obst.value("name", "Unnamed"), go);
@@ -166,6 +180,24 @@ void Level::LoadLevel(std::string filepath)
                     std::string text = obst.value("text", "Unnamed");
                     std::shared_ptr<MenuItem> textPos = std::make_shared<MenuItem>(name, position, scale, color, texturePath, text);
                     dialogueBox->SetCurrentText(textPos);
+                }
+                else if(name == "selectMenu")
+                {
+                    dialogueBox->AddSelectMenu(position, scale, color, "", name);
+                }
+                else if(name.find("selectMenuItem") != std::string::npos && dialogueBox->GetSelectMenu() != nullptr)
+                {
+                    if(dialogueBox->GetSelectMenu()->GetNumberOfMenuItems() == 0)
+                    {
+                        dialogueBox->GetSelectMenu()->SetCursorMaxHeight(position.y);
+                        dialogueBox->GetSelectMenu()->SetCursorMinHeight(position.y);
+                    }
+                    std::string text = obst.value("text", "Unnamed");
+                    dialogueBox->AddSelectMenuItem(name, position, scale, color, texturePath, text);
+                }
+                else if(name == "cursor" && dialogueBox->GetSelectMenu() != nullptr)
+                {
+                    dialogueBox->GetSelectMenu()->AddCursor(name, position, scale, color, texturePath);
                 }
             }
             else if(objs.key() == "aground"){

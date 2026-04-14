@@ -29,19 +29,19 @@ Player::~Player()
 
 void Player::OnEvent(const Input& input)
 {
-    if(input.IsKeyDown("D") && !hit)
+    if(input.IsKeyDown("D") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.x = 300.0f;
     }
-    else if(input.IsKeyDown("A") && !hit)
+    else if(input.IsKeyDown("A") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.x = -300.0f;
     }
-    if(input.IsKeyDown("W") && !hit)
+    if(input.IsKeyDown("W") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.y = 300.0f;
     }
-    else if(input.IsKeyDown("S") && !hit)
+    else if(input.IsKeyDown("S") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.y = -300.0f;
     }
@@ -84,7 +84,7 @@ void Player::Update(const Input& input, float dt)
         rigidBody.velocity.x = 0;
         rigidBody.velocity.y = 0;
     }
-    else
+    else if(!talkingToNPC)
     {
         if(input.IsKeyDown("D") && !hit)
         {
