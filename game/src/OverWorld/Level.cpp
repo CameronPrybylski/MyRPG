@@ -387,22 +387,6 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
         dialogueBox->SetBordersPosition(newPosition);
         dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
     }
-    /*
-    else if(player->talkingToNPC && dialogueBox->InUse())
-    {
-        if(dialogueBox->DialogueResponse("Pay") != "")
-        {
-            int gil = player->GetGil();
-            int iCost =  std::stoi(dialogueBox->DialogueResponse("Pay"));
-            if(gil >= iCost)
-            {
-                int newGil = gil - iCost;
-                player->SetGil(newGil);
-                dialogueBox->ClearDialogueResponses();
-            }
-        }
-    }
-    */
     if(dialogueBox != nullptr && dialogueBox->GetIndex() >= dialogueBox->GetDialogue().size() && dialogueBox->InUse())
     {
         npcs[player->npcTalkingTo]->SetTalking(false);
