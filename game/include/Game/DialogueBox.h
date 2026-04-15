@@ -37,6 +37,9 @@ public:
 
     void SetDialogueTree(std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree);
     void ResetDialogue(int indexOfD, std::string dialogueOption);
+    
+    std::string DialogueResponse(std::string response);
+    void ClearDialogueResponses(){this->dialogueResponses.clear();}
 
 private:
     bool inUse = false;
@@ -49,6 +52,7 @@ private:
 
     std::shared_ptr<Menu> selectMenu;
     bool selectMenuActive = false;
+    std::unordered_map<std::string, std::string> dialogueResponses;
 
     std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree;
 

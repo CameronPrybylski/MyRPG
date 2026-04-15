@@ -270,6 +270,45 @@ void Level::OnEvent(const Input &input)
     {
         obj.second->OnEvent(input);
     }
+    if(player->talkingToNPC && dialogueBox->InUse())
+    {
+        std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems = dialogueBox->GetSelectMenu()->GetMenuItems();
+        for(auto menuItem : menuItems)
+        {
+            std::string menuItemText = menuItem.second->GetText();
+            if(menuItemText.find("Pay") != std::string::npos)
+            {
+                int gil = player->GetGil();
+                std::string strGil;
+                size_t space = menuItemText.find(" ");
+                strGil = menuItemText.substr(space+1, menuItemText.length());
+                int iCost =  std::stoi(strGil);
+                if(gil < iCost)
+                {
+                    menuItem.second->SetSelectable(false);
+                }
+                else
+                {
+                    menuItem.second->SetSelectable(true);
+                }
+            }
+            else
+            {
+                menuItem.second->SetSelectable(true);
+            }
+        }
+        if(dialogueBox->DialogueResponse("Pay") != "")
+        {
+            int gil = player->GetGil();
+            int iCost =  std::stoi(dialogueBox->DialogueResponse("Pay"));
+            if(gil >= iCost)
+            {
+                int newGil = gil - iCost;
+                player->SetGil(newGil);
+                dialogueBox->ClearDialogueResponses();
+            }
+        }
+    }
 }
 
 void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
@@ -348,6 +387,22 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
         dialogueBox->SetBordersPosition(newPosition);
         dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
     }
+    /*
+    else if(player->talkingToNPC && dialogueBox->InUse())
+    {
+        if(dialogueBox->DialogueResponse("Pay") != "")
+        {
+            int gil = player->GetGil();
+            int iCost =  std::stoi(dialogueBox->DialogueResponse("Pay"));
+            if(gil >= iCost)
+            {
+                int newGil = gil - iCost;
+                player->SetGil(newGil);
+                dialogueBox->ClearDialogueResponses();
+            }
+        }
+    }
+    */
     if(dialogueBox != nullptr && dialogueBox->GetIndex() >= dialogueBox->GetDialogue().size() && dialogueBox->InUse())
     {
         npcs[player->npcTalkingTo]->SetTalking(false);
@@ -355,6 +410,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
         player->npcTalkingTo = "";
         player->talkingToNPC = false;
         dialogueBox->SetIndex(0);
+        dialogueBox->ClearDialogueResponses();
     }
     
 }
@@ -481,6 +537,14 @@ void Level::SaveState()
     saveData[areaName]["Player"] = nlohmann::json::object_t({{"position", position}, {"hp", player->hp}, {"gil", player->GetGil()}});
     saveData[areaName]["Camera"] = nlohmann::json::object_t({{"leftScreenEdge", leftScreenEdge}, {"rightScreenEdge", rightScreenEdge}, {"topScreenEdge", topScreenEdge}, {"bottomScreenEdge", bottomScreenEdge}});
     saveData[areaName]["Enemy"] = nlohmann::json::object_t({{"enemyFighting", player->enemyFighting}});
+
+    for(auto item : saveData.items())
+    {
+        if(item.value().contains("Player") && item.value().at("Player").contains("gil"))
+        {
+            saveData[item.key()]["Player"]["gil"] = player->GetGil();
+        }
+    }
 
     std::unordered_map<std::string, bool> emptyChests;
 

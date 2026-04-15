@@ -40,7 +40,7 @@ void Menu::OnEvent(const Input &input)
         {
             for(auto menuItem : menuItems)
             {
-                if(cursor->transform.position.y == menuItem.second->transform.position.y)
+                if(cursor->transform.position.y == menuItem.second->transform.position.y && menuItem.second->GetSelectable())
                 {
                     menuName = menuItem.second->GetText() + "MenuItems";
                 }

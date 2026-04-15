@@ -56,9 +56,18 @@ void DialogueBox::OnEvent(const Input &input)
                 std::string strMenuName = "MenuItems";
                 size_t end = selectMenuName.find(strMenuName);
                 std::string dialogueOption = selectMenuName.substr(0, end);
-                if(dialogueTree[i].count(dialogueOption))
+                if(dialogueTree[i].count(dialogueOption) && dialogueOption != "")
                 {
                     ResetDialogue(i, dialogueOption);
+                    std::string dialogueResponseKey = "";
+                    std::string dialogueResponseValue = "";
+                    size_t space = dialogueOption.find(" ");
+                    if(space != std::string::npos)
+                    {
+                        dialogueResponseKey = dialogueOption.substr(0, space);
+                        dialogueResponseValue = dialogueOption.substr(space + 1, dialogueOption.length());
+                        this->dialogueResponses[dialogueResponseKey] = dialogueResponseValue;
+                    }
                     break;
                 }
             }
@@ -90,6 +99,15 @@ void DialogueBox::ResetDialogue(int indexOfD, std::string dialogueOption)
 
     selectMenu->SetMenuItemsText(newMenuItemsText);
 
+}
+
+std::string DialogueBox::DialogueResponse(std::string response)
+{
+    if(this->dialogueResponses.count(response))
+    {
+        return dialogueResponses.at(response);
+    }
+    return "";
 }
 
 void DialogueBox::Update(const Input &input, float dt)
