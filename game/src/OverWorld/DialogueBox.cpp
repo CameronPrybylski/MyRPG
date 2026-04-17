@@ -27,7 +27,7 @@ DialogueBox::~DialogueBox()
 
 void DialogueBox::OnEvent(const Input &input)
 {
-    if(input.IsKeyDown("SPACE") && inUse && index == indexRendered)
+    if(input.IsKeyDown("SPACE") && inUse && index == indexRendered && !selectMenuActive)
     {
         index++;
         if(index < dialogue.size())
