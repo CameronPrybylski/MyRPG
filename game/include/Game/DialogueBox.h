@@ -34,17 +34,29 @@ public:
     void AddSelectMenuItem(std::string name, glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string fontPath, std::string text);
     void AddSelectMenu(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name);
     std::shared_ptr<Menu> GetSelectMenu(){return this->selectMenu;}
+    bool HasSelectMenu(){
+        if(this->selectMenu)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
 
     void SetDialogueTree(std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree);
     void ResetDialogue(int indexOfD, std::string dialogueOption);
     
     std::string DialogueResponse(std::string response);
     void ClearDialogueResponses(){this->dialogueResponses.clear();}
+    void SetIndexOfDTree(int index){this->indexDTree = index;}
 
 private:
     bool inUse = false;
     int index = 0;
     int indexRendered = 0;
+    int indexDTree = 0;
     std::vector<std::string> dialogue;
     std::vector<glm::vec3> dialogueScale;
     std::shared_ptr<MenuItem> currentText;

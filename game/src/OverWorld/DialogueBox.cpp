@@ -34,12 +34,12 @@ void DialogueBox::OnEvent(const Input &input)
         {
             currentText->ChangeText(dialogue[index]);
         }
-        if(index == dialogue.size() - 1)
+        if(index == dialogue.size() - 1 && selectMenu != nullptr && 2*indexDTree + 1 < dialogueTree.size())
         {
             selectMenuActive = true;
             selectMenu->SetActive(true);
         }
-        else
+        else if(selectMenu != nullptr)
         {
             selectMenuActive = false;
             selectMenu->SetActive(false);
@@ -78,6 +78,7 @@ void DialogueBox::OnEvent(const Input &input)
 void DialogueBox::ResetDialogue(int indexOfD, std::string dialogueOption)
 {
     dialogue = dialogueTree[indexOfD][dialogueOption];
+    this->indexDTree = indexOfD;
     this->index = 0;
     currentText->ChangeText(dialogue[this->index]);
     selectMenuActive = false;
@@ -251,4 +252,24 @@ void DialogueBox::SetMenuActive(bool active)
 void DialogueBox::SetDialogueTree(std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree)
 {
     this->dialogueTree = dialogueTree;
+    if(dialogueTree.size() > 0)
+    {
+        int iMenuItemIndex = 1;
+        std::unordered_map<std::string, std::vector<std::string>> dialogueTreeI = dialogueTree[iMenuItemIndex];
+        std::string response = dialogueTreeI.begin()->first;
+        for(auto menuItem : selectMenu->GetMenuItems())
+        {
+            menuItem.second->ChangeText(response);
+            iMenuItemIndex++;
+            if(iMenuItemIndex < dialogueTree.size())
+            {
+                dialogueTreeI = dialogueTree[iMenuItemIndex];
+                response = dialogueTreeI.begin()->first;
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
 }

@@ -18,6 +18,8 @@ public:
     std::vector<std::string> GetDialogue(){return dialogue;}
 
     void SetDialogueTree(std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree){this->dialogueTree = dialogueTree;}
+    std::vector<std::unordered_map<std::string, std::vector<std::string>>> GetDialogueTree(){return this->dialogueTree;}
+    bool HasDialogueTree(){return !dialogueTree.empty();}
 
 
 private:
