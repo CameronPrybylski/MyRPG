@@ -98,7 +98,7 @@
                 "texturePath" : "/textures/Nerrick_sprite.png",
                 "dialogue" : ["Hello!", "My name is Merrick.", "You may have met my Brother", "We co-own this here inn.", "Would you like to stay the night?"], 
                 "maxDist" : 500.0,
-                "dialogueTree" : [{"":[]},{"Yes" : ["Great!", "I have one room available.", "It'll be 10 Gil."]}, {"No" : ["That's too bad."]}, {"Pay 10" : ["Thanks"]}, {"Cancel": ["That's too bad."]},{"":[]},{"":[]}]
+                "dialogueTree" : [{"":[]},{"Yes" : ["Great!", "I have one room available.", "It'll be 10 Gil."]}, {"No" : ["That's too bad."]}, {"Pay 10" : ["Thanks"]}, {"Cancel": ["That's too bad."]}]
             }
         ],
         "dialogue" : [

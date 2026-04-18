@@ -256,3 +256,25 @@ void Menu::SetMenuItemsText(std::vector<std::string> newMenuItemsText)
         menuName = "MenuItems";
     }
 }
+
+void Menu::ChangePosition(glm::vec3 newPosition, float xDiff, float yDiff)
+{
+    this->transform.position = newPosition;
+    borders.clear();
+    CreateBorders();
+    for(auto menuItem : menuItems)
+    {
+        menuItem.second->SetPosition(newPosition);
+        if(newPosition.y > cursorMaxHeight)
+        {
+            cursorMaxHeight = newPosition.y;
+        }
+        if(newPosition.y < cursorMinHeight)
+        {
+            cursorMinHeight = newPosition.y;
+        }
+        newPosition = newPosition + glm::vec3(0.0f, yDiff, 0.0f);
+    }
+    cursor->transform.position = newPosition + glm::vec3(xDiff, -yDiff, 0.0f);
+    ResetCursorMinMax(menuItems);
+}

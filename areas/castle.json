@@ -109,7 +109,8 @@
                 "isStatic": true,
                 "texturePath" : "/textures/Nerrick_sprite.png",
                 "dialogue" : ["Hello!", "My name is Merrick.", "You may have met my Brother", "We co-own this here inn."], 
-                "maxDist" : 500.0
+                "maxDist" : 500.0,
+                "dialogueTree" : [{"":[]},{"Ok" : ["Great!","I need a warrior."]}, {"What?" : ["That's too bad."]}]
             },
             {
                 "name": "npcKingCornelia",
@@ -120,8 +121,9 @@
                 "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": true,
                 "texturePath" : "/textures/KingofCornelia-ff1-nes.png",
-                "dialogue" : ["Hello!", "I am the King of Cornealia."], 
-                "maxDist" : 500.0
+                "dialogue" : ["Hello!", "I am the King of Cornealia.", "Are you are warrior?"], 
+                "maxDist" : 500.0,
+                "dialogueTree" : [{"":[]},{"Yes" : ["Great!","I need a warrior."]}, {"No" : ["That's too bad."]}]
             }
         ],
         "dialogue" : [
@@ -145,6 +147,49 @@
                 "isStatic": true,
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Hi"
+            },
+            {
+                "name": "selectMenu",
+                "position": [350.0, 600.0, -0.5],
+                "scale": [110.0, 150.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 0.5, 1.0],
+                "isStatic": true,
+                "texturePath" : "",
+                "cursorMinMaxHeight" : [800.0, 0.0]
+            },
+            {
+                "name": "selectMenuItem1",
+                "position": [330.0, 650.0, 0.0],
+                "scale": [11.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Yes"
+            },
+            {
+                "name": "selectMenuItem2",
+                "position": [330.0, 600.0, 0.0],
+                "scale": [11.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "No"
+            },
+            {
+                "name": "cursor",
+                "position": [315.0, 600.0, 0.0],
+                "scale": [10.0, 5.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
             }
         ]
     },

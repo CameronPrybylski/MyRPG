@@ -61,6 +61,8 @@ public:
 
     virtual int GetNumberOfMenuItems(){return this->menuItems.size();}
 
+    virtual void ChangePosition(glm::vec3 newPosition, float xDiff, float yDiff);
+
 
 protected:
 

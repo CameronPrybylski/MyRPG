@@ -270,7 +270,7 @@ void Level::OnEvent(const Input &input)
     {
         obj.second->OnEvent(input);
     }
-    if(player->talkingToNPC && dialogueBox->InUse())
+    if(player->talkingToNPC && dialogueBox->InUse() && dialogueBox->HasSelectMenu())
     {
         std::unordered_map<std::string, std::shared_ptr<MenuItem>> menuItems = dialogueBox->GetSelectMenu()->GetMenuItems();
         for(auto menuItem : menuItems)
@@ -380,9 +380,12 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
     if(player->talkingToNPC && !dialogueBox->InUse())
     {
         npcs[player->npcTalkingTo]->SetTalking(true);
+        dialogueBox->SetDialogueTree(npcs[player->npcTalkingTo]->GetDialogueTree());
         dialogueBox->SetInUse(true);
         glm::vec3 newPosition = npcs[player->npcTalkingTo]->transform.position + glm::vec3(0.0f, 150.0f, 0.5f);
         dialogueBox->transform.position = newPosition;
+        if(dialogueBox->HasSelectMenu())
+            dialogueBox->GetSelectMenu()->ChangePosition( newPosition + glm::vec3(-200.0f, -100.0f, 0.0f), -25.0f, 50.0f);
         dialogueBox->SetTextPosition(newPosition + glm::vec3(10.0f, 0.0f, 0.0f));
         dialogueBox->SetBordersPosition(newPosition);
         dialogueBox->SetDialogue(npcs[player->npcTalkingTo]->GetDialogue());
@@ -394,6 +397,7 @@ void Level::OnUpdate(const Input& input, PhysicsSystem &physics, float dt)
         player->npcTalkingTo = "";
         player->talkingToNPC = false;
         dialogueBox->SetIndex(0);
+        dialogueBox->SetIndexOfDTree(0);
         dialogueBox->ClearDialogueResponses();
     }
     
