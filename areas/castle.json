@@ -123,7 +123,7 @@
                 "texturePath" : "/textures/KingofCornelia-ff1-nes.png",
                 "dialogue" : ["Hello!", "I am the King of Cornealia.", "Are you are warrior?"], 
                 "maxDist" : 500.0,
-                "dialogueTree" : [{"":[]},{"Yes" : ["Great!","I need a warrior."]}, {"No" : ["That's too bad."]}]
+                "dialogueTree" : [{"":[]},{"Yes" : ["Great!","I need a warrior.", "Travel to the cave east of Cornelia."]}, {"No" : ["That's too bad."]}]
             }
         ],
         "dialogue" : [
