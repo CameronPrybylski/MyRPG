@@ -18,6 +18,10 @@ public:
     void PositionSword();
     void SetHP(int hp){this->hp = hp;}
 
+    std::string texturePathLeft = "";
+    std::string texturePathRight = "";
+    std::string texturePathUp = "";
+
     bool hit = false;
     bool alive = true;
     bool usingSword = false;

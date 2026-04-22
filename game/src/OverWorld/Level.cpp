@@ -8,6 +8,7 @@
 #include <Game/MenuItem.h>
 #include <Game/MenuScene.h>
 #include <Game/Menu.h>
+#include <Game/Corridor.h>
 
 bool Level::loadGame = false;
 std::string Level::saveSlot = "";
@@ -112,6 +113,21 @@ void Level::LoadLevel(std::string filepath)
                 go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,true);
                 player->AddItem("sword", go);
                 std::unordered_map<std::string, glm::vec3> startPositions;
+                if(obst.contains("texturePathLeft"))
+                {
+                    std::string texturePathLeft = root + obst.value("texturePathLeft", "Unnamed");
+                    player->texturePathLeft = texturePathLeft;
+                }
+                if(obst.contains("texturePathRight"))
+                {
+                    std::string texturePathRight = root + obst.value("texturePathRight", "Unnamed");
+                    player->texturePathRight = texturePathRight;
+                }
+                if(obst.contains("texturePathUp"))
+                {
+                    std::string texturePathUp = root + obst.value("texturePathUp", "Unnamed");
+                    player->texturePathUp = texturePathUp;
+                }
             }
             else if(objs.key() == "enemies"){
                 if(deadEnemies.count(name) == 0)
@@ -137,7 +153,7 @@ void Level::LoadLevel(std::string filepath)
                 treasureChest->SetContents(contents);
             }
             else if(objs.key() == "towns"){
-                std::shared_ptr<TownSpot> town = std::make_shared<TownSpot>(position, scale, color, "", name);
+                std::shared_ptr<TownSpot> town = std::make_shared<TownSpot>(position, scale, color, texturePath, name);
                 go = town;
                 AddObject(obst.value("name", "Unnamed"), go);
                 towns[name] = town;
@@ -201,9 +217,31 @@ void Level::LoadLevel(std::string filepath)
                 }
             }
             else if(objs.key() == "aground"){
+                if(name == "background")
+                {
+                    glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+                    go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
+                    AddObject(obst.value("name", "Unnamed"), go);
+                }
+            }
+            else if(objs.key() == "corridors")
+            {
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
-                go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
+                std::set<int> gaps;// = obst["gaps"];
+                for(int i = 0; i < obst["gaps"].size(); i++)
+                {
+                    gaps.insert((int)obst["gaps"][i]);
+                }
+                std::shared_ptr<Corridor> corridor = std::make_shared<Corridor>(position, scale, rotation, velocity, color, "", name, isStatic, gaps);
+                go = corridor;
                 AddObject(obst.value("name", "Unnamed"), go);
+                for(int i = 0; i < corridor->GetWalls().size(); i++)
+                {
+                    std::shared_ptr<GameObject> goi;
+                    goi = corridor->GetWalls()[i];
+                    AddObject(obst.value("name", "Unnamed") + std::to_string(i), goi);
+                    corridor->GetWalls()[i]->name = obst.value("name", "Unnamed") + std::to_string(i);
+                }
             }
         }
     }

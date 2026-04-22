@@ -61,6 +61,62 @@ void Battle::LoadBattle()
     }
 
     enemies.clear();
+
+    std::ifstream nextAreaFile(root + "/savestate/currentArea.json");
+    if (!nextAreaFile.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json nextAreaJson;
+    nextAreaFile >> nextAreaJson;
+    nextArea = nextAreaJson["CurrentArea"];
+
+    nextAreaFile.close();
+
+    std::ifstream nextAreaBackground(root + "/areas/" + nextArea + ".json");
+    if (!nextAreaBackground.is_open()) {
+        throw std::runtime_error("Failed to open level file.");
+    }
+
+    nlohmann::json nextAreaBackgroundJson;
+    nextAreaBackground >> nextAreaBackgroundJson;
+    glm::vec4 backgroundColor;
+    std::string backgroundTexturePath = "";
+    objectList.clear();
+    objectMap.clear();
+    for(auto objs : nextAreaBackgroundJson["objects"]["aground"].items())
+    {
+        if(objs.value().contains("name") && objs.value().at("name") == "background")
+        {
+            backgroundColor = { objs.value().at("color")[0], 
+                                objs.value().at("color")[1], 
+                                objs.value().at("color")[2], 
+                                objs.value().at("color")[3]
+                            };
+            backgroundTexturePath = objs.value().at("battleTexturePath");
+        }
+        if(objs.value().contains("name") && objs.value().at("name") == "top")
+        {
+            auto obst = objs.value();
+            std::shared_ptr<GameObject> go;
+            std::string name = obst.value("name", "Unnamed");
+            glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
+            glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+            glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+            glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
+            glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
+            bool isStatic = obst.value("isStatic", false);
+            std::string texturePath = obst.value("texturePath", "Unnamed");
+            if(texturePath != "")
+            {
+                texturePath = root + texturePath;
+            }
+            go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
+            AddObject(obst.value("name", "Unnamed"), go);
+        }
+    }
+    nextAreaBackground.close();
+
     
     std::ifstream file(filepath);
     if (!file.is_open()) {
@@ -70,10 +126,7 @@ void Battle::LoadBattle()
     nlohmann::json j;
     file >> j;
 
-    objectList.clear();
-    objectMap.clear();
     player = nullptr;
-    nextArea = j["levelParams"]["nextLevel"];
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -186,8 +239,12 @@ void Battle::LoadBattle()
             }
             else if(objs.key() == "aground")
             {
+                if(backgroundTexturePath != "")
+                {
+                    texturePath = root + backgroundTexturePath;
+                }
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
-                go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
+                go = std::make_shared<Obstacle>(position, scale, rotation, velocity, backgroundColor, texturePath, name, isStatic);
                 AddObject(obst.value("name", "Unnamed"), go);
             }
         }
@@ -322,7 +379,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
         LootBattle();
         SavePlayerInfo();
         initialStart = false;
-        EndScene("overworld");
+        EndScene(nextArea);
     }
     
     menu->UpdatePlayerHP(player->GetHP());

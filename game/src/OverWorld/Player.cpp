@@ -32,18 +32,38 @@ void Player::OnEvent(const Input& input)
     if(input.IsKeyDown("D") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.x = 300.0f;
+        if(texturePathRight != "")
+        {
+            texture.Delete();
+            texture.Create(texturePathRight);
+        }
     }
     else if(input.IsKeyDown("A") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.x = -300.0f;
+        if(texturePathLeft != "")
+        {
+            texture.Delete();
+            texture.Create(texturePathLeft);
+        }
     }
     if(input.IsKeyDown("W") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.y = 300.0f;
+        if(texturePathUp != "")
+        {
+            texture.Delete();
+            texture.Create(texturePathUp);
+        }
     }
     else if(input.IsKeyDown("S") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.y = -300.0f;
+        if(texturePath != "")
+        {
+            texture.Delete();
+            texture.Create(texturePath);
+        }
     }
     if(input.IsKeyDown("L"))
     {

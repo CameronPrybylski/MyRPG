@@ -32,6 +32,7 @@ add_executable(MyRPG
     src/Title/SaveMenu.cpp
     src/Menu/MenuScene.cpp
     src/Menu/PlayerMenu.cpp
+    src/OverWorld/Corridor.cpp
     # Add your game source files here
 )
 

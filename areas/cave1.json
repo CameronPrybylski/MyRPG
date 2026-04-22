@@ -1,0 +1,111 @@
+{
+    "objects" : {
+        "aground" : [
+            {
+                "name": "background",
+                "position": [600.0, 450.0, -0.5],
+                "scale": [200.0, 500.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.85, 0.3, 0.1, 0.5],
+                "isStatic": true,
+                "texturePath" : "",
+                "battleTexturePath" : ""
+            },
+            {
+                "name": "top",
+                "position": [533.5, 750.0, 0.0],
+                "scale": [1067.0, 175.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 0.0, 0.0],
+                "isStatic": true,
+                "texturePath" : "/textures/EarthCave.png",
+                "battleTexturePath" : ""
+            }
+        ],
+        "obstacles": [
+            {
+                "name": "obstacle1",
+                "position": [1050.0, 185.0, 0.0],
+                "scale": [700.0, 20.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.85, 0.3, 0.1, 0.5],
+                "isStatic": true,
+                "texturePath" : ""
+            }
+        ],
+        "corridors": [
+            {
+                "name": "corridor1",
+                "position": [600.0, 450.0, -1.0],
+                "scale": [200.0, 500.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.85, 0.3, 0.1, 0.5],
+                "gaps" : [3],
+                "isStatic": true,
+                "texturePath" : "",
+                "battleTexturePath" : ""
+            },
+            {
+                "name": "corridor2",
+                "position": [750.0, 75.0, -1.0],
+                "scale": [1000.0, 200.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.85, 0.3, 0.1, 0.7],
+                "gaps" : [0, 1],
+                "isStatic": true,
+                "texturePath" : "",
+                "battleTexturePath" : ""
+            }
+        ],
+        "player" : [
+            {
+                "name": "player",
+                "position": [700.5, 400.0, 0.0],
+                "scale": [50.0, 50.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": false,
+                "texturePath" : "/textures/FighterOverworld.png",
+                "startPositiontown1": [600.0, 750.0, 0.0]
+            }
+        ],
+        "saveSpots" : [
+            {
+                "name": "saveSpot1",
+                "position": [650.0, 550.0, 0.0],
+                "scale": [30.0, 25.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            }
+        ],
+        "towns" : [
+            {
+                "name": "overworld",
+                "position": [600.0, 600.0, 0.0],
+                "scale": [60.0, 50.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : ""
+            }
+        ]
+    },
+    "levelParams" : {
+        "completionDist" : 3500.0,
+        "nextLevel" : "battle",
+        "savescene" : "savescene",
+        "area" : "cave1",
+        "combatArea" : false,
+        "moveCamera" : true
+    }
+}
