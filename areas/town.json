@@ -76,12 +76,15 @@
             {
                 "name": "player",
                 "position": [625.0, 50.0, 0.0],
-                "scale": [50.0, 50.0, 0.0],
+                "scale": [60.0, 50.0, 0.0],
                 "rotation" : [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
-                "texturePath" : "/textures/FighterOverworld.png",
+                "texturePath" : "/textures/WarriorDown.png",
+                "texturePathLeft" : "/textures/WarriorLeft.png",
+                "texturePathRight" : "/textures/WarriorRight.png",
+                "texturePathUp" : "/textures/WarriorUp.png",
                 "startPositionoverworld": [625.0, 50.0, 0.0],
                 "startPositioncastle": [625.0, 1240.0, 0.0]
             }
