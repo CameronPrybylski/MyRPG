@@ -19,7 +19,6 @@ Player::Player(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string
     }
     this->color = color;
     this->name = name;
-    ///Users/cameronprzybylski/Documents/C++/C++ Projects/MyRPG/textures/WarriorOverworld.png"
 }
 
 Player::~Player()
@@ -32,6 +31,7 @@ void Player::OnEvent(const Input& input)
     if(input.IsKeyDown("D") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.x = 300.0f;
+        rigidBody.velocity.y = 0.0f;
         if(texturePathRight != "")
         {
             texture.Delete();
@@ -41,15 +41,17 @@ void Player::OnEvent(const Input& input)
     else if(input.IsKeyDown("A") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.x = -300.0f;
+        rigidBody.velocity.y = 0.0f;
         if(texturePathLeft != "")
         {
             texture.Delete();
             texture.Create(texturePathLeft);
         }
     }
-    if(input.IsKeyDown("W") && !hit && !talkingToNPC)
+    else if(input.IsKeyDown("W") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.y = 300.0f;
+        rigidBody.velocity.x = 0.0f;
         if(texturePathUp != "")
         {
             texture.Delete();
@@ -59,23 +61,12 @@ void Player::OnEvent(const Input& input)
     else if(input.IsKeyDown("S") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.y = -300.0f;
+        rigidBody.velocity.x = 0.0f;
         if(texturePath != "")
         {
             texture.Delete();
             texture.Create(texturePath);
         }
-    }
-    if(input.IsKeyDown("L"))
-    {
-        usingSword = true;
-        //items["sword"]->transform.position.x = transform.position.x + items["sword"]->transform.scale.x;
-        //items["sword"]->transform.position.y = transform.position.y;
-    }
-    else
-    {
-        usingSword = false;
-        //items["sword"]->transform.position.x = transform.position.x;
-        //items["sword"]->transform.position.y = transform.position.y;
     }
     if(stop)
     {
@@ -104,36 +95,6 @@ void Player::Update(const Input& input, float dt)
         rigidBody.velocity.x = 0;
         rigidBody.velocity.y = 0;
     }
-    else if(!talkingToNPC)
-    {
-        if(input.IsKeyDown("D") && !hit)
-        {
-            rigidBody.velocity.x = 300.0f;
-            positionFacing = "Right";
-        }
-        else if(input.IsKeyDown("A") && !hit)
-        {
-            rigidBody.velocity.x = -300.0f;
-            positionFacing = "Left";
-        }
-        else{
-            rigidBody.velocity.x = 0.0f;
-        }
-        if(input.IsKeyDown("W") && !hit)
-        {
-            rigidBody.velocity.y = 300.0f;
-            positionFacing = "Up";
-        }
-        else if(input.IsKeyDown("S") && !hit)
-        {
-            rigidBody.velocity.y = -300.0f;
-            positionFacing = "Down";
-        }
-        else
-        {
-            rigidBody.velocity.y = 0.0f;
-        }
-    }
     if(stop)
     {
         rigidBody.velocity.x = 0.0f;
@@ -143,10 +104,7 @@ void Player::Update(const Input& input, float dt)
     }
 
     distance += std::abs(transform.position.x - rigidBody.previousPosition.x) + std::abs(transform.position.y - rigidBody.previousPosition.y);
-    if(distance >= 500.0f)
-    {
-        //inBattle = true;
-    }
+    
     PositionSword();
 }
 
@@ -166,9 +124,6 @@ void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 coll
 
 void Player::Render(Renderer& renderer, const Camera& camera)
 {
-
-    //renderer.DrawTexturedQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), texture, color);
-    //texture.Unbind();
     if(shaderName == "textureShader"){
         renderer.DrawTexturedQuad(*mesh, transform, camera, AssetManager::GetShader(shaderName), texture, color);
         texture.Unbind();
@@ -203,36 +158,5 @@ void Player::PositionSword()
     Transform swordTransform = items["sword"]->transform;
     swordTransform.position = transform.position;
     float swordScale = swordTransform.scale.x;
-    if(usingSword)
-    {
-        if(positionFacing == "Down" || positionFacing == "Left")
-        {
-            swordScale *= -1;
-        }
-        if(positionFacing == "Right" || positionFacing == "Left")
-        {
-            swordTransform.position.x = transform.position.x + swordScale;
-            if(positionFacing == "Right")
-            {
-                swordTransform.rotation.z = 180.0f;
-            }
-            else
-            {
-                swordTransform.rotation.z = 0.0f;
-            }
-        }
-        else if(positionFacing == "Up" || positionFacing == "Down")
-        {
-            swordTransform.position.y = transform.position.y + swordScale;
-            if(positionFacing == "Up")
-            {
-                swordTransform.rotation.z = 270.0f;
-            }
-            else
-            {
-                swordTransform.rotation.z = 90.0f;
-            }
-        }
-    }
     items["sword"]->transform = swordTransform;
 }
