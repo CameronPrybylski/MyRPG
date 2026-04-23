@@ -3,6 +3,7 @@
 #include <Game/FinalFantasyText.h>
 
 #include <Game/SaveScene.h>
+#include <Game/MenuScene.h>
 #include <Game/Obstacle.h>
 #include <Game/SaveMenu.h>
 #include <Game/MenuItem.h>
@@ -207,10 +208,14 @@ void SaveScene::SaveGame()
         {
            saveData[saveNumber]["PlayerBattle"] = nlohmann::json::object_t({
                 {"hp", item.value()["hp"]},
+                {"maxhp", item.value()["maxhp"]},
+                {"mp", item.value()["mp"]},
+                {"maxmp", item.value()["maxmp"]},
                 {"mp", item.value()["mp"]},
                 {"level", item.value()["level"]},
                 {"strength", item.value()["strength"]},
                 {"xp", item.value()["xp"]},
+                {"xpNeeded", item.value()["xpNeeded"]},
                 {"items", item.value()["items"]},//nlohmann::json::object_t({{"Potion", item.value()["items"]["Potion"]}})}
                 {"equippedWeapon", item.value()["equippedWeapon"]},
                 {"weapons", item.value()["weapons"]}
@@ -259,6 +264,8 @@ void SaveScene::LoadGame()
 {
     Level::SetSaveSlot(menu->SaveSlot());
     Level::SetLoadGame(true);
+    MenuScene::SetSaveSlot(menu->SaveSlot());
+    MenuScene::SetLoadGame(true);
     loadBattle->SetSaveSlot(menu->SaveSlot());
     loadBattle->SetLoadGame(true);
 

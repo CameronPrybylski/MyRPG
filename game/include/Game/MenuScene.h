@@ -26,6 +26,11 @@ public:
     static void AddEquipmentItem(std::string text, std::string description);
     static std::string menuFilePath;
 
+    static bool loadGame;
+    static std::string saveSlot;
+    static void SetLoadGame(bool loadGame);
+    static void SetSaveSlot(std::string saveSlot);
+
 private:
     std::string nextScene;
     std::string filepath;
