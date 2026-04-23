@@ -7,6 +7,8 @@
 #include <Game/PlayerMenu.h>
 
 std::string MenuScene::menuFilePath = "";
+std::string MenuScene::saveSlot = "";
+bool MenuScene::loadGame = false;
 
 MenuScene::MenuScene(float screenWidth, float screenHeight, std::string filepath, std::string battleFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), battleFilePath(battleFilePath), root(root)
 {
@@ -33,6 +35,25 @@ void MenuScene::LoadMenuScene()
     nlohmann::json nextAreaJson;
     nextAreaFile >> nextAreaJson;
     nextScene = nextAreaJson["CurrentArea"];
+
+    if(loadGame)
+    {
+        std::string strMenu = "menu";
+        int menuIndex = menuFilePath.find(strMenu);
+        if(saveSlot == "" && menuFilePath.find("new") == std::string::npos)
+        {
+            menuFilePath.insert(menuIndex, "new");
+        }
+        else if(saveSlot == "Save 1" && menuFilePath.find("save1") == std::string::npos)
+        {
+            menuFilePath.insert(menuIndex, "save1");
+        }
+        else if(saveSlot == "Save 2" && menuFilePath.find("save2") == std::string::npos)
+        {
+            menuFilePath.insert(menuIndex, "save2");
+        }
+        filepath = menuFilePath;
+    }
 
     std::ifstream file(filepath);
     if (!file.is_open()) {
@@ -395,7 +416,18 @@ void MenuScene::AddEquipmentItem(std::string text, std::string description)
 
     std::string strMenu = "menu";
     int menuIndex = menuFilePath.find(strMenu);
-    menuFilePath.insert(menuIndex, "new");
+    if(saveSlot == "" && menuFilePath.find("new") == std::string::npos)
+    {
+        menuFilePath.insert(menuIndex, "new");
+    }
+    else if(saveSlot == "Save 1" && menuFilePath.find("save1") == std::string::npos)
+    {
+        menuFilePath.insert(menuIndex, "save1");
+    }
+    else if(saveSlot == "Save 2" && menuFilePath.find("save2") == std::string::npos)
+    {
+        menuFilePath.insert(menuIndex, "save2");
+    }
 
     std::ofstream menuFileOut(menuFilePath);
     if (!menuFileOut.is_open()) {
@@ -406,4 +438,14 @@ void MenuScene::AddEquipmentItem(std::string text, std::string description)
 
     menuFileOut << menuJson;
     menuFileOut.close();
+}
+
+void MenuScene::SetLoadGame(bool loadgame)
+{
+    loadGame = loadgame;
+}
+
+void MenuScene::SetSaveSlot(std::string saveslot)
+{
+    saveSlot = saveslot;
 }
