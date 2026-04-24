@@ -230,6 +230,9 @@ void Battle::LoadBattle()
                 {
                     player->AddSpell(spell.key(), std::make_shared<Spell>(spell.value()["Damage"], spell.value()["MPCost"]));
                 }
+                
+                player->SetDeathTexture1Path(root + obst.value("deathTexture1Path", "Unamed"));
+                player->SetDeathTexture2Path(root + obst.value("deathTexture2Path", "Unamed"));
             }
             else if(objs.key() == "menu"){
                 if(name.find("attackMenuItem") != std::string::npos)
@@ -317,7 +320,7 @@ void Battle::LoadPhysics(PhysicsSystem& physics)
 
 void Battle::OnEvent(const Input& input)
 {
-    if(playerMove)
+    if(playerMove && player->GetHP() > 0)
     {
         for(auto& obj : objectList)
         {
@@ -328,6 +331,28 @@ void Battle::OnEvent(const Input& input)
 
 void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
 {
+    if(player->GetHP() <= 0 && !player->DeathInProgress() && !player->DeathOver())
+    {
+        player->SetDeathInProgress(true);
+    }
+    if(player->DeathInProgress() && !player->DeathOver())
+    {
+        player->Update(input, dt);
+        return;
+    }
+
+    std::vector<std::string> deadEnemies;
+    if(player->GetHP() <= 0 && player->DeathOver())
+    {
+        initialStart = true;
+        enemies.clear();
+        deadEnemies.clear();
+        player->SetDeathOver(false);
+        player->SetDeathInProgress(false);
+        Init();
+        EndScene("gameOver");
+    }
+
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(collisions, dt);
     if(playerMove && menu->GetPlayerMove() != "")
@@ -346,7 +371,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     }
     player->SetMove(menu->GetPlayerMove());
 
-    std::vector<std::string> deadEnemies;
+   
     for(auto itr = enemies.begin(); itr != enemies.end();)
     {
         auto enemy = itr;
@@ -384,14 +409,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     
     menu->UpdatePlayerHP(player->GetHP());
     menu->UpdatePlayerMP(player->GetMP());
-    if(player->GetHP() <= 0)
-    {
-        initialStart = true;
-        enemies.clear();
-        deadEnemies.clear();
-        Init();
-        EndScene("gameOver");
-    }
+    
 }
 
 void Battle::OnCollision(std::vector<CollisionEvent> collisions, float dt)

@@ -130,10 +130,21 @@ public:
     int GetGil(){return this->gil;}
     void SetGil(int gil){this->gil = gil;}
 
+    void SetDeathTexture1Path(std::string deathTexture1Path){this->deathTexture1Path = deathTexture1Path;}
+    void SetDeathTexture2Path(std::string deathTexture2Path){this->deathTexture2Path = deathTexture2Path;}
+
+    void DeathAnimation();
+    bool DeathOver(){return this->deathOver;}
+    bool DeathInProgress(){return this->deathInProgress;}
+    void SetDeathOver(bool deathOver){this->deathOver = deathOver;}
+    void SetDeathInProgress(bool deathInProgress){this->deathInProgress = deathInProgress;}
+
 private:
     int hp;
     int maxHP;
     bool alive = true;
+    float timeOfDeath = 0.0f;
+    glm::vec3 deathScale;
     std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons;
     std::unordered_map<std::string, std::shared_ptr<Spell>> spells;
     std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> consumableItems;
@@ -148,7 +159,12 @@ private:
     int xpNeeded;
     int xpIncrement;
 
+    std::string deathTexture1Path = "";
+    std::string deathTexture2Path = "";
+
     int gil;
+    bool deathOver = false;
+    bool deathInProgress = false;
 
 
 };
