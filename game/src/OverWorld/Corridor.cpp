@@ -35,7 +35,7 @@ void Corridor::SetWalls()
 
     glm::vec3 borderPos;
     glm::vec3 borderScale;
-    glm::vec4 borderColor = glm::vec4(1.0f, 1.0f, 1.0f, 0.5f);
+    glm::vec4 borderColor = glm::vec4(1.0f, 1.0f, 1.0f, 0.0f);
     for(int i = 0; i < 4; i++)
     {
         std::string borderName = "border" + std::to_string(i);

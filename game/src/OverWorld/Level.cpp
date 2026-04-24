@@ -118,10 +118,20 @@ void Level::LoadLevel(std::string filepath)
                     std::string texturePathLeft = root + obst.value("texturePathLeft", "Unnamed");
                     player->texturePathLeft = texturePathLeft;
                 }
+                if(obst.contains("texturePathLeft2"))
+                {
+                    std::string texturePathLeft2 = root + obst.value("texturePathLeft2", "Unnamed");
+                    player->texturePathLeft2 = texturePathLeft2;
+                }
                 if(obst.contains("texturePathRight"))
                 {
                     std::string texturePathRight = root + obst.value("texturePathRight", "Unnamed");
                     player->texturePathRight = texturePathRight;
+                }
+                if(obst.contains("texturePathRight2"))
+                {
+                    std::string texturePathRight2 = root + obst.value("texturePathRight2", "Unnamed");
+                    player->texturePathRight2 = texturePathRight2;
                 }
                 if(obst.contains("texturePathUp"))
                 {
