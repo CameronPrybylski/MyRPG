@@ -10,8 +10,9 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     shaderName = "textureShader";
     transform.position = position;
     transform.scale = scale;
+    deathScale = {scale.y, scale.x, scale.z};
     rigidBody.isStatic = isStatic;
-    hp = 20;
+    hp = 5;
     maxHP = hp;
     strength = 1;
     magicLevel = 1;
@@ -55,6 +56,31 @@ void PlayerInBattle::Update(const Input& input, float dt)
     if(hp <= 0)
     {
         alive = false;
+        timeOfDeath += 1.0f;
+    }
+
+    DeathAnimation();
+}
+
+void PlayerInBattle::DeathAnimation()
+{
+    if(deathInProgress && !deathOver)
+    {
+        if(timeOfDeath > 0.0f && timeOfDeath < 60.0f)
+        {
+            texture.Delete();
+            texture.Create(deathTexture1Path);
+        }
+        else if(timeOfDeath > 0.0f && timeOfDeath < 120.0f)
+        {
+            transform.scale = deathScale;
+            texture.Delete();
+            texture.Create(deathTexture2Path);
+        }
+        else
+        {
+            deathOver = true;
+        }
     }
 }
 
