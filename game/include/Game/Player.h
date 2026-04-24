@@ -19,7 +19,9 @@ public:
     void SetHP(int hp){this->hp = hp;}
 
     std::string texturePathLeft = "";
+    std::string texturePathLeft2 = "";
     std::string texturePathRight = "";
+    std::string texturePathRight2 = "";
     std::string texturePathUp = "";
 
     bool hit = false;
@@ -42,8 +44,12 @@ public:
     std::string texturePath;
 
     float distance = 0.0f;
+    float leftDist = 0.0f;
+    float rightDist = 0.0f;
     float GetDistance(){return distance;}
     void SetDistance(float distance){this->distance = distance;}
+
+    void SetDirection();
 
     int gil;
 

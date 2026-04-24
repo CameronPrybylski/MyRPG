@@ -73,7 +73,9 @@
                 "isStatic": false,
                 "texturePath" : "/textures/WarriorDown.png",
                 "texturePathLeft" : "/textures/WarriorLeft.png",
+                "texturePathLeft2" : "/textures/WarriorLeft2.png",
                 "texturePathRight" : "/textures/WarriorRight.png",
+                "texturePathRight2" : "/textures/WarriorRight2.png",
                 "texturePathUp" : "/textures/WarriorUp.png",
                 "startPositiontown1": [600.0, 750.0, 0.0]
             }

@@ -32,41 +32,30 @@ void Player::OnEvent(const Input& input)
     {
         rigidBody.velocity.x = 300.0f;
         rigidBody.velocity.y = 0.0f;
-        if(texturePathRight != "")
-        {
-            texture.Delete();
-            texture.Create(texturePathRight);
-        }
     }
     else if(input.IsKeyDown("A") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.x = -300.0f;
         rigidBody.velocity.y = 0.0f;
-        if(texturePathLeft != "")
-        {
-            texture.Delete();
-            texture.Create(texturePathLeft);
-        }
     }
     else if(input.IsKeyDown("W") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.y = 300.0f;
         rigidBody.velocity.x = 0.0f;
-        if(texturePathUp != "")
-        {
-            texture.Delete();
-            texture.Create(texturePathUp);
-        }
+        leftDist = 0.0f;
+        rightDist = 0.0f;
     }
     else if(input.IsKeyDown("S") && !hit && !talkingToNPC)
     {
         rigidBody.velocity.y = -300.0f;
         rigidBody.velocity.x = 0.0f;
-        if(texturePath != "")
-        {
-            texture.Delete();
-            texture.Create(texturePath);
-        }
+        leftDist = 0.0f;
+        rightDist = 0.0f;
+    }
+    else if(!(input.IsKeyDown("D") || input.IsKeyDown("A") || input.IsKeyDown("W") || input.IsKeyDown("S")))
+    {
+        rigidBody.velocity.x = 0;
+        rigidBody.velocity.y = 0;
     }
     if(stop)
     {
@@ -90,22 +79,79 @@ void Player::Update(const Input& input, float dt)
             timeSinceHit += dt;
         }
     }
-    else if(!(input.IsKeyDown("D") || input.IsKeyDown("A") || input.IsKeyDown("W") || input.IsKeyDown("S")))
-    {
-        rigidBody.velocity.x = 0;
-        rigidBody.velocity.y = 0;
-    }
     if(stop)
     {
         rigidBody.velocity.x = 0.0f;
         rigidBody.velocity.y = 0.0f;
-    }if(hp <= 0){
+    }
+    if(hp <= 0)
+    {
         alive = false;
     }
 
+    SetDirection();
+}
+
+void Player::SetDirection()
+{
     distance += std::abs(transform.position.x - rigidBody.previousPosition.x) + std::abs(transform.position.y - rigidBody.previousPosition.y);
-    
-    PositionSword();
+    if(transform.position.x < rigidBody.previousPosition.x)
+    {
+        leftDist += std::abs(transform.position.x - rigidBody.previousPosition.x);
+        rightDist = 0.0f;
+        positionFacing = "LEFT";
+        if(texturePathLeft != "")
+        {
+            texture.Delete();
+            texture.Create(texturePathLeft);
+            if(texturePathLeft2 != "" && leftDist > 60.0f)
+            {
+                std::string tempTextPath = texturePathLeft;
+                texturePathLeft = texturePathLeft2;
+                texturePathLeft2 = tempTextPath;
+                leftDist = 0.0f;
+            }
+        }
+    }
+    else if(transform.position.x > rigidBody.previousPosition.x)
+    {
+        rightDist += std::abs(transform.position.x - rigidBody.previousPosition.x);
+        leftDist = 0.0f;
+        positionFacing = "RIGHT";
+        if(texturePathRight != "")
+        {
+            texture.Delete();
+            texture.Create(texturePathRight);
+            if(texturePathRight2 != "" && rightDist > 60.0f)
+            {
+                std::string tempTextPath = texturePathRight;
+                texturePathRight = texturePathRight2;
+                texturePathRight2 = tempTextPath;
+                rightDist = 0.0f;
+            }
+        }
+    }
+    else if(transform.position.y != rigidBody.previousPosition.y)
+    {
+        if(transform.position.y > rigidBody.previousPosition.y && positionFacing != "UP")
+        {
+            if(texturePathUp != "")
+            {
+                texture.Delete();
+                texture.Create(texturePathUp);
+                positionFacing = "UP";
+            }
+        }
+        if(transform.position.y < rigidBody.previousPosition.y && positionFacing != "DOWN")
+        {
+            if(texturePath != "")
+            {
+                texture.Delete();
+                texture.Create(texturePath);
+                positionFacing = "DOWN";
+            }
+        }
+    }
 }
 
 void Player::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)
