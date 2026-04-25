@@ -66,18 +66,18 @@ void PlayerInBattle::DeathAnimation()
 {
     if(deathInProgress && !deathOver)
     {
-        if(timeOfDeath > 0.0f && timeOfDeath < 60.0f)
+        if(timeOfDeath == 1.0f)
         {
             texture.Delete();
             texture.Create(deathTexture1Path);
         }
-        else if(timeOfDeath > 0.0f && timeOfDeath < 120.0f)
+        else if(timeOfDeath == 60.0f)
         {
             transform.scale = deathScale;
             texture.Delete();
             texture.Create(deathTexture2Path);
         }
-        else
+        else if(timeOfDeath > 120.0f)
         {
             deathOver = true;
         }
