@@ -82,11 +82,13 @@
                 "color": [1.0, 1.0, 1.0, 1.0],
                 "isStatic": false,
                 "texturePath" : "/textures/WarriorDown.png",
+                "texturePath2" : "/textures/WarriorDown2.png",
                 "texturePathLeft" : "/textures/WarriorLeft2.png",
                 "texturePathLeft2" : "/textures/WarriorLeft.png",
                 "texturePathRight" : "/textures/WarriorRight.png",
                 "texturePathRight2" : "/textures/WarriorRight2.png",
                 "texturePathUp" : "/textures/WarriorUp.png",
+                "texturePathUp2" : "/textures/WarriorUp2.png",
                 "startPositionoverworld": [625.0, 50.0, 0.0],
                 "startPositioncastle": [625.0, 1240.0, 0.0]
             }
@@ -145,6 +147,7 @@
                 "color": [1.0, 1.0, 1.0, 0.0],
                 "isStatic": false,
                 "texturePath" : "/textures/Nerrick_sprite.png",
+                "texturePath2" : "/textures/Nerrick_sprite2.png",
                 "dialogue" : ["Hello! How are you?", "My name is Nerrick.", "I am the owner", "of the prancing pony inn.", "Yo."], 
                 "maxDist" : 500.0
             },

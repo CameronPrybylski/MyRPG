@@ -113,6 +113,11 @@ void Level::LoadLevel(std::string filepath)
                 go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,true);
                 player->AddItem("sword", go);
                 std::unordered_map<std::string, glm::vec3> startPositions;
+                if(obst.contains("texturePath2"))
+                {
+                    std::string texturePath2 = root + obst.value("texturePath2", "Unnamed");
+                    player->texturePath2 = texturePath2;
+                }
                 if(obst.contains("texturePathLeft"))
                 {
                     std::string texturePathLeft = root + obst.value("texturePathLeft", "Unnamed");
@@ -137,6 +142,11 @@ void Level::LoadLevel(std::string filepath)
                 {
                     std::string texturePathUp = root + obst.value("texturePathUp", "Unnamed");
                     player->texturePathUp = texturePathUp;
+                }
+                if(obst.contains("texturePathUp2"))
+                {
+                    std::string texturePathUp2 = root + obst.value("texturePathUp2", "Unnamed");
+                    player->texturePathUp2 = texturePathUp2;
                 }
             }
             else if(objs.key() == "enemies"){
@@ -188,6 +198,11 @@ void Level::LoadLevel(std::string filepath)
                     {
                         dialogueBox->SetDialogueTree(dialogueTree);
                     }
+                }
+                if(obst.contains("texturePath2") && texturePath != "")
+                {
+                    std::string texturePath2 = root + obst.value("texturePath2", "Unnamed");
+                    npc->SetTexturePath2(texturePath2);
                 }
                 npcs[name] = npc;
                 go = npc;

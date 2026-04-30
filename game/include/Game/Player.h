@@ -23,6 +23,7 @@ public:
     std::string texturePathRight = "";
     std::string texturePathRight2 = "";
     std::string texturePathUp = "";
+    std::string texturePathUp2 = "";
 
     bool hit = false;
     bool alive = true;
@@ -42,10 +43,10 @@ public:
     bool talkingToNPC = false;
 
     std::string texturePath;
+    std::string texturePath2 = "";
 
     float distance = 0.0f;
-    float leftDist = 0.0f;
-    float rightDist = 0.0f;
+    float frame = 0.0f;
     float GetDistance(){return distance;}
     void SetDistance(float distance){this->distance = distance;}
 
