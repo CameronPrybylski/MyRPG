@@ -64,7 +64,10 @@ void NPC::Update(const Input &input, float dt)
     {
         rigidBody.velocity = velocity;
     }
-    frame += 1.0f;
+    if(texturePath != "" && texturePath2 != "")
+    {
+        frame += 1.0f;
+    }
 }
 
 void NPC::Render(Renderer &renderer, const Camera &camera)
