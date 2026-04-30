@@ -14,6 +14,8 @@ NPC::NPC(glm::vec3 position, glm::vec3 scale, glm::vec3 velocity, glm::vec4 colo
     this->dialogue = dialogue;
     this->velocity = velocity;
     this->maxDist = maxDist;
+    this->texturePath = texturePath;
+    this->totalVelocity = std::abs(velocity.x) + std::abs(velocity.y);
     if(texturePath != ""){
         shaderName = "textureShader";
         texture.Create(texturePath);
@@ -39,6 +41,15 @@ void NPC::Update(const Input &input, float dt)
     }else{
         distance += changeDist.y;
     }
+    if(totalVelocity > 0.0f && frame > (3000.0f / totalVelocity) && texturePath != "" && texturePath2 != "")
+    {
+        std::string texturePathTemp = texturePath;
+        texturePath = texturePath2;
+        texturePath2 = texturePathTemp;
+        texture.Delete();
+        texture.Create(texturePath);
+        frame = 0.0f;
+    }
     if(distance >= maxDist)
     {
         rigidBody.velocity *= -1;
@@ -53,6 +64,7 @@ void NPC::Update(const Input &input, float dt)
     {
         rigidBody.velocity = velocity;
     }
+    frame += 1.0f;
 }
 
 void NPC::Render(Renderer &renderer, const Camera &camera)

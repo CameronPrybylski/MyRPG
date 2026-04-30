@@ -21,6 +21,8 @@ public:
     std::vector<std::unordered_map<std::string, std::vector<std::string>>> GetDialogueTree(){return this->dialogueTree;}
     bool HasDialogueTree(){return !dialogueTree.empty();}
 
+    void SetTexturePath2(std::string texturePath2){this->texturePath2 = texturePath2;}
+
 
 private:
     std::vector<std::string> dialogue;
@@ -28,6 +30,10 @@ private:
     glm::vec3 velocity;
     float maxDist;
     float distance = 0;
+    std::string texturePath = "";
+    std::string texturePath2 = "";
+    float frame = 1.0f;
+    float totalVelocity = 0.0f;
     std::vector<std::unordered_map<std::string, std::vector<std::string>>> dialogueTree;
 
 };
