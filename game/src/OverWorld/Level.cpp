@@ -76,6 +76,7 @@ void Level::LoadLevel(std::string filepath)
     combatArea = j["levelParams"]["combatArea"];
     moveCamera = j["levelParams"]["moveCamera"];
     glm::vec3 initialPosition = {0.0f, 0.0f, -1.0f};
+    glm::vec3 playerInitialPosition = {0.0f, 0.0f, -1.0f};
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -108,6 +109,7 @@ void Level::LoadLevel(std::string filepath)
                     initialPosition = position;
                 }
                 player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
+                playerInitialPosition = position;
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
                 go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,true);
@@ -276,10 +278,6 @@ void Level::LoadLevel(std::string filepath)
     {
         LoadState();
     }
-    if(loadGame)
-    {
-        LoadGame();
-    }
 
     SaveArea(previousArea);
 
@@ -291,9 +289,19 @@ void Level::LoadLevel(std::string filepath)
     player->transform.position.x = (leftScreenEdge + rightScreenEdge) / 2;
     player->transform.position.y = (bottomScreenEdge + topScreenEdge) / 2;
 
-    if(enterArea)
+    if(enterArea && !initialStart)
     {
         player->transform.position = initialPosition;
+    }
+    else if(initialStart && !loadGame)
+    {
+        player->transform.position = playerInitialPosition;
+    }
+    else if(loadGame)
+    {
+        LoadGame();
+        loadGame = false;
+        initialStart = false;
     }
 
     float minX, maxX, minY, maxY;
@@ -758,8 +766,6 @@ void Level::LoadGame()
     player->rigidBody.previousPosition = player->transform.position;
     player->transform.position = position;
     camera.Create(leftScreenEdge, rightScreenEdge, bottomScreenEdge, topScreenEdge, -1.0f, 1.0f);
-    loadGame = false;
-    initialStart = false;
 }
 
 void Level::Reset()
