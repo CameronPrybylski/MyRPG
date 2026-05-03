@@ -89,19 +89,6 @@
             {
                 "name": "player",
                 "position": [700.5, 400.0, 0.0],
-                "scale": [55.0, 50.0, 50.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": false,
-                "texturePath" : "/textures/WarriorDown.png",
-                "texturePath2" : "/textures/WarriorDown2.png",
-                "texturePathLeft" : "/textures/WarriorLeft2.png",
-                "texturePathLeft2" : "/textures/WarriorLeft.png",
-                "texturePathRight" : "/textures/WarriorRight.png",
-                "texturePathRight2" : "/textures/WarriorRight2.png",
-                "texturePathUp" : "/textures/WarriorUp.png",
-                "texturePathUp2" : "/textures/WarriorUp2.png",
                 "startPositiontown1": [600.0, 750.0, 0.0]
             }
         ],

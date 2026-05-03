@@ -56,6 +56,8 @@ void Level::LoadLevel(std::string filepath)
 
     areaFile.close();
 
+    std::string playerJsonPath = root + "/areas/player.json";
+    LoadPlayer(playerJsonPath);
 
     std::ifstream file(filepath);
     if (!file.is_open()) {
@@ -67,8 +69,6 @@ void Level::LoadLevel(std::string filepath)
 
     objectList.clear();
     objectMap.clear();
-    player = nullptr;
-    //std::cout << j["levelParams"]["completionDist"] << std::endl;
     completionDist = j["levelParams"]["completionDist"];
     nextLevel = j["levelParams"]["nextLevel"];
     savescene = j["levelParams"]["savescene"];
@@ -82,20 +82,27 @@ void Level::LoadLevel(std::string filepath)
             std::shared_ptr<GameObject> go;
             std::string name = obst.value("name", "Unnamed");
             glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
-            glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
-            glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
-            glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
-            glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
-            bool isStatic = obst.value("isStatic", false);
-            std::string texturePath = obst.value("texturePath", "Unnamed");
-
-            if(texturePath.find("font") != std::string::npos)
+            glm::vec3 scale, rotation, velocity;
+            glm::vec4 color;
+            bool isStatic;
+            std::string texturePath;
+            if(name != "player")
             {
-                texturePath = root + texturePath;
-            }
-            else if(texturePath.find("textures") != std::string::npos)
-            {
-                texturePath = root + texturePath;
+                position = { obst["position"][0], obst["position"][1], obst["position"][2]};
+                scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+                rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+                velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
+                color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
+                isStatic = obst.value("isStatic", false);
+                texturePath = obst.value("texturePath", "Unnamed");
+                if(texturePath.find("font") != std::string::npos)
+                {
+                    texturePath = root + texturePath;
+                }
+                else if(texturePath.find("textures") != std::string::npos)
+                {
+                    texturePath = root + texturePath;
+                }
             }
             
             if(objs.key() == "obstacles"){
@@ -108,48 +115,9 @@ void Level::LoadLevel(std::string filepath)
                 {
                     initialPosition = position;
                 }
-                player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
                 playerInitialPosition = position;
                 go = player;
                 AddObject(obst.value("name", "Unnamed"), go);
-                go = std::make_shared<Sword>(position, glm::vec3(45.0f, 45.0f, 0.0f), glm::vec3(0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 0.0f), "", "sword" ,true);
-                player->AddItem("sword", go);
-                std::unordered_map<std::string, glm::vec3> startPositions;
-                if(obst.contains("texturePath2"))
-                {
-                    std::string texturePath2 = root + obst.value("texturePath2", "Unnamed");
-                    player->texturePath2 = texturePath2;
-                }
-                if(obst.contains("texturePathLeft"))
-                {
-                    std::string texturePathLeft = root + obst.value("texturePathLeft", "Unnamed");
-                    player->texturePathLeft = texturePathLeft;
-                }
-                if(obst.contains("texturePathLeft2"))
-                {
-                    std::string texturePathLeft2 = root + obst.value("texturePathLeft2", "Unnamed");
-                    player->texturePathLeft2 = texturePathLeft2;
-                }
-                if(obst.contains("texturePathRight"))
-                {
-                    std::string texturePathRight = root + obst.value("texturePathRight", "Unnamed");
-                    player->texturePathRight = texturePathRight;
-                }
-                if(obst.contains("texturePathRight2"))
-                {
-                    std::string texturePathRight2 = root + obst.value("texturePathRight2", "Unnamed");
-                    player->texturePathRight2 = texturePathRight2;
-                }
-                if(obst.contains("texturePathUp"))
-                {
-                    std::string texturePathUp = root + obst.value("texturePathUp", "Unnamed");
-                    player->texturePathUp = texturePathUp;
-                }
-                if(obst.contains("texturePathUp2"))
-                {
-                    std::string texturePathUp2 = root + obst.value("texturePathUp2", "Unnamed");
-                    player->texturePathUp2 = texturePathUp2;
-                }
             }
             else if(objs.key() == "enemies"){
                 if(deadEnemies.count(name) == 0)
@@ -315,6 +283,66 @@ void Level::LoadLevel(std::string filepath)
     rightScreenEdge = maxX;
     bottomScreenEdge = minY;
     topScreenEdge = maxY;
+}
+
+void Level::LoadPlayer(std::string playerFilePath)
+{
+    std::ifstream playerJsonFile(playerFilePath);
+    if (!playerJsonFile.is_open()) {
+        throw std::runtime_error("Failed to open player file.");
+    }
+
+    nlohmann::json playerJson;
+    playerJsonFile >> playerJson;
+    playerJsonFile.close();
+    nlohmann::json::object_t obst = playerJson["objects"]["player"];
+    std::string name = obst["name"];
+    glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
+    glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+    glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+    glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
+    glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
+    bool isStatic = obst["isStatic"];
+    std::string texturePath = obst["texturePath"];
+    texturePath = root + texturePath;
+    
+    player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
+    
+    if(playerJson["objects"]["player"].contains("texturePath2"))
+    {
+        std::string texturePath2 = root + playerJson["objects"]["player"].value("texturePath2", "Unnamed");
+        player->texturePath2 = texturePath2;
+    }
+    if(playerJson["objects"]["player"].contains("texturePathLeft"))
+    {
+        std::string texturePathLeft = root + playerJson["objects"]["player"].value("texturePathLeft", "Unnamed");
+        player->texturePathLeft = texturePathLeft;
+    }
+    if(playerJson["objects"]["player"].contains("texturePathLeft2"))
+    {
+        std::string texturePathLeft2 = root + playerJson["objects"]["player"].value("texturePathLeft2", "Unnamed");
+        player->texturePathLeft2 = texturePathLeft2;
+    }
+    if(playerJson["objects"]["player"].contains("texturePathRight"))
+    {
+        std::string texturePathRight = root + playerJson["objects"]["player"].value("texturePathRight", "Unnamed");
+        player->texturePathRight = texturePathRight;
+    }
+    if(playerJson["objects"]["player"].contains("texturePathRight2"))
+    {
+        std::string texturePathRight2 = root + playerJson["objects"]["player"].value("texturePathRight2", "Unnamed");
+        player->texturePathRight2 = texturePathRight2;
+    }
+    if(playerJson["objects"]["player"].contains("texturePathUp"))
+    {
+        std::string texturePathUp = root + playerJson["objects"]["player"].value("texturePathUp", "Unnamed");
+        player->texturePathUp = texturePathUp;
+    }
+    if(playerJson["objects"]["player"].contains("texturePathUp2"))
+    {
+        std::string texturePathUp2 = root + playerJson["objects"]["player"].value("texturePathUp2", "Unnamed");
+        player->texturePathUp2 = texturePathUp2;
+    }
 }
 
 void Level::LoadPhysics(PhysicsSystem& physics)
