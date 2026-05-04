@@ -16,6 +16,17 @@
             "texturePathRight2" : "/textures/WarriorRight2.png",
             "texturePathUp" : "/textures/WarriorUp.png",
             "texturePathUp2" : "/textures/WarriorUp2.png"
+        },
+        "treasureChest" : {
+        
+            "name": "treasureChest",
+            "position": [1000.0, 300.0, 0.0],
+            "scale": [60.0, 50.0, 50.0],
+            "rotation" : [0.0, 0.0, 0.0],
+            "velocity": [0.0, 0.0, 0.0],
+            "color": [0.275, 0.135, 0.035, 1.0],
+            "isStatic": true,
+            "texturePath" : ""
         }
     }
 }

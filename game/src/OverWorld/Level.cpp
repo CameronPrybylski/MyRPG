@@ -56,7 +56,7 @@ void Level::LoadLevel(std::string filepath)
 
     areaFile.close();
 
-    std::string playerJsonPath = root + "/areas/player.json";
+    std::string playerJsonPath = root + "/areas/global.json";
     LoadPlayer(playerJsonPath);
 
     std::ifstream file(filepath);
@@ -66,6 +66,7 @@ void Level::LoadLevel(std::string filepath)
 
     nlohmann::json j;
     file >> j;
+    file.close();
 
     objectList.clear();
     objectMap.clear();
@@ -86,7 +87,7 @@ void Level::LoadLevel(std::string filepath)
             glm::vec4 color;
             bool isStatic;
             std::string texturePath;
-            if(name != "player")
+            if(name != "player" && objs.key() != "treasureChests")
             {
                 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
                 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
@@ -135,7 +136,9 @@ void Level::LoadLevel(std::string filepath)
                 saveSpots[name] = saveSpot;
             }
             else if(objs.key() == "treasureChests"){
-                std::shared_ptr<TreasureChest> treasureChest = std::make_shared<TreasureChest>(position, scale, color, "", name);
+                std::shared_ptr<TreasureChest> treasureChest = LoadTreasureChest(playerJsonPath);
+                treasureChest->transform.position = position;
+                treasureChest->name = name;
                 go = treasureChest;
                 AddObject(obst.value("name", "Unnamed"), go);
                 treasureChests[name] = treasureChest;
@@ -343,6 +346,29 @@ void Level::LoadPlayer(std::string playerFilePath)
         std::string texturePathUp2 = root + playerJson["objects"]["player"].value("texturePathUp2", "Unnamed");
         player->texturePathUp2 = texturePathUp2;
     }
+}
+
+std::shared_ptr<TreasureChest> Level::LoadTreasureChest(std::string playerFilePath)
+{
+    std::ifstream playerJsonFile(playerFilePath);
+    if (!playerJsonFile.is_open()) {
+        throw std::runtime_error("Failed to open player file.");
+    }
+
+    nlohmann::json playerJson;
+    playerJsonFile >> playerJson;
+    playerJsonFile.close();
+    nlohmann::json::object_t obst = playerJson["objects"]["treasureChest"];
+    std::string name = obst["name"];
+    glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
+    glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+    glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
+    std::string texturePath = obst["texturePath"];
+    if(texturePath != "")
+        texturePath = root + texturePath;
+
+    return std::make_shared<TreasureChest>(position, scale, color, texturePath, name);
+
 }
 
 void Level::LoadPhysics(PhysicsSystem& physics)
