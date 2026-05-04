@@ -49,6 +49,7 @@ public:
 private:
     std::shared_ptr<Player> player;
     void LoadPlayer(std::string playerFilePath);
+    std::shared_ptr<TreasureChest> LoadTreasureChest(std::string playerFilePath);
     std::vector<std::shared_ptr<Enemy>> enemies; 
     std::unordered_map<std::string, std::shared_ptr<SaveSpot>> saveSpots;
     std::unordered_map<std::string, std::shared_ptr<TreasureChest>> treasureChests;
