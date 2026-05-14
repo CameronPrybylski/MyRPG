@@ -113,7 +113,7 @@
             {
                 "name": "treasureChest2",
                 "position": [1000.0, 100.0, 0.0],
-                "contents" : {"WeaponSword" : 5}
+                "contents" : {"WeaponLong Sword" : 5}
             }
         ],
         "towns" : [

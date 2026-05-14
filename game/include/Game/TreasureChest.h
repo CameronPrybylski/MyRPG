@@ -33,12 +33,14 @@ public:
 
     bool Empty(){return this->empty;}
     void SetEmpty(bool empty){this->empty = empty;}
+    std::string GetTexturePath(){return this->texturePath;}
 
 
 private:
     bool openChest;
     bool touchChest;
     bool empty;
+    std::string texturePath = "";
     std::unordered_map<std::string, int> contents;
 
 };
