@@ -4,7 +4,7 @@
             {
                 "name": "menu",
                 "position": [200.0, 400.0, 0.0],
-                "scale": [250.0, 600.0, 0.0],
+                "scale": [300.0, 600.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 0.0, 1.0, 0.5],
@@ -14,7 +14,7 @@
             },
             {
                 "name": "menuItem1",
-                "position": [125.0, 600.0, 0.0],
+                "position": [100.0, 600.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -25,7 +25,7 @@
             },
             {
                 "name": "menuItem2",
-                "position": [125.0, 560.0, 0.0],
+                "position": [100.0, 560.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -36,7 +36,7 @@
             },
             {
                 "name": "cursor",
-                "position": [100.0, 600.0, 0.0],
+                "position": [75.0, 600.0, 0.0],
                 "scale": [10.0, 5.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -48,7 +48,7 @@
         "obstacles":[
             {
                 "name": "background",
-                "position": [667.0, 400.0, 0.0],
+                "position": [700.0, 400.0, 0.0],
                 "scale": [684.0, 600.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -137,7 +137,7 @@
             {
                 "name": "playerMenu",
                 "position": [200.0, 400.0, 0.0],
-                "scale": [250.0, 600.0, 0.0],
+                "scale": [300.0, 600.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 0.0, 1.0, 0.5],
@@ -147,7 +147,7 @@
             },
             {
                 "name": "itemMenuItem1",
-                "position": [125.0, 600.0, 0.0],
+                "position": [100.0, 600.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -156,11 +156,11 @@
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Potion",
                 "description" : "Raises HP by 5",
-                "descriptionPosition" : [350.0, 600.0, 0.0]
+                "descriptionPosition" : [400.0, 600.0, 0.0]
             },
             {
                 "name": "itemMenuItem2",
-                "position": [125.0, 560.0, 0.0],
+                "position": [100.0, 560.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -169,11 +169,11 @@
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Ether",
                 "description" : "Raises MP by 5",
-                "descriptionPosition" : [350.0, 560.0, 0.0]
+                "descriptionPosition" : [400.0, 560.0, 0.0]
             },
             {
                 "name": "itemMenuItem3",
-                "position": [125.0, 520.0, 0.0],
+                "position": [100.0, 520.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -182,11 +182,11 @@
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Back",
                 "description" : "Return to previous screen",
-                "descriptionPosition" : [350.0, 560.0, 0.0]
+                "descriptionPosition" : [400.0, 560.0, 0.0]
             },
             {
                 "name": "equipmentMenuItem1",
-                "position": [125.0, 600.0, 0.0],
+                "position": [100.0, 600.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -194,13 +194,13 @@
                 "weaponDamage": 3,
                 "isStatic": true,
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "ShortSword",
+                "text" : "Short Sword",
                 "description" : "Damage of 3",
-                "descriptionPosition" : [350.0, 600.0, 0.0]
+                "descriptionPosition" : [400.0, 600.0, 0.0]
             },
             {
                 "name": "equipmentMenuItem2",
-                "position": [125.0, 560.0, 0.0],
+                "position": [100.0, 560.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -210,11 +210,11 @@
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Bow",
                 "description" : "Damage of 3",
-                "descriptionPosition" : [350.0, 600.0, 0.0]
+                "descriptionPosition" : [400.0, 600.0, 0.0]
             },
             {
                 "name": "equipmentMenuItem3",
-                "position": [125.0, 200.0, 0.0],
+                "position": [100.0, 200.0, 0.0],
                 "scale": [22.0, 35.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
@@ -223,7 +223,7 @@
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Back",
                 "description" : "Return to previous screen",
-                "descriptionPosition" : [350.0, 600.0, 0.0]
+                "descriptionPosition" : [400.0, 600.0, 0.0]
             }
         ]
     }

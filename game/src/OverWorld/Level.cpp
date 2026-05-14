@@ -57,7 +57,7 @@ void Level::LoadLevel(std::string filepath)
     areaFile.close();
 
     std::string playerJsonPath = root + "/areas/global.json";
-    LoadPlayer(playerJsonPath);
+    LoadGlobal(playerJsonPath);
 
     std::ifstream file(filepath);
     if (!file.is_open()) {
@@ -68,8 +68,6 @@ void Level::LoadLevel(std::string filepath)
     file >> j;
     file.close();
 
-    objectList.clear();
-    objectMap.clear();
     completionDist = j["levelParams"]["completionDist"];
     nextLevel = j["levelParams"]["nextLevel"];
     savescene = j["levelParams"]["savescene"];
@@ -87,7 +85,7 @@ void Level::LoadLevel(std::string filepath)
             glm::vec4 color;
             bool isStatic;
             std::string texturePath;
-            if(name != "player" && objs.key() != "treasureChests")
+            if(name != "player" && objs.key() != "treasureChests" && name != "dialogueBox")
             {
                 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
                 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
@@ -136,9 +134,7 @@ void Level::LoadLevel(std::string filepath)
                 saveSpots[name] = saveSpot;
             }
             else if(objs.key() == "treasureChests"){
-                std::shared_ptr<TreasureChest> treasureChest = LoadTreasureChest(playerJsonPath);
-                treasureChest->transform.position = position;
-                treasureChest->name = name;
+                std::shared_ptr<TreasureChest> treasureChest = CreateTreasureChest(position, name);
                 go = treasureChest;
                 AddObject(obst.value("name", "Unnamed"), go);
                 treasureChests[name] = treasureChest;
@@ -183,19 +179,7 @@ void Level::LoadLevel(std::string filepath)
             }
             else if(objs.key() == "dialogue")
             {
-                if(name == "dialogueBox")
-                {
-                    dialogueBox = std::make_shared<DialogueBox>(position, scale, color, "", name);
-                    go = dialogueBox;
-                    AddObject(obst.value("name", "Unnamed"), go);
-                }
-                else if(name == "textPos")
-                {
-                    std::string text = obst.value("text", "Unnamed");
-                    std::shared_ptr<MenuItem> textPos = std::make_shared<MenuItem>(name, position, scale, color, texturePath, text);
-                    dialogueBox->SetCurrentText(textPos);
-                }
-                else if(name == "selectMenu")
+                if(name == "selectMenu")
                 {
                     dialogueBox->AddSelectMenu(position, scale, color, "", name);
                 }
@@ -288,9 +272,11 @@ void Level::LoadLevel(std::string filepath)
     topScreenEdge = maxY;
 }
 
-void Level::LoadPlayer(std::string playerFilePath)
+void Level::LoadGlobal(std::string globalFilePath)
 {
-    std::ifstream playerJsonFile(playerFilePath);
+    objectList.clear();
+    objectMap.clear();
+    std::ifstream playerJsonFile(globalFilePath);
     if (!playerJsonFile.is_open()) {
         throw std::runtime_error("Failed to open player file.");
     }
@@ -298,77 +284,92 @@ void Level::LoadPlayer(std::string playerFilePath)
     nlohmann::json playerJson;
     playerJsonFile >> playerJson;
     playerJsonFile.close();
-    nlohmann::json::object_t obst = playerJson["objects"]["player"];
-    std::string name = obst["name"];
-    glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
-    glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
-    glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
-    glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
-    glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
-    bool isStatic = obst["isStatic"];
-    std::string texturePath = obst["texturePath"];
-    texturePath = root + texturePath;
-    
-    player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
-    
-    if(playerJson["objects"]["player"].contains("texturePath2"))
+    for(auto obj : playerJson["objects"].items())
     {
-        std::string texturePath2 = root + playerJson["objects"]["player"].value("texturePath2", "Unnamed");
-        player->texturePath2 = texturePath2;
-    }
-    if(playerJson["objects"]["player"].contains("texturePathLeft"))
-    {
-        std::string texturePathLeft = root + playerJson["objects"]["player"].value("texturePathLeft", "Unnamed");
-        player->texturePathLeft = texturePathLeft;
-    }
-    if(playerJson["objects"]["player"].contains("texturePathLeft2"))
-    {
-        std::string texturePathLeft2 = root + playerJson["objects"]["player"].value("texturePathLeft2", "Unnamed");
-        player->texturePathLeft2 = texturePathLeft2;
-    }
-    if(playerJson["objects"]["player"].contains("texturePathRight"))
-    {
-        std::string texturePathRight = root + playerJson["objects"]["player"].value("texturePathRight", "Unnamed");
-        player->texturePathRight = texturePathRight;
-    }
-    if(playerJson["objects"]["player"].contains("texturePathRight2"))
-    {
-        std::string texturePathRight2 = root + playerJson["objects"]["player"].value("texturePathRight2", "Unnamed");
-        player->texturePathRight2 = texturePathRight2;
-    }
-    if(playerJson["objects"]["player"].contains("texturePathUp"))
-    {
-        std::string texturePathUp = root + playerJson["objects"]["player"].value("texturePathUp", "Unnamed");
-        player->texturePathUp = texturePathUp;
-    }
-    if(playerJson["objects"]["player"].contains("texturePathUp2"))
-    {
-        std::string texturePathUp2 = root + playerJson["objects"]["player"].value("texturePathUp2", "Unnamed");
-        player->texturePathUp2 = texturePathUp2;
+        nlohmann::json::object_t obst = obj.value();
+        std::string name = obst["name"];
+        glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
+        glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+        glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
+        glm::vec3 velocity = { obst["velocity"][0], obst["velocity"][1], obst["velocity"][2]};
+        glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
+        bool isStatic = obst["isStatic"];
+        std::string texturePath = obst["texturePath"];
+        if(texturePath != "")
+            texturePath = root + texturePath;
+
+        if(name == "player")
+        {
+            LoadPlayer(position, scale, color, texturePath, name, isStatic);
+            if(playerJson["objects"]["player"].contains("texturePath2"))
+            {
+                std::string texturePath2 = root + playerJson["objects"]["player"].value("texturePath2", "Unnamed");
+                player->texturePath2 = texturePath2;
+            }
+            if(playerJson["objects"]["player"].contains("texturePathLeft"))
+            {
+                std::string texturePathLeft = root + playerJson["objects"]["player"].value("texturePathLeft", "Unnamed");
+                player->texturePathLeft = texturePathLeft;
+            }
+            if(playerJson["objects"]["player"].contains("texturePathLeft2"))
+            {
+                std::string texturePathLeft2 = root + playerJson["objects"]["player"].value("texturePathLeft2", "Unnamed");
+                player->texturePathLeft2 = texturePathLeft2;
+            }
+            if(playerJson["objects"]["player"].contains("texturePathRight"))
+            {
+                std::string texturePathRight = root + playerJson["objects"]["player"].value("texturePathRight", "Unnamed");
+                player->texturePathRight = texturePathRight;
+            }
+            if(playerJson["objects"]["player"].contains("texturePathRight2"))
+            {
+                std::string texturePathRight2 = root + playerJson["objects"]["player"].value("texturePathRight2", "Unnamed");
+                player->texturePathRight2 = texturePathRight2;
+            }
+            if(playerJson["objects"]["player"].contains("texturePathUp"))
+            {
+                std::string texturePathUp = root + playerJson["objects"]["player"].value("texturePathUp", "Unnamed");
+                player->texturePathUp = texturePathUp;
+            }
+            if(playerJson["objects"]["player"].contains("texturePathUp2"))
+            {
+                std::string texturePathUp2 = root + playerJson["objects"]["player"].value("texturePathUp2", "Unnamed");
+                player->texturePathUp2 = texturePathUp2;
+            }
+        }
+        else if(name == "treasureChest")
+        {
+            LoadTreasureChest(position, scale, color, texturePath, name);
+        }
+        else if(name == "dialogueBox")
+        {
+            LoadDialogueBox(position, scale, color, texturePath, name);
+        }
+        else if(name == "textPos")
+        {
+            std::string text = obst["text"];
+            std::shared_ptr<MenuItem> textPos = std::make_shared<MenuItem>(name, position, scale, color, texturePath, text);
+            dialogueBox->SetCurrentText(textPos);
+        }
     }
 }
 
-std::shared_ptr<TreasureChest> Level::LoadTreasureChest(std::string playerFilePath)
+void Level::LoadPlayer(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, bool isStatic)
 {
-    std::ifstream playerJsonFile(playerFilePath);
-    if (!playerJsonFile.is_open()) {
-        throw std::runtime_error("Failed to open player file.");
-    }
+    player = std::make_shared<Player>(position, scale, color, texturePath, name, isStatic);
+}
 
-    nlohmann::json playerJson;
-    playerJsonFile >> playerJson;
-    playerJsonFile.close();
-    nlohmann::json::object_t obst = playerJson["objects"]["treasureChest"];
-    std::string name = obst["name"];
-    glm::vec3 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
-    glm::vec3 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
-    glm::vec4 color = { obst["color"][0], obst["color"][1], obst["color"][2], obst["color"][3]};
-    std::string texturePath = obst["texturePath"];
-    if(texturePath != "")
-        texturePath = root + texturePath;
+void Level::LoadTreasureChest(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name)
+{
+    treasureChestTemplate = std::make_shared<TreasureChest>(position, scale, color, texturePath, name);
+}
 
-    return std::make_shared<TreasureChest>(position, scale, color, texturePath, name);
-
+void Level::LoadDialogueBox(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name)
+{
+    dialogueBox = std::make_shared<DialogueBox>(position, scale, color, texturePath, name);
+    std::shared_ptr<GameObject> go;
+    go = dialogueBox;
+    AddObject(name, go);
 }
 
 void Level::LoadPhysics(PhysicsSystem& physics)
@@ -585,6 +586,11 @@ void Level::UpdateCamera()
     leftScreenEdge += changeX;
     rightScreenEdge += changeX;
     
+}
+
+std::shared_ptr<TreasureChest> Level::CreateTreasureChest(glm::vec3 position, std::string name)
+{
+    return std::make_shared<TreasureChest>(position, treasureChestTemplate->transform.scale, treasureChestTemplate->color, treasureChestTemplate->GetTexturePath(), name);
 }
 
 void Level::OpenChest(std::string treasureChestName)

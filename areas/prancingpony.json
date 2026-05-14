@@ -97,27 +97,6 @@
         ],
         "dialogue" : [
             {
-                "name": "dialogueBox",
-                "position": [700.0, 800.0, -0.5],
-                "scale": [250.0, 62.5, 0.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 0.5, 1.0],
-                "isStatic": true,
-                "texturePath" : ""
-            },
-            {
-                "name": "textPos",
-                "position": [400.0, 800.0, -0.5],
-                "scale": [11.0, 7.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Hi"
-            },
-            {
                 "name": "selectMenu",
                 "position": [210.0, 300.0, -0.5],
                 "scale": [110.0, 150.0, 0.0],

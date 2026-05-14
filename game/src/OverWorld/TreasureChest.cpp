@@ -10,6 +10,7 @@ TreasureChest::TreasureChest(glm::vec3 position, glm::vec3 scale, glm::vec4 colo
     this->name = name;
     openChest = false;
     this->empty = false;
+    this->texturePath = texturePath;
     if(texturePath != ""){
         shaderName = "textureShader";
         texture.Create(texturePath);

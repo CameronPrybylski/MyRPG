@@ -48,8 +48,10 @@ public:
 
 private:
     std::shared_ptr<Player> player;
-    void LoadPlayer(std::string playerFilePath);
-    std::shared_ptr<TreasureChest> LoadTreasureChest(std::string playerFilePath);
+    void LoadGlobal(std::string globalFilePath);
+    void LoadPlayer(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name, bool isStatic);
+    void LoadTreasureChest(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name);
+    void LoadDialogueBox(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::string texturePath, std::string name);
     std::vector<std::shared_ptr<Enemy>> enemies; 
     std::unordered_map<std::string, std::shared_ptr<SaveSpot>> saveSpots;
     std::unordered_map<std::string, std::shared_ptr<TreasureChest>> treasureChests;
@@ -70,6 +72,9 @@ private:
     std::string areaName;
     std::unordered_map<std::string, std::shared_ptr<NPC>> npcs;
     std::shared_ptr<DialogueBox> dialogueBox;
+    //std::map<std::string, std::shared_ptr<TreasureChest>> TreasureChests;
+    std::shared_ptr<TreasureChest> treasureChestTemplate;
+    std::shared_ptr<TreasureChest> CreateTreasureChest(glm::vec3 position, std::string name);
 
     std::string root;
 

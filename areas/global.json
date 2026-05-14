@@ -27,6 +27,27 @@
             "color": [0.275, 0.135, 0.035, 1.0],
             "isStatic": true,
             "texturePath" : ""
+        },
+        "dialogue" : {
+            "name": "dialogueBox",
+            "position": [100000.0, 1000000.0, -0.5],
+            "scale": [250.0, 62.5, 0.0],
+            "rotation" : [0.0, 0.0, 0.0],
+            "velocity": [0.0, 0.0, 0.0],
+            "color": [0.0, 0.0, 0.5, 1.0],
+            "isStatic": true,
+            "texturePath" : ""
+        },
+        "textPos" : {
+            "name": "textPos",
+            "position": [400.0, 800.0, -0.5],
+            "scale": [12.0, 7.0, 0.0],
+            "rotation": [0.0, 0.0, 0.0],
+            "velocity": [0.0, 0.0, 0.0],
+            "color": [1.0, 1.0, 1.0, 1.0],
+            "isStatic": true,
+            "texturePath" : "/fonts/OpenSans-Bold.ttf",
+            "text" : "Hi"
         }
     }
 }

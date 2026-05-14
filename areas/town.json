@@ -150,29 +150,6 @@
                 "dialogue" : ["Hi!", "My name is Tom", "I am the shepherd of the old forest."], 
                 "maxDist" : 500.0
             }
-        ],
-        "dialogue" : [
-            {
-                "name": "dialogueBox",
-                "position": [600.0, 800.0, 0.6],
-                "scale": [500.0, 125.0, 0.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 0.0, 0.5, 1.0],
-                "isStatic": true,
-                "texturePath" : ""
-            },
-            {
-                "name": "textPos",
-                "position": [300.0, 800.0, 0.0],
-                "scale": [16.5, 15.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : "/fonts/OpenSans-Bold.ttf",
-                "text" : "Hi"
-            }
         ]
     },
     "levelParams" : {

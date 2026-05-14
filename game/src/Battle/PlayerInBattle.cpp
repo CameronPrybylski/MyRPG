@@ -12,7 +12,7 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     transform.scale = scale;
     deathScale = {scale.y, scale.x, scale.z};
     rigidBody.isStatic = isStatic;
-    hp = 5;
+    hp = 15;
     maxHP = hp;
     strength = 1;
     magicLevel = 1;
@@ -26,8 +26,8 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     this->color = color;
     this->name = name;
 
-    equippedWeapon = std::make_shared<Weapon>(3,"ShortSword");
-    weapons["ShortSword"] = equippedWeapon;
+    equippedWeapon = std::make_shared<Weapon>(3,"Short Sword");
+    weapons["Short Sword"] = equippedWeapon;
     weapons["Bow"] = std::make_shared<Weapon>(3, "Bow");
 }
 
