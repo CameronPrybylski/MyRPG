@@ -85,7 +85,7 @@ void Level::LoadLevel(std::string filepath)
             glm::vec4 color;
             bool isStatic;
             std::string texturePath;
-            if(name != "player" && objs.key() != "treasureChests" && name != "dialogueBox")
+            if(name != "player" && objs.key() != "treasureChests" && name != "dialogueBox" && objs.key() != "saveSpots")
             {
                 position = { obst["position"][0], obst["position"][1], obst["position"][2]};
                 scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
@@ -128,7 +128,8 @@ void Level::LoadLevel(std::string filepath)
                 }
             }
             else if(objs.key() == "saveSpots"){
-                std::shared_ptr<SaveSpot> saveSpot = std::make_shared<SaveSpot>(position, scale, color, "", name);
+                scale = { obst["scale"][0], obst["scale"][1], obst["scale"][2]};
+                std::shared_ptr<SaveSpot> saveSpot = CreateSaveSpot( position, scale, name);
                 go = saveSpot;
                 AddObject(obst.value("name", "Unnamed"), go);
                 saveSpots[name] = saveSpot;
@@ -350,6 +351,10 @@ void Level::LoadGlobal(std::string globalFilePath)
             std::string text = obst["text"];
             std::shared_ptr<MenuItem> textPos = std::make_shared<MenuItem>(name, position, scale, color, texturePath, text);
             dialogueBox->SetCurrentText(textPos);
+        }
+        else if(name == "saveSpot")
+        {
+            saveSpotTemplate = std::make_shared<SaveSpot>(position, scale, color, texturePath, name);
         }
     }
 }
@@ -591,6 +596,11 @@ void Level::UpdateCamera()
 std::shared_ptr<TreasureChest> Level::CreateTreasureChest(glm::vec3 position, std::string name)
 {
     return std::make_shared<TreasureChest>(position, treasureChestTemplate->transform.scale, treasureChestTemplate->color, treasureChestTemplate->GetTexturePath(), name);
+}
+
+std::shared_ptr<SaveSpot> Level::CreateSaveSpot(glm::vec3 position, glm::vec3 scale, std::string name)
+{
+    return std::make_shared<SaveSpot>(position, scale, saveSpotTemplate->color, saveSpotTemplate->GetTexturePath(), name);
 }
 
 void Level::OpenChest(std::string treasureChestName)

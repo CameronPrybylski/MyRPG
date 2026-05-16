@@ -9,6 +9,7 @@ SaveSpot::SaveSpot(glm::vec3 position, glm::vec3 scale, glm::vec4 color, std::st
     this->color = color;
     this->name = name;
     saveGame = false;
+    this->texturePath = texturePath;
     if(texturePath != ""){
         shaderName = "textureShader";
         texture.Create(texturePath);

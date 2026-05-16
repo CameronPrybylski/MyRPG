@@ -75,6 +75,8 @@ private:
     //std::map<std::string, std::shared_ptr<TreasureChest>> TreasureChests;
     std::shared_ptr<TreasureChest> treasureChestTemplate;
     std::shared_ptr<TreasureChest> CreateTreasureChest(glm::vec3 position, std::string name);
+    std::shared_ptr<SaveSpot> saveSpotTemplate;
+    std::shared_ptr<SaveSpot> CreateSaveSpot(glm::vec3 position, glm::vec3 scale, std::string name);
 
     std::string root;
 

@@ -13,10 +13,12 @@ public:
 
     bool GetSaveGame(){return this->saveGame;}
     void SetSaveGame(bool saveGame){this->saveGame = saveGame;}
+    std::string GetTexturePath(){return this->texturePath;}
 
 private:
     bool saveGame;
     bool enterInput = false;
+    std::string texturePath;
 
 
 };
