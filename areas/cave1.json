@@ -73,12 +73,7 @@
             {
                 "name": "saveSpot1",
                 "position": [650.0, 550.0, 0.0],
-                "scale": [30.0, 25.0, 50.0],
-                "rotation" : [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [1.0, 1.0, 1.0, 1.0],
-                "isStatic": true,
-                "texturePath" : ""
+                "scale": [30.0, 25.0, 50.0]
             }
         ],
         "towns" : [
