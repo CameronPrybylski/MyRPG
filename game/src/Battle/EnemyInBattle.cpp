@@ -42,11 +42,13 @@ void EnemyInBattle::Update(const Input &input, float dt)
     }
     if(enemyMove && isAlive)
     {
+        /*
         MakeMove();
         if(transform.position.x - (transform.scale.x / 2) <= 0.0f)
         {
             transform.position.x = (transform.scale.x / 2);
         }
+        */
     }
 }
 
@@ -63,6 +65,11 @@ void EnemyInBattle::MakeMove()
         transform.position.x +=  100.0f;
     else
         transform.position.x -= 100.0f;
+
+    if(transform.position.x - (transform.scale.x / 2) <= 0.0f)
+    {
+        transform.position.x = (transform.scale.x / 2);
+    }
 }
 
 void EnemyInBattle::TakeDamage(int damage)

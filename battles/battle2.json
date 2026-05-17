@@ -48,7 +48,7 @@
                 "texturePath" : "/textures/FighterBattle.png",
                 "deathTexture1Path" : "/textures/FighterDeath1.png",
                 "deathTexture2Path" : "/textures/FighterDeath2.png",
-                "spell" : {"Fire" : {"Damage" : 3, "MPCost" : 5}}
+                "spell" : {"Fire" : {"Damage" : 3, "MPCost" : 5}, "Cure" : {"Damage" : 5, "MPCost" : 5}}
             }
         ],
         "enemies" : [

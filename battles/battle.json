@@ -107,6 +107,17 @@
             },
             {
                 "name": "magicMenuItem2",
+                "position": [100.0, 95.0, 0.0],
+                "scale": [22.0, 35.0, 0.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 1.0],
+                "isStatic": true,
+                "texturePath" : "/fonts/OpenSans-Bold.ttf",
+                "text" : "Cure"
+            },
+            {
+                "name": "magicMenuItem3",
                 "position": [95.0, 55.0, 0.0],
                 "scale": [22.0, 30.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],

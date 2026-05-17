@@ -60,6 +60,56 @@ void PlayerInBattle::Update(const Input& input, float dt)
     }
 
     DeathAnimation();
+    RenderMove();
+}
+
+void PlayerInBattle::MakeMove(std::string menuPlayerMove)
+{
+    ogPosition = transform.position;
+    move = true;
+    moveForward = true;
+    this->totalPlayerMove = menuPlayerMove;
+}
+
+void PlayerInBattle::RenderMove()
+{
+    if(move)
+    {
+        frame += 1.0f;
+        if(totalPlayerMove.find("Attack") != std::string::npos)
+        {
+            if(frame <= 15.0f)
+            {
+                glm::vec3 newPos(-5.0f, 0.0f, 0.0f);
+                transform.position += newPos;
+            }
+            else if(frame > 30.0f && frame <= 45.0f)
+            {
+                glm::vec3 newPos(5.0f, 0.0f, 0.0f);
+                transform.position += newPos;
+            }
+            else if(frame > 45.0f)
+            {
+                transform.position = ogPosition;
+            }
+        }
+        if(frame > 15.0f && frame <= 30.0f)
+        {
+            attack = true;
+        }
+        else if(frame > 30.0f && frame <= 45.0f)
+        {
+            moveBackward = true;
+            moveForward = false;
+            attack = false;
+        }
+        else if(frame > 45.0f)
+        {
+            frame = 0.0f;
+            move = false;
+            moveBackward = false;
+        }
+    }
 }
 
 void PlayerInBattle::DeathAnimation()
@@ -251,4 +301,24 @@ int PlayerInBattle::GetMagicDamage(std::string magicType)
         }
     }
     return 0;
+}
+
+void PlayerInBattle::UseMagic(std::string magicType)
+{
+    if(spells.count(magicType))
+    {
+        std::shared_ptr<Spell> spell = spells.at(magicType);
+        if(magicType.find("Cur") != std::string::npos && spell->GetMPCost() <= mp)
+        {
+            if(hp + spell->GetDamage() <= maxHP)
+            {
+                hp += spell->GetDamage();
+            }
+            else
+            {
+                hp = maxHP;
+            }
+            mp -= spell->GetMPCost();
+        }
+    }
 }

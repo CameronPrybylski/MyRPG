@@ -34,11 +34,7 @@ void BattleMenu::OnEvent(const Input &input)
             {
                 if(cursor->transform.position.y == attackMenuItem.second->transform.position.y)
                 {
-                    if(playerMove.find("Magic") != std::string::npos)
-                    {
-                        playerMove += "Attack" + attackMenuItem.second->GetText();
-                    }
-                    else if(attackMenuItem.second->GetText() != "Back")
+                    if(attackMenuItem.second->GetText() != "Back")
                     {
                         playerMove = "Attack" + attackMenuItem.second->GetText();
                     }
@@ -52,11 +48,16 @@ void BattleMenu::OnEvent(const Input &input)
             {
                 if(cursor->transform.position.y == magicMenuItem.second->transform.position.y)
                 {
-                    if(magicMenuItem.second->GetText() != "Back")
+                    if(magicMenuItem.second->GetText() != "Back" && magicMenuItem.second->GetText().find("Cur") == std::string::npos)
                     {
-                        playerMove = "Magic" + magicMenuItem.second->GetText();
+                        magicMove = "Magic" + magicMenuItem.second->GetText();
                         menuName = "AttackMenuItems";
                         break;
+                    }
+                    else
+                    {
+                        magicMove = "Magic" + magicMenuItem.second->GetText();
+                        playerMove = magicMove;
                     }
                     menuName = "MenuItems";
                 }
