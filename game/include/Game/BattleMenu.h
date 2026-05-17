@@ -25,9 +25,19 @@ public:
         return playerMove;
     }
 
+    std::string GetMagicMove() const
+    {
+        return magicMove;
+    }
+
     void SetPlayerMove(std::string move)
     {
         playerMove = move;
+    }
+
+    void SetMagicMove(std::string move)
+    {
+        magicMove = move;
     }
 
     void SetDeadEnemies(std::vector<std::string> deadEnemies);
@@ -48,5 +58,6 @@ private:
     std::unordered_map<std::string, std::shared_ptr<MenuItem>> itemMenuItems;
     std::unordered_map<std::string, int> itemCount;
     std::string playerMove = "";
+    std::string magicMove = "";
 
 };

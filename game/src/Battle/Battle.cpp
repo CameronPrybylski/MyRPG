@@ -320,7 +320,7 @@ void Battle::LoadPhysics(PhysicsSystem& physics)
 
 void Battle::OnEvent(const Input& input)
 {
-    if(playerMove && player->GetHP() > 0)
+    if(playerMove && player->GetHP() > 0 && !player->IsMove())
     {
         for(auto& obj : objectList)
         {
@@ -340,6 +340,26 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
         player->Update(input, dt);
         return;
     }
+    if(player->IsMove())
+    {
+        player->Update(input, dt);
+        if(player->IsAttack() && playerMove)
+        {
+            HandlePlayerMove();
+            for(auto& obj : objectList)
+            {
+                obj->Update(input, dt);
+            }
+            if(!(menu->GetMagicMove().find("Magic") != std::string::npos && menu->GetPlayerMove().find("Attack") == std::string::npos))
+            {
+                menu->SetPlayerMove("");
+                menu->SetMagicMove("");
+            }
+            player->SetMove(menu->GetPlayerMove());
+            playerMove = false;
+        }
+        return;
+    }
 
     std::vector<std::string> deadEnemies;
     if(player->GetHP() <= 0 && player->DeathOver())
@@ -355,9 +375,17 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
 
     std::vector<CollisionEvent> collisions = physics.Update(dt);
     OnCollision(collisions, dt);
-    if(playerMove && menu->GetPlayerMove() != "")
+    
+    if(playerMove && menu->GetPlayerMove() != "" && !player->IsMove())
     {
-        HandlePlayerMove();
+        player->MakeMove(menu->GetPlayerMove());
+        for(auto itr = enemies.begin(); itr != enemies.end();)
+        {
+            auto enemy = itr;
+            enemy->second->SetMove(true);
+            ++itr;
+        }
+        return;
     }
 
     for(auto& obj : objectList)
@@ -391,7 +419,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
         else
         {
             enemy->second->SetMove(!playerMove);
-            itr++;
+            ++itr;
         }
     }
 
@@ -420,15 +448,15 @@ void Battle::OnCollision(std::vector<CollisionEvent> collisions, float dt)
 void Battle::HandlePlayerMove()
 {
     player->SetMove(menu->GetPlayerMove());
-    if(menu->GetPlayerMove().find("Attack") != std::string::npos && menu->GetPlayerMove().find("Magic") == std::string::npos)
+    if(menu->GetPlayerMove().find("Attack") != std::string::npos && menu->GetMagicMove().find("Magic") == std::string::npos)
     {
         if(enemies.find(menu->GetPlayerMove().substr(6)) != enemies.end())
         {
             enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
         }
-        //enemies[menu->GetPlayerMove().substr(6)]->TakeDamage(player->GetAttackDamage());
+        menu->SetPlayerMove("");
     }
-    else if(menu->GetPlayerMove().find("Magic") != std::string::npos )
+    else if(menu->GetMagicMove().find("Magic") != std::string::npos )
     {
         if(menu->GetPlayerMove().find("Attack") != std::string::npos)
         {
@@ -436,7 +464,7 @@ void Battle::HandlePlayerMove()
             int indexOfEnemy = indexOfAttack + 6;
             if(enemies.find(menu->GetPlayerMove().substr(indexOfEnemy)) != enemies.end())
             {
-                std::string magicType = menu->GetPlayerMove().substr(5);
+                std::string magicType = menu->GetMagicMove().substr(5);
                 int magicDamage = player->GetMagicDamage(magicType);
                 if(magicDamage == 0)
                 {
@@ -448,10 +476,13 @@ void Battle::HandlePlayerMove()
                 }
             }
         }
-        else
+        else if( menu->GetPlayerMove().find("Magic") != std::string::npos )
         {
-            return;
+            std::string magicType = menu->GetMagicMove().substr(5);
+            player->UseMagic(magicType);
         }
+        menu->SetPlayerMove("");
+        menu->SetMagicMove("");
     }
     else if(menu->GetPlayerMove().find("UseItem") != std::string::npos)
     {
@@ -464,12 +495,14 @@ void Battle::HandlePlayerMove()
         {
             menu->RemoveItemMenuItem(itemUse);
         }
+        menu->SetPlayerMove("");
     }
     playerMove = false;
 }
 
 void Battle::HandleEnemyMove(std::shared_ptr<EnemyInBattle> enemy)
 {
+    enemy->MakeMove();
     player->TakeDamage(enemy->GetAttackDamage());
 }
 

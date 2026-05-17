@@ -77,6 +77,7 @@ public:
     }
 
     int GetMagicDamage(std::string magicType);
+    void UseMagic(std::string magicType);
 
     void TakeDamage(int damage)
     {
@@ -139,12 +140,24 @@ public:
     void SetDeathOver(bool deathOver){this->deathOver = deathOver;}
     void SetDeathInProgress(bool deathInProgress){this->deathInProgress = deathInProgress;}
 
+    void MakeMove(std::string menuPlayerMove);
+    void RenderMove();
+    bool IsMove(){return this->move;}
+    bool IsMoveForward(){return this->moveForward;}
+    bool IsMoveBackward(){return this->moveBackward;}
+    bool IsAttack(){return this->attack;}
+
 private:
     int hp;
     int maxHP;
     bool alive = true;
+    bool move = false;
+    bool moveForward = false;
+    bool moveBackward = false;
+    bool attack = false;
     float timeOfDeath = 0.0f;
     glm::vec3 deathScale;
+    glm::vec3 ogPosition;
     std::unordered_map<std::string, std::shared_ptr<Weapon>> weapons;
     std::unordered_map<std::string, std::shared_ptr<Spell>> spells;
     std::unordered_map<std::string, std::vector<std::shared_ptr<ConsumableItem>>> consumableItems;
@@ -165,6 +178,8 @@ private:
     int gil;
     bool deathOver = false;
     bool deathInProgress = false;
+    float frame = 0.0f;
+    std::string totalPlayerMove = "";
 
 
 };
