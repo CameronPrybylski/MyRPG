@@ -180,6 +180,23 @@ void Battle::LoadBattle()
                     menu->AddCursor(name, position, scale, color, texturePath);
                 }
             }
+            else if(objs.key() == "player"){
+                player = std::make_shared<PlayerInBattle>(position, scale, color, texturePath, name, isStatic);
+                go = player;
+                AddObject(obst.value("name", "Unnamed"), go);
+
+                for(const auto& spell : obst["spell"].items())
+                {
+                    player->AddSpell(spell.key(), std::make_shared<Spell>(spell.value()["Damage"], spell.value()["MPCost"]));
+                }
+                
+                player->SetMoveTexture(root + obst.value("moveTexturePath", "Unamed"));
+                player->SetAttackTexture(root + obst.value("attackTexturePath", "Unamed"));
+                player->SetMagicTexture(root + obst.value("magicTexturePath", "Unamed"));
+                player->SetDamageTexture(root + obst.value("damageTexturePath", "Unamed"));
+                player->SetDeathTexture1Path(root + obst.value("deathTexture1Path", "Unamed"));
+                player->SetDeathTexture2Path(root + obst.value("deathTexture2Path", "Unamed"));
+            }
         }
     }
 
@@ -221,18 +238,6 @@ void Battle::LoadBattle()
                 int xp = obst.value("xp", 0);
                 std::shared_ptr<EnemyInBattle> enemy = CreateEnemy(position, scale, color, texturePath, name, attackDamage, xp);
                 AddEnemy(enemy);
-            }
-            else if(objs.key() == "player"){
-                player = std::make_shared<PlayerInBattle>(position, scale, color, texturePath, name, isStatic);
-                go = player;
-                AddObject(obst.value("name", "Unnamed"), go);
-                for(const auto& spell : obst["spell"].items())
-                {
-                    player->AddSpell(spell.key(), std::make_shared<Spell>(spell.value()["Damage"], spell.value()["MPCost"]));
-                }
-                
-                player->SetDeathTexture1Path(root + obst.value("deathTexture1Path", "Unamed"));
-                player->SetDeathTexture2Path(root + obst.value("deathTexture2Path", "Unamed"));
             }
             else if(objs.key() == "menu"){
                 if(name.find("attackMenuItem") != std::string::npos)
@@ -378,12 +383,11 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     
     if(playerMove && menu->GetPlayerMove() != "" && !player->IsMove())
     {
-        player->MakeMove(menu->GetPlayerMove());
-        for(auto itr = enemies.begin(); itr != enemies.end();)
+        player->MakeMove(menu->GetPlayerMove() + menu->GetMagicMove());
+        std::unordered_map<std::string, std::shared_ptr<EnemyInBattle>>::iterator enemy = enemies.begin();
+        for(; enemy != enemies.end(); ++enemy)
         {
-            auto enemy = itr;
             enemy->second->SetMove(true);
-            ++itr;
         }
         return;
     }

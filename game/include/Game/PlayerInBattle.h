@@ -79,9 +79,26 @@ public:
     int GetMagicDamage(std::string magicType);
     void UseMagic(std::string magicType);
 
-    void TakeDamage(int damage)
+    void SetMoveTexture(std::string moveTexturePath)
     {
-        hp -= damage;
+        this->moveTexturePath = moveTexturePath;
+    }
+
+    void SetAttackTexture(std::string attackTexturePath)
+    {
+        this->attackTexturePath = attackTexturePath;
+    }
+
+    void SetMagicTexture(std::string magicTexturePath)
+    {
+        this->magicTexturePath = magicTexturePath;
+    }
+
+    void TakeDamage(int damage);
+    void DamageFlicker();
+    void SetDamageTexture(std::string damageTexturePath)
+    {
+        this->damageTexturePath = damageTexturePath;
     }
 
     int GetLevel(){return level;}
@@ -172,12 +189,18 @@ private:
     int xpNeeded;
     int xpIncrement;
 
+    std::string texturePath = "";
+    std::string magicTexturePath = "";
+    std::string moveTexturePath = "";
+    std::string attackTexturePath = "";
     std::string deathTexture1Path = "";
     std::string deathTexture2Path = "";
+    std::string damageTexturePath = "";
 
     int gil;
     bool deathOver = false;
     bool deathInProgress = false;
+    bool takingDamage = false;
     float frame = 0.0f;
     std::string totalPlayerMove = "";
 

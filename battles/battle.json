@@ -160,6 +160,25 @@
                 "texturePath" : "/fonts/OpenSans-Bold.ttf",
                 "text" : "Back"
             }
+        ],
+        "player" : [
+            {
+                "name": "player",
+                "position": [800.0, 600.0, 0.0],
+                "scale": [80.0, 100.0, 50.0],
+                "rotation" : [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [1.0, 1.0, 1.0, 0.0],
+                "isStatic": false,
+                "texturePath" : "/textures/FighterBattle.png",
+                "moveTexturePath" : "/textures/FighterBattleMove.png",
+                "attackTexturePath" : "/textures/FighterBattleAttack.png",
+                "magicTexturePath" : "/textures/FighterBattleMagic.png",
+                "damageTexturePath" : "/textures/FighterDamage.png",
+                "deathTexture1Path" : "/textures/FighterDeath1.png",
+                "deathTexture2Path" : "/textures/FighterDeath2.png",
+                "spell" : {"Fire" : {"Damage" : 3, "MPCost" : 5}, "Cure" : {"Damage" : 5, "MPCost" : 5}}
+            }
         ]
     },
     "levelParams" : {
