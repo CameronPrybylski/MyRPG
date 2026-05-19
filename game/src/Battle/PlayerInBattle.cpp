@@ -22,6 +22,7 @@ PlayerInBattle::PlayerInBattle(glm::vec3 position, glm::vec3 scale, glm::vec4 co
     xp = 0;
     xpNeeded = 50;
     xpIncrement = 10;
+    this->texturePath = texturePath;
     texture.Create(texturePath);
     this->color = color;
     this->name = name;
@@ -61,6 +62,7 @@ void PlayerInBattle::Update(const Input& input, float dt)
 
     DeathAnimation();
     RenderMove();
+    DamageFlicker();
 }
 
 void PlayerInBattle::MakeMove(std::string menuPlayerMove)
@@ -76,17 +78,21 @@ void PlayerInBattle::RenderMove()
     if(move)
     {
         frame += 1.0f;
-        if(totalPlayerMove.find("Attack") != std::string::npos)
+        if(totalPlayerMove.find("Attack") != std::string::npos && totalPlayerMove.find("Magic") == std::string::npos)
         {
             if(frame <= 15.0f)
             {
                 glm::vec3 newPos(-5.0f, 0.0f, 0.0f);
                 transform.position += newPos;
+                texture.Delete();
+                texture.Create(moveTexturePath);
             }
             else if(frame > 30.0f && frame <= 45.0f)
             {
                 glm::vec3 newPos(5.0f, 0.0f, 0.0f);
                 transform.position += newPos;
+                texture.Delete();
+                texture.Create(moveTexturePath);
             }
             else if(frame > 45.0f)
             {
@@ -96,6 +102,16 @@ void PlayerInBattle::RenderMove()
         if(frame > 15.0f && frame <= 30.0f)
         {
             attack = true;
+            if(totalPlayerMove.find("Magic") != std::string::npos)
+            {
+                texture.Delete();
+                texture.Create(magicTexturePath);
+            }
+            else if(totalPlayerMove.find("Attack") != std::string::npos)
+            {
+                texture.Delete();
+                texture.Create(attackTexturePath);
+            }
         }
         else if(frame > 30.0f && frame <= 45.0f)
         {
@@ -108,6 +124,8 @@ void PlayerInBattle::RenderMove()
             frame = 0.0f;
             move = false;
             moveBackward = false;
+            texture.Delete();
+            texture.Create(texturePath);
         }
     }
 }
@@ -130,6 +148,37 @@ void PlayerInBattle::DeathAnimation()
         else if(timeOfDeath > 120.0f)
         {
             deathOver = true;
+        }
+    }
+}
+
+void PlayerInBattle::TakeDamage(int damage)
+{
+    hp -= damage;
+    takingDamage = true;
+}
+
+void PlayerInBattle::DamageFlicker()
+{
+    if(takingDamage)
+    {
+        frame += 1.0f;
+        if(frame <= 60.0f && (int)frame % 2 == 0)
+        {
+            texture.Delete();
+            texture.Create(damageTexturePath);
+        }
+        else if(frame <= 60.0f && (int)frame % 2 != 0)
+        {
+            texture.Delete();
+            texture.Create(texturePath);
+        }
+        else
+        {
+            texture.Delete();
+            texture.Create(texturePath);
+            frame = 0.0f;
+            takingDamage = false;
         }
     }
 }
