@@ -11,6 +11,7 @@ add_executable(MyRPG
     src/OverWorld/SaveSpot.cpp
     src/OverWorld/TreasureChest.cpp
     src/OverWorld/TownSpot.cpp
+    src/OverWorld/RepeatPattern.cpp
     src/Battle/PlayerInBattle.cpp
     src/Obstacle.cpp
     src/OverWorld/Enemy.cpp

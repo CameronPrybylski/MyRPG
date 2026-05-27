@@ -9,6 +9,7 @@
 #include <Game/MenuScene.h>
 #include <Game/Menu.h>
 #include <Game/Corridor.h>
+#include <Game/RepeatPattern.h>
 
 bool Level::loadGame = false;
 std::string Level::saveSlot = "";
@@ -107,6 +108,11 @@ void Level::LoadLevel(std::string filepath)
             if(objs.key() == "obstacles"){
                 glm::vec3 rotation = {obst["rotation"][0], obst["rotation"][1], obst["rotation"][2]};
                 go = std::make_shared<Obstacle>(position, scale, rotation, velocity, color, "", name, isStatic);
+                AddObject(obst.value("name", "Unnamed"), go);
+            }
+            else if(objs.key() == "patterns")
+            {
+                go = std::make_shared<RepeatPattern>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
                 AddObject(obst.value("name", "Unnamed"), go);
             }
             else if(objs.key() == "player"){

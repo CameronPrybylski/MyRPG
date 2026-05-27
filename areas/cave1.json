@@ -94,7 +94,7 @@
         "nextLevel" : "battle",
         "savescene" : "savescene",
         "area" : "cave1",
-        "combatArea" : false,
+        "combatArea" : true,
         "moveCamera" : true
     }
 }

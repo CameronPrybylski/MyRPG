@@ -25,6 +25,8 @@ int main()
     
         auto quadMesh = std::make_shared<QuadMesh>();
         AssetManager::LoadMesh("quadMesh", quadMesh);
+        auto batchMesh = std::make_shared<BatchMesh>();
+        AssetManager::LoadMesh("batchMesh", batchMesh);
         
         std::shared_ptr<Scene> title = std::make_shared<TitleScene>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/title.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), std::string(root));
         std::shared_ptr<Level> overworld = std::make_shared<Level>(app.GetScreenWidth(), app.GetScreenHeight(), (std::string(root) + "/areas/overworld.json").c_str(), (std::string(root) + "/savestate/saveOverWorld.json").c_str(), (std::string(root) + "/savestate/saveBattle.json").c_str(), (std::string(root) + "/savestate/saveGame.json").c_str(), (std::string(root) + "/savestate/currentArea.json").c_str(), std::string(root));

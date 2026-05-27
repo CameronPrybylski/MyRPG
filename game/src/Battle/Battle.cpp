@@ -13,6 +13,7 @@
 
 #include <random>
 #include <chrono>
+#include <set>
 
 Battle::Battle(float screenWidth, float screenHeight, std::string filepath, std::string saveFilePath, std::string saveGameFilePath, std::string root) : Scene(screenWidth, screenHeight), filepath(filepath), saveGameFilePath(saveGameFilePath), root(root)
 {
@@ -49,8 +50,6 @@ void Battle::LoadBattle()
         }
     }
 
-    newFilePath.insert(whereToInsert, std::to_string(random_num));
-
     if(random_num == 1)
     {
         playerMove = true;
@@ -72,6 +71,29 @@ void Battle::LoadBattle()
     nextArea = nextAreaJson["CurrentArea"];
 
     nextAreaFile.close();
+
+    std::ifstream combatAreasFile(root + "/battles/combatareas.json");
+    if (!combatAreasFile.is_open()) {
+        throw std::runtime_error("Failed to open combat areas file.");
+    }
+
+    nlohmann::json combatAreasJson;
+    combatAreasFile >> combatAreasJson;
+    combatAreasFile.close();
+    
+    std::set<std::string> combatAreas;
+    for(const auto& areas : combatAreasJson.items())
+    {
+        for(const auto& area : areas.value())
+        {
+            combatAreas.insert(area);
+        }
+    }
+
+    if(combatAreas.count(nextArea))
+    {
+        newFilePath.insert(whereToInsert, std::to_string(random_num) + nextArea);
+    }
 
     std::ifstream nextAreaBackground(root + "/areas/" + nextArea + ".json");
     if (!nextAreaBackground.is_open()) {
@@ -206,7 +228,7 @@ void Battle::LoadBattle()
 
     std::ifstream file2(newFilePath);
     if (!file2.is_open()) {
-        throw std::runtime_error("Failed to open level file.");
+        throw std::runtime_error("Failed to open battle file.");
     }
 
     nlohmann::json j2;
@@ -416,7 +438,6 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
         {
             deadEnemies.push_back(enemy->second->name);
             player->AddToXP(enemy->second->GetXP());
-            player->CheckXP();
             //erase returns iterator to the next element in map
             itr = enemies.erase(itr);
         }
@@ -433,6 +454,7 @@ void Battle::OnUpdate(const Input& input, PhysicsSystem& physics, float dt)
     }
     if(enemies.size() == 0)
     {
+        player->CheckXP();
         LootBattle();
         SavePlayerInfo();
         initialStart = false;
