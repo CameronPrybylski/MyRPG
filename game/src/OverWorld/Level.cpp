@@ -112,7 +112,9 @@ void Level::LoadLevel(std::string filepath)
             }
             else if(objs.key() == "patterns")
             {
-                go = std::make_shared<RepeatPattern>(position, scale, rotation, velocity, color, texturePath, name, isStatic);
+                glm::vec2 tileScale = {obst["tileScale"][0], obst["tileScale"][1]};
+                go = std::make_shared<RepeatPattern>(position, scale, rotation, velocity, color, texturePath, name, isStatic, tileScale);
+                //glm::vec2 tileScale = {obst["tileScale"][0], obst["tileScale"][1]};
                 AddObject(obst.value("name", "Unnamed"), go);
             }
             else if(objs.key() == "player"){
