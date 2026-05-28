@@ -1,7 +1,7 @@
 #include <Game/RepeatPattern.h>
 #include <Game/Obstacle.h>
 
-RepeatPattern::RepeatPattern(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation, glm::vec3 velocity, glm::vec4 color, std::string texturePath, std::string name, bool isStatic)
+RepeatPattern::RepeatPattern(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation, glm::vec3 velocity, glm::vec4 color, std::string texturePath, std::string name, bool isStatic, glm::vec2 tileScale)
 {
     mesh = AssetManager::GetMesh("batchMesh");
     transform.position = position;
@@ -12,6 +12,7 @@ RepeatPattern::RepeatPattern(glm::vec3 position, glm::vec3 scale, glm::vec3 rota
     this->color = color;
     this->name = name;
     this->texturePath = texturePath;
+    this->tileScale = tileScale;
     if(texturePath != ""){
         shaderName = "textureShader";
         texture.Create(texturePath);
@@ -30,8 +31,8 @@ void RepeatPattern::Init()
     /*
      To Do: Implement Batch Rendering 
     */
-    int numXObjs = transform.scale.x / 50;
-    int numYObjs = transform.scale.y / 50;
+    int numXObjs = transform.scale.x / tileScale.x;
+    int numYObjs = transform.scale.y / tileScale.y;
     float startX = transform.position.x - transform.scale.x / 2;
     float startY = transform.position.y - transform.scale.y / 2;
     glm::vec3 startPos = {startX, startY, transform.position.z};
@@ -49,20 +50,21 @@ void RepeatPattern::Init()
             std::vector<float> quad = 
             {
                 startPos.x, startPos.y, 0.0f, 0.0f,
-                startPos.x + 50.0f, startPos.y, 1.0f, 0.0f,
-                startPos.x + 50.0f, startPos.y + 50.0f, 1.0f, 1.0f,
-                startPos.x, startPos.y + 50.0f, 0.0f, 1.0f,
+                startPos.x + tileScale.x, startPos.y, 1.0f, 0.0f,
+                startPos.x + tileScale.x, startPos.y + tileScale.y, 1.0f, 1.0f,
+                startPos.x, startPos.y + tileScale.y, 0.0f, 1.0f
             };
             for(int k = 0; k < quad.size(); ++k)
             {
                 vertices.push_back(quad[k]);
             }
-            startPos.x += 50.0f;
+            startPos.x += tileScale.x;
         }
-        startPos.y += 50.0f;
+        startPos.y += tileScale.y;
         startPos.x = startX;
     }
     mesh->SetVertices(vertices);
+    this->vertices = vertices;
 }
 
 void RepeatPattern::OnEvent(const Input &input)
@@ -71,7 +73,6 @@ void RepeatPattern::OnEvent(const Input &input)
 
 void RepeatPattern::Update(const Input &input, float dt)
 {
-
 }
 
 void RepeatPattern::Render(Renderer &renderer, const Camera &camera)
@@ -79,7 +80,15 @@ void RepeatPattern::Render(Renderer &renderer, const Camera &camera)
     /*
      To Do: Implement Batch Rendering 
     */
-    renderer.DrawTexturedBatch(*mesh, camera, AssetManager::GetShader(shaderName), texture, color);
+    mesh->SetVertices(vertices);
+    if(shaderName == "textureShader")
+    {
+        renderer.DrawTexturedBatch(*mesh, camera, AssetManager::GetShader(shaderName), texture, color);
+    }
+    else if(shaderName == "objectShader")
+    {
+        renderer.DrawBatch(*mesh, camera, AssetManager::GetShader(shaderName), color);
+    }
 }
 
 void RepeatPattern::OnCollision(std::shared_ptr<GameObject> collidedObj, glm::vec2 collisionNormal, float dt)

@@ -7,7 +7,7 @@
                 "scale": [1000.0, 2000.0, 0.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
-                "color": [0.0, 1.0, 0.0, 1.0],
+                "color": [0.0, 0.5, 0.0, 1.0],
                 "isStatic": true,
                 "texturePath" : "",
                 "battleTexturePath" : ""
@@ -25,16 +25,6 @@
             }
         ],
         "obstacles": [
-            {
-                "name": "obstacle1",
-                "position": [0.0, 1000.0, 0.0],
-                "scale": [800.0, 50.0, 0.0],
-                "rotation": [0.0, 0.0, 0.0],
-                "velocity": [0.0, 0.0, 0.0],
-                "color": [0.85, 0.3, 0.1, 1.0],
-                "isStatic": true,
-                "texturePath" : ""
-            },
             {
                 "name": "obstacle2",
                 "position": [400.0, 150.0, 0.0],
@@ -99,13 +89,59 @@
         "patterns" : [
             {
                 "name": "ocean",
-                "position": [500.0, 1000.0, -1.0],
-                "scale": [5000.0, 5000.0, 0.0],
+                "position": [-275.0, 1000.0, 0.0],
+                "scale": [550.0, 3000.0, 0.0],
+                "tileScale" : [50.0, 50.0],
                 "rotation": [0.0, 0.0, 0.0],
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 0.0, 0.0, 0.0],
                 "isStatic": true,
                 "texturePath" : "/textures/Ocean.png"
+            },
+            {
+                "name": "ocean2",
+                "position": [500.0, 2250.0, 0.0],
+                "scale": [1000.0, 500.0, 0.0],
+                "tileScale" : [50.0, 50.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 0.0, 0.0],
+                "isStatic": true,
+                "texturePath" : "/textures/Ocean.png"
+            },
+            {
+                "name": "forrest",
+                "position": [500.0, 1200.0, 0.0],
+                "scale": [500.0, 100.0, 0.0],
+                "tileScale" : [50.0, 50.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 0.0, 0.0],
+                "isStatic": true,
+                "texturePath" : "/textures/ForrestTile.png"
+            },
+            
+            {
+                "name": "mountain",
+                "position": [500.0, 2000.0, 0.2],
+                "scale": [1000.0, 25.0, 0.0],
+                "tileScale" : [50.0, 25.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 0.0, 0.0],
+                "isStatic": true,
+                "texturePath" : "/textures/MountainTileMiddle.png"
+            },
+            {
+                "name": "mountain2",
+                "position": [500.0, 2025.0, 0.1],
+                "scale": [1000.0, 25.0, 0.0],
+                "tileScale" : [50.0, 25.0],
+                "rotation": [0.0, 0.0, 0.0],
+                "velocity": [0.0, 0.0, 0.0],
+                "color": [0.0, 0.0, 0.0, 0.0],
+                "isStatic": true,
+                "texturePath" : "/textures/MountainTileTop.png"
             }
         ],
         "player" : [
