@@ -4,6 +4,7 @@
 RepeatPattern::RepeatPattern(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation, glm::vec3 velocity, glm::vec4 color, std::string texturePath, std::string name, bool isStatic, glm::vec2 tileScale)
 {
     mesh = AssetManager::GetMesh("batchMesh");
+    batched = true;
     transform.position = position;
     transform.scale = scale;
     transform.rotation = rotation;
@@ -12,9 +13,11 @@ RepeatPattern::RepeatPattern(glm::vec3 position, glm::vec3 scale, glm::vec3 rota
     this->color = color;
     this->name = name;
     this->texturePath = texturePath;
+    int textureNum = texturePaths.size();
+    texturePaths[textureNum] = texturePath;
     this->tileScale = tileScale;
     if(texturePath != ""){
-        shaderName = "textureShader";
+        shaderName = "textureBatchShader";
         texture.Create(texturePath);
     }else{
         shaderName = "objectShader";
@@ -49,10 +52,10 @@ void RepeatPattern::Init()
             */
             std::vector<float> quad = 
             {
-                startPos.x, startPos.y, 0.0f, 0.0f,
-                startPos.x + tileScale.x, startPos.y, 1.0f, 0.0f,
-                startPos.x + tileScale.x, startPos.y + tileScale.y, 1.0f, 1.0f,
-                startPos.x, startPos.y + tileScale.y, 0.0f, 1.0f
+                startPos.x, startPos.y, 0.0f, 0.0f, 0.0f,
+                startPos.x + tileScale.x, startPos.y, 1.0f, 0.0f, 0.0f,
+                startPos.x + tileScale.x, startPos.y + tileScale.y, 1.0f, 1.0f, 0.0f,
+                startPos.x, startPos.y + tileScale.y, 0.0f, 1.0f, 0.0f
             };
             for(int k = 0; k < quad.size(); ++k)
             {
@@ -67,12 +70,58 @@ void RepeatPattern::Init()
     this->vertices = vertices;
 }
 
+void RepeatPattern::AddVertices(glm::vec3 position, glm::vec3 scale, glm::vec3 rotation, glm::vec3 velocity, glm::vec4 color, std::string texturePath, std::string name, bool isStatic, glm::vec2 tileScale)
+{
+    int numXObjs = scale.x / tileScale.x;
+    int numYObjs = scale.y / tileScale.y;
+    float startX = position.x - scale.x / 2;
+    float startY = position.y - scale.y / 2;
+    glm::vec3 startPos = {startX, startY, position.z};
+    int textureNum = texturePaths.size();
+    for(int i = 0; i < numYObjs; ++i)
+    {
+        for(int j = 0; j < numXObjs; ++j)
+        {
+            std::vector<float> quad = 
+            {
+                startPos.x, startPos.y, 0.0f, 0.0f, (float)textureNum,
+                startPos.x + tileScale.x, startPos.y, 1.0f, 0.0f, (float)textureNum,
+                startPos.x + tileScale.x, startPos.y + tileScale.y, 1.0f, 1.0f, (float)textureNum,
+                startPos.x, startPos.y + tileScale.y, 0.0f, 1.0f, (float)textureNum
+            };
+            for(int k = 0; k < quad.size(); ++k)
+            {
+                vertices.push_back(quad[k]);
+            }
+            startPos.x += tileScale.x;
+        }
+        startPos.y += tileScale.y;
+        startPos.x = startX;
+    }
+    mesh->SetVertices(vertices);
+    texturePaths[textureNum] = texturePath;
+}
+
+
 void RepeatPattern::OnEvent(const Input &input)
 {
 }
 
 void RepeatPattern::Update(const Input &input, float dt)
 {
+    if(reverseTexturePath != "")
+    {
+        ++frame;
+        if(frame == 60)
+        {
+            texture.Delete();
+            texture.Create(reverseTexturePath);
+            std::string temp = reverseTexturePath;
+            reverseTexturePath = texturePath;
+            texturePath = temp;
+            frame = 0;
+        }
+    }
 }
 
 void RepeatPattern::Render(Renderer &renderer, const Camera &camera)
@@ -80,10 +129,21 @@ void RepeatPattern::Render(Renderer &renderer, const Camera &camera)
     /*
      To Do: Implement Batch Rendering 
     */
-    mesh->SetVertices(vertices);
-    if(shaderName == "textureShader")
+    if(shaderName == "textureBatchShader")
     {
-        renderer.DrawTexturedBatch(*mesh, camera, AssetManager::GetShader(shaderName), texture, color);
+        std::vector<Texture> textures(texturePaths.size());
+        for(auto tex : texturePaths)
+        {
+            textures[tex.first].Create(tex.second);
+        }
+
+        renderer.DrawTexturedBatch(*mesh, camera, AssetManager::GetShader(shaderName), textures, color);
+
+        for(int i = 0; i < textures.size(); ++i)
+        {
+            textures[i].Unbind();
+            textures[i].Delete();
+        }
     }
     else if(shaderName == "objectShader")
     {
