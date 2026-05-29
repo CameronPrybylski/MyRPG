@@ -77,6 +77,7 @@ void Level::LoadLevel(std::string filepath)
     moveCamera = j["levelParams"]["moveCamera"];
     glm::vec3 initialPosition = {0.0f, 0.0f, -1.0f};
     glm::vec3 playerInitialPosition = {0.0f, 0.0f, -1.0f};
+    bool firstPattern = true;
     for (const auto& objs : j["objects"].items()) {
         for(const auto& obst : objs.value()){
             std::shared_ptr<GameObject> go;
@@ -113,9 +114,25 @@ void Level::LoadLevel(std::string filepath)
             else if(objs.key() == "patterns")
             {
                 glm::vec2 tileScale = {obst["tileScale"][0], obst["tileScale"][1]};
-                go = std::make_shared<RepeatPattern>(position, scale, rotation, velocity, color, texturePath, name, isStatic, tileScale);
-                //glm::vec2 tileScale = {obst["tileScale"][0], obst["tileScale"][1]};
-                AddObject(obst.value("name", "Unnamed"), go);
+                if(firstPattern)
+                {
+                    repeatPattern = std::make_shared<RepeatPattern>(position, scale, rotation, velocity, color, texturePath, name, isStatic, tileScale);
+                    if(obst.value("reverseTexturePath", "Unnamed") != "Unnamed")
+                    {
+                        std::string reverseTexturePath = root + obst.value("reverseTexturePath", "Unnamed");
+                        repeatPattern->SetReverseTexturePath(reverseTexturePath);
+                    }
+                    go = repeatPattern;
+                    AddObject(obst.value("name", "Unnamed"), go);
+                    firstPattern = false;
+                }
+                else
+                {
+                    repeatPattern->AddVertices(position, scale, rotation, velocity, color, texturePath, name, isStatic, tileScale);
+                    go = std::make_shared<Obstacle>(position, scale, rotation, velocity, glm::vec4{0.0f, 0.0f, 0.0f, 0.0f}, "", name, isStatic);
+                    nonDrawnObjects[name] = go;
+                    objectMap[name] = go;
+                }
             }
             else if(objs.key() == "player"){
                 if(initialPosition[2] == -1.0f)
@@ -285,6 +302,7 @@ void Level::LoadGlobal(std::string globalFilePath)
 {
     objectList.clear();
     objectMap.clear();
+    nonDrawnObjects.clear();
     std::ifstream playerJsonFile(globalFilePath);
     if (!playerJsonFile.is_open()) {
         throw std::runtime_error("Failed to open player file.");
@@ -394,7 +412,14 @@ void Level::LoadPhysics(PhysicsSystem& physics)
     physics.SetGravity(gravity);
     for(auto& obj : objectMap)
     {
-        physics.RegisterBody(obj.second->transform, obj.second->rigidBody, obj.second->name);
+        if(nonDrawnObjects.count(obj.first) == 0)
+        {
+            physics.RegisterBody(obj.second->transform, obj.second->rigidBody, obj.second->name);
+        }
+    }
+    for(auto& nonDrObj : nonDrawnObjects)
+    {
+        physics.RegisterBody(nonDrObj.second->transform, nonDrObj.second->rigidBody, nonDrObj.second->name);
     }
 }
 

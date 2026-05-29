@@ -57,6 +57,7 @@ int main()
         
         AssetManager::LoadShader("objectShader", (std::string(root) + "/shaders/basic.vert").c_str(), (std::string(root) + "/shaders/basic.frag").c_str());
         AssetManager::LoadShader("textureShader", (std::string(root) + "/shaders/texture.vert").c_str(), (std::string(root) + "/shaders/texture.frag").c_str());
+        AssetManager::LoadShader("textureBatchShader", (std::string(root) + "/shaders/batchtexture.vert").c_str(), (std::string(root) + "/shaders/batchtexture.frag").c_str());
         app.Run();
     }
     return 0;

@@ -96,7 +96,8 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 0.0, 0.0, 0.0],
                 "isStatic": true,
-                "texturePath" : "/textures/Ocean.png"
+                "texturePath" : "/textures/Ocean.png",
+                "reverseTexturePath" : "/textures/OceanReverse.png"
             },
             {
                 "name": "ocean2",
@@ -107,7 +108,8 @@
                 "velocity": [0.0, 0.0, 0.0],
                 "color": [0.0, 0.0, 0.0, 0.0],
                 "isStatic": true,
-                "texturePath" : "/textures/Ocean.png"
+                "texturePath" : "/textures/Ocean.png",
+                "reverseTexturePath" : "/textures/OceanReverse2.png"
             },
             {
                 "name": "forrest",

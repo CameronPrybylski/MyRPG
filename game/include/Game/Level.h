@@ -10,6 +10,7 @@ class TreasureChest;
 class TownSpot;
 class NPC;
 class DialogueBox;
+class RepeatPattern;
 
 class Level : public Scene {
 
@@ -72,6 +73,7 @@ private:
     std::string areaName;
     std::unordered_map<std::string, std::shared_ptr<NPC>> npcs;
     std::shared_ptr<DialogueBox> dialogueBox;
+    std::shared_ptr<RepeatPattern> repeatPattern;
     //std::map<std::string, std::shared_ptr<TreasureChest>> TreasureChests;
     std::shared_ptr<TreasureChest> treasureChestTemplate;
     std::shared_ptr<TreasureChest> CreateTreasureChest(glm::vec3 position, std::string name);
