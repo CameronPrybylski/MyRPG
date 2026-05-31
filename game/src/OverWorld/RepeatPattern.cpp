@@ -14,11 +14,13 @@ RepeatPattern::RepeatPattern(glm::vec3 position, glm::vec3 scale, glm::vec3 rota
     this->name = name;
     this->texturePath = texturePath;
     int textureNum = texturePaths.size();
-    texturePaths[textureNum] = texturePath;
+    texturePaths.push_back(texturePath);
+    Texture texture;
+    textures.push_back(texture);
     this->tileScale = tileScale;
     if(texturePath != ""){
         shaderName = "textureBatchShader";
-        texture.Create(texturePath);
+        //texture.Create(texturePath);
     }else{
         shaderName = "objectShader";
     }
@@ -99,7 +101,9 @@ void RepeatPattern::AddVertices(glm::vec3 position, glm::vec3 scale, glm::vec3 r
         startPos.x = startX;
     }
     mesh->SetVertices(vertices);
-    texturePaths[textureNum] = texturePath;
+    texturePaths.push_back(texturePath);
+    Texture texture;
+    textures.push_back(texture);
 }
 
 
@@ -131,10 +135,10 @@ void RepeatPattern::Render(Renderer &renderer, const Camera &camera)
     */
     if(shaderName == "textureBatchShader")
     {
-        std::vector<Texture> textures(texturePaths.size());
-        for(auto tex : texturePaths)
+        //std::vector<Texture> textures(texturePaths.size());
+        for(int i = 0; i < textures.size(); ++i)
         {
-            textures[tex.first].Create(tex.second);
+            textures[i].Create(texturePaths[i]);
         }
 
         renderer.DrawTexturedBatch(*mesh, camera, AssetManager::GetShader(shaderName), textures, color);
