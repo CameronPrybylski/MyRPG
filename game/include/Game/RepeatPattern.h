@@ -35,6 +35,7 @@ protected:
     glm::vec2 tileScale;
     int frame = 0;
     std::string reverseTexturePath = "";
-    std::map<int, std::string> texturePaths;
+    std::vector<std::string> texturePaths;
+    std::vector<Texture> textures;
 
 };
